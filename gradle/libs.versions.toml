@@ -7,14 +7,26 @@ androidx-activity = "1.12.0"
 androidx-lifecycle = "2.9.6"
 composeHotReload = "1.0.0"
 composeMultiplatform = "1.9.3"
+glass-yasan-toolkit = "0.7.0"
+koin-bom = "4.1.1"
 kotlin = "2.2.21"
 kotlinx-coroutines = "1.10.2"
 
 [libraries]
-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
-androidx-lifecycle-viewmodelCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-viewmodelCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
+glass-yasan-toolkit-about = { module = "glass.yasan.toolkit:about", version.ref = "glass-yasan-toolkit" }
+glass-yasan-toolkit-compose = { module = "glass.yasan.toolkit:compose", version.ref = "glass-yasan-toolkit" }
+glass-yasan-toolkit-core = { module = "glass.yasan.toolkit:core", version.ref = "glass-yasan-toolkit" }
+glass-yasan-toolkit-koin = { module = "glass.yasan.toolkit:koin", version.ref = "glass-yasan-toolkit" }
+koin-android = { module = "io.insert-koin:koin-android" }
+koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose" }
+koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin-bom" }
+koin-compose = { module = "io.insert-koin:koin-compose" }
+koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel" }
+koin-core = { module = "io.insert-koin:koin-core" }
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlinx-coroutinesSwing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 
 [plugins]
