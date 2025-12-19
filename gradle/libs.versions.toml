@@ -9,7 +9,7 @@ composeHotReload = "1.0.0"
 composeMultiplatform = "1.9.3"
 glass-yasan-toolkit = "0.8.0"
 koin-bom = "4.1.1"
-kotlin = "2.2.21"
+kotlin = "2.3.0"
 kotlinx-coroutines = "1.10.2"
 
 [libraries]
