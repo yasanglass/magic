@@ -29,10 +29,10 @@ import glass.yasan.magic.domain.model.Answer
 import glass.yasan.magic.presentation.route.magic.MagicViewModel.Event
 import glass.yasan.magic.presentation.util.SystemBarColorsEffect
 import glass.yasan.magic.presentation.route.magic.MagicViewModel.State
+import glass.yasan.magic.util.PreviewWithTest
 import glass.yasan.toolkit.about.presentation.compose.ToolkitDeveloperLogoHorizontal
 import glass.yasan.toolkit.compose.color.toContentColor
 import glass.yasan.toolkit.compose.viewmodel.rememberSendViewEvent
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -100,7 +100,7 @@ private fun MagicScreen(
     }
 }
 
-@Preview
+@PreviewWithTest
 @Composable
 internal fun MagicScreenEmptyPreview() {
     PreviewContent(
@@ -108,25 +108,25 @@ internal fun MagicScreenEmptyPreview() {
     )
 }
 
-@Preview
+@PreviewWithTest
 @Composable
-internal fun MagicScreenGreenPreview() {
+internal fun MagicScreenSuccessPreview() {
     PreviewContent(
         answer = DefaultAnswerPacks.magicEightBallAnswers.first { it.type == Answer.Type.SUCCESS },
     )
 }
 
-@Preview
+@PreviewWithTest
 @Composable
-internal fun MagicScreenOrangePreview() {
+internal fun MagicScreenCautionPreview() {
     PreviewContent(
         answer = DefaultAnswerPacks.magicEightBallAnswers.first { it.type == Answer.Type.CAUTION },
     )
 }
 
-@Preview
+@PreviewWithTest
 @Composable
-internal fun MagicScreenRedPreview() {
+internal fun MagicScreenDangerPreview() {
     PreviewContent(
         answer = DefaultAnswerPacks.magicEightBallAnswers.first { it.type == Answer.Type.DANGER },
     )

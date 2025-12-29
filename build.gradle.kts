@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.arturbosch.detekt) apply true
     alias(libs.plugins.jetbrains.kotlinx.kover)
     alias(libs.plugins.iurysouza.modulegraph)
+    alias(libs.plugins.roborazzi) apply false
 }
 
 dependencies {

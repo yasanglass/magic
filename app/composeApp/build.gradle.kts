@@ -1,3 +1,4 @@
+import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -9,6 +10,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.compose)
     alias(libs.plugins.jetbrains.kotlin.serialization)
     alias(libs.plugins.jetbrains.compose.hotreload)
+    alias(libs.plugins.roborazzi)
 }
 
 kotlin {
@@ -111,6 +113,16 @@ kotlin {
                 implementation(libs.jetbrains.kotlinx.coroutines.swing)
             }
         }
+        val jvmTest by getting {
+            dependencies {
+                implementation(libs.sergio.sastre.composable.preview.scanner.jvm)
+                implementation(libs.roborazzi.compose.desktop)
+                implementation(kotlin("reflect"))
+                implementation(kotlin("test"))
+                @OptIn(ExperimentalComposeLibrary::class)
+                implementation(compose.uiTest)
+            }
+        }
         androidMain {
             dependencies {
                 implementation(compose.preview)
@@ -181,5 +193,30 @@ compose.desktop {
                 iconFile.set(project.file("src/commonMain/composeResources/drawable/app_icon.png"))
             }
         }
+    }
+}
+
+tasks.register<Delete>("cleanSnapshots") {
+    delete(fileTree("src/jvmTest/snapshots") { include("*.png") })
+}
+
+tasks.register("cleanRecordSnapshots") {
+    description = "Deletes all snapshots and re-records them"
+    dependsOn("cleanSnapshots")
+    finalizedBy("recordRoborazziJvm")
+}
+
+tasks.register("verifySnapshots") {
+    description = "Verifies snapshots match baselines"
+    dependsOn("verifyRoborazziJvm")
+}
+
+val isCleanRecord = providers.gradleProperty("cleanRecordSnapshots").isPresent ||
+    gradle.startParameter.taskNames.any { it.contains("cleanRecordSnapshots") }
+
+tasks.named("jvmTest") {
+    mustRunAfter("cleanSnapshots")
+    if (isCleanRecord) {
+        outputs.upToDateWhen { false }
     }
 }

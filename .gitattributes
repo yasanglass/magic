@@ -1,0 +1,2 @@
+# Snapshot images stored in Git LFS
+app/composeApp/src/jvmTest/snapshots/*.png filter=lfs diff=lfs merge=lfs -text
