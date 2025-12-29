@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">Magic</string>
+    <string name="answer_affirmative_it_is_certain">It is certain</string>
+    <string name="answer_affirmative_it_is_decidedly_so">It is decidedly so</string>
+    <string name="answer_affirmative_without_a_doubt">Without a doubt</string>
+    <string name="answer_affirmative_yes_definitely">Yes – definitely</string>
+    <string name="answer_affirmative_you_may_rely_on_it">You may rely on it</string>
+    <string name="answer_affirmative_as_i_see_it_yes">As I see it, yes</string>
+    <string name="answer_affirmative_most_likely">Most likely</string>
+    <string name="answer_affirmative_outlook_good">Outlook good</string>
+    <string name="answer_affirmative_yes">Yes</string>
+    <string name="answer_affirmative_signs_point_to_yes">Signs point to yes</string>
+    <string name="answer_non_committal_reply_hazy_try_again">Reply hazy, try again</string>
+    <string name="answer_non_committal_ask_again_later">Ask again later</string>
+    <string name="answer_non_committal_better_not_tell_you_now">Better not tell you now</string>
+    <string name="answer_non_committal_cannot_predict_now">Cannot predict now</string>
+    <string name="answer_non_committal_concentrate_and_ask_again">Concentrate and ask again</string>
+    <string name="answer_negative_dont_count_on_it">Don\'t count on it</string>
+    <string name="answer_negative_my_reply_is_no">My reply is no</string>
+    <string name="answer_negative_my_sources_say_no">My sources say no</string>
+    <string name="answer_negative_outlook_not_so_good">Outlook not so good</string>
+    <string name="answer_negative_very_doubtful">Very doubtful</string>
 </resources>
