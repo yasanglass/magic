@@ -33,8 +33,6 @@ import glass.yasan.toolkit.about.presentation.compose.ToolkitDeveloperLogoHorizo
 import glass.yasan.toolkit.compose.color.toContentColor
 import glass.yasan.toolkit.compose.viewmodel.rememberSendViewEvent
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -102,19 +100,46 @@ private fun MagicScreen(
     }
 }
 
-private class StatePreviewParameterProvider : PreviewParameterProvider<State> {
-    override val values: Sequence<State> = DefaultAnswerPacks.magicEightBallAnswers
-        .map { answer -> State(answer = answer) }
-        .asSequence()
+@Preview
+@Composable
+internal fun MagicScreenEmptyPreview() {
+    PreviewContent(
+        answer = Answer.empty,
+    )
 }
 
 @Preview
 @Composable
-private fun MagicScreenPreview(
-    @PreviewParameter(StatePreviewParameterProvider::class) state: State,
+internal fun MagicScreenGreenPreview() {
+    PreviewContent(
+        answer = DefaultAnswerPacks.magicEightBallAnswers.first { it.type == Answer.Type.SUCCESS },
+    )
+}
+
+@Preview
+@Composable
+internal fun MagicScreenOrangePreview() {
+    PreviewContent(
+        answer = DefaultAnswerPacks.magicEightBallAnswers.first { it.type == Answer.Type.CAUTION },
+    )
+}
+
+@Preview
+@Composable
+internal fun MagicScreenRedPreview() {
+    PreviewContent(
+        answer = DefaultAnswerPacks.magicEightBallAnswers.first { it.type == Answer.Type.DANGER },
+    )
+}
+
+@Composable
+private fun PreviewContent(
+    answer: Answer,
 ) {
     MagicScreen(
-        state = state,
+        state = State(
+            answer = answer,
+        ),
         sendEvent = {},
     )
 }

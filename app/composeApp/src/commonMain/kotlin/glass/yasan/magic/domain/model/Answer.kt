@@ -24,11 +24,11 @@ data class Answer(
 
     enum class Type {
         EMPTY,
-        GENERIC,
-        GREEN,
-        BLUE,
-        ORANGE,
-        RED,
+        CONTENT,
+        SUCCESS,
+        INFO,
+        CAUTION,
+        DANGER,
         ;
 
         @OptIn(ExperimentalKepkoApi::class)
@@ -36,11 +36,11 @@ data class Answer(
         fun getContainerColor(): Color =
             when (this) {
                 EMPTY -> KepkoTheme.colors.foreground
-                GENERIC -> KepkoTheme.colors.content
-                GREEN -> KepkoTheme.colors.success
-                BLUE -> KepkoTheme.colors.information
-                ORANGE -> KepkoTheme.colors.caution
-                RED -> KepkoTheme.colors.danger
+                CONTENT -> KepkoTheme.colors.content
+                SUCCESS -> KepkoTheme.colors.success
+                INFO -> KepkoTheme.colors.information
+                CAUTION -> KepkoTheme.colors.caution
+                DANGER -> KepkoTheme.colors.danger
             }
 
     }
