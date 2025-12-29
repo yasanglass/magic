@@ -7,8 +7,9 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,29 +20,38 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import glass.yasan.kepko.component.Text
 import glass.yasan.magic.data.local.DefaultAnswerPacks
 import glass.yasan.magic.domain.model.Answer
+import glass.yasan.magic.presentation.navigation.Route
+import glass.yasan.magic.presentation.route.magic.MagicViewModel.Action.NavigateToSettings
 import glass.yasan.magic.presentation.route.magic.MagicViewModel.Event
 import glass.yasan.magic.presentation.util.SystemBarColorsEffect
 import glass.yasan.magic.presentation.route.magic.MagicViewModel.State
 import glass.yasan.magic.resources.Res
+import glass.yasan.magic.resources.answer_ask
 import glass.yasan.magic.resources.long_click_for_settings
+import glass.yasan.magic.resources.open_settings
 import glass.yasan.magic.util.PreviewWithTest
 import glass.yasan.toolkit.about.presentation.compose.ToolkitDeveloperLogoHorizontal
 import glass.yasan.toolkit.compose.color.toContentColor
+import glass.yasan.toolkit.compose.viewmodel.ViewActionEffect
 import glass.yasan.toolkit.compose.viewmodel.rememberSendViewEvent
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun MagicScreen() {
+fun MagicScreen(
+    navController: NavHostController,
+) {
     val viewModel: MagicViewModel = koinViewModel()
     val state by viewModel.viewState.collectAsStateWithLifecycle()
     val sendEvent = rememberSendViewEvent(viewModel)
@@ -50,6 +60,14 @@ fun MagicScreen() {
         state = state,
         sendEvent = sendEvent,
     )
+
+    ViewActionEffect(
+        viewAction = viewModel.viewAction,
+    ) { action ->
+        when (action) {
+            is NavigateToSettings -> navController.navigate(Route.Settings)
+        }
+    }
 }
 
 @Composable
@@ -69,53 +87,76 @@ private fun MagicScreen(
             .fillMaxSize()
             .background(containerColor)
             .safeContentPadding()
-            .clickable(
+            .combinedClickable(
                 interactionSource = null,
                 indication = null,
-            ) {
-                sendEvent(Event.OnClick)
-            },
+                onClickLabel = stringResource(Res.string.answer_ask),
+                onClick = { sendEvent(Event.Ask) },
+                onLongClickLabel = stringResource(Res.string.open_settings),
+                onLongClick = { sendEvent(Event.OpenSettings) },
+            ),
     ) {
+        Header(extraContentAlpha)
+        Answer(state, contentColor)
+        Footer(contentColor, extraContentAlpha)
+    }
+}
+
+@Composable
+private fun Answer(
+    state: State,
+    contentColor: Color
+) {
+    AnimatedContent(
+        targetState = state.answer,
+        transitionSpec = { fadeIn() togetherWith fadeOut() },
+    ) { answer ->
         Text(
-            text = stringResource(Res.string.long_click_for_settings),
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Light,
-            fontStyle = FontStyle.Italic,
+            text = answer.getText(),
+            fontSize = 32.sp,
+            lineHeight = 32.sp,
+            fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .alpha(extraContentAlpha)
-                .align(Alignment.TopCenter)
-                .padding(16.dp),
-        )
-        AnimatedContent(
-            targetState = state.answer,
-            transitionSpec = { fadeIn() togetherWith fadeOut() },
-        ) { answer ->
-            Text(
-                text = answer.getText(),
-                fontSize = 32.sp,
-                lineHeight = 32.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                color = contentColor,
-                modifier = Modifier
-                    .padding(
-                        vertical = 128.dp,
-                        horizontal = 32.dp,
-                    ),
-            )
-        }
-        ToolkitDeveloperLogoHorizontal(
             color = contentColor,
             modifier = Modifier
-                .fillMaxWidth()
-                .alpha(extraContentAlpha)
-                .align(Alignment.BottomCenter)
-                .padding(16.dp)
-                .height(46.dp),
+                .padding(
+                    vertical = 128.dp,
+                    horizontal = 32.dp,
+                ),
         )
     }
+}
+
+@Composable
+private fun BoxScope.Header(extraContentAlpha: Float) {
+    Text(
+        text = stringResource(Res.string.long_click_for_settings),
+        fontSize = 14.sp,
+        fontWeight = FontWeight.Light,
+        fontStyle = FontStyle.Italic,
+        textAlign = TextAlign.Center,
+        modifier = Modifier
+            .fillMaxWidth()
+            .alpha(extraContentAlpha)
+            .align(Alignment.TopCenter)
+            .padding(16.dp),
+    )
+}
+
+@Composable
+private fun BoxScope.Footer(
+    contentColor: Color,
+    extraContentAlpha: Float
+) {
+    ToolkitDeveloperLogoHorizontal(
+        color = contentColor,
+        modifier = Modifier
+            .fillMaxWidth()
+            .alpha(extraContentAlpha)
+            .align(Alignment.BottomCenter)
+            .padding(16.dp)
+            .height(46.dp),
+    )
 }
 
 @PreviewWithTest

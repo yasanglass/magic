@@ -2,6 +2,7 @@ package glass.yasan.magic.presentation.route.magic
 
 import glass.yasan.magic.data.local.DefaultAnswerPacks
 import glass.yasan.magic.domain.model.Answer
+import glass.yasan.magic.presentation.route.magic.MagicViewModel.Action.NavigateToSettings
 import glass.yasan.toolkit.compose.viewmodel.ToolkitViewModel
 import glass.yasan.toolkit.compose.viewmodel.ViewAction
 import glass.yasan.toolkit.compose.viewmodel.ViewEvent
@@ -19,17 +20,21 @@ class MagicViewModel : ToolkitViewModel<
 
     interface Event : ViewEvent {
 
-        data object OnClick : Event
+        data object Ask : Event
+        data object OpenSettings : Event
 
     }
 
-    data object Action : ViewAction
+    interface Action : ViewAction {
+        data object NavigateToSettings : Action
+    }
 
     override fun defaultViewState(): State = State()
 
     override suspend fun onViewEvent(event: Event) {
         when (event) {
-            is Event.OnClick -> fetchNewAnswer()
+            is Event.Ask -> fetchNewAnswer()
+            is Event.OpenSettings -> openSettings()
         }
     }
 
@@ -39,6 +44,10 @@ class MagicViewModel : ToolkitViewModel<
                 answer = DefaultAnswerPacks.magicEightBallAnswers.random(),
             )
         }
+    }
+
+    private fun openSettings() {
+        sendViewAction(NavigateToSettings)
     }
 
 }

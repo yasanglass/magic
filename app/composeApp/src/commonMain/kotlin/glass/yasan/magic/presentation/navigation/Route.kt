@@ -8,4 +8,7 @@ sealed interface Route {
     @Serializable
     data object Magic : Route
 
+    @Serializable
+    data object Settings : Route
+
 }

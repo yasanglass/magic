@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import glass.yasan.magic.presentation.route.SettingsScreen
 import glass.yasan.magic.presentation.route.magic.MagicScreen
 
 @Composable
@@ -42,7 +43,10 @@ internal fun NavigationHost(
         },
     ) {
         composable<Route.Magic> {
-            MagicScreen()
+            MagicScreen(navController)
+        }
+        composable<Route.Settings> {
+            SettingsScreen(navController)
         }
     }
 }
