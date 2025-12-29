@@ -54,6 +54,27 @@ kotlin {
     }
 
     sourceSets {
+        val webMain by creating {
+            dependsOn(commonMain.get())
+        }
+        jsMain {
+            dependsOn(webMain)
+        }
+        wasmJsMain {
+            dependsOn(webMain)
+        }
+        val iosMain by creating {
+            dependsOn(commonMain.get())
+        }
+        iosX64Main {
+            dependsOn(iosMain)
+        }
+        iosArm64Main {
+            dependsOn(iosMain)
+        }
+        iosSimulatorArm64Main {
+            dependsOn(iosMain)
+        }
         commonMain {
             dependencies {
                 implementation(compose.components.resources)
