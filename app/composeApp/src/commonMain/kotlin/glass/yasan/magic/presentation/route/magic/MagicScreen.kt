@@ -102,7 +102,7 @@ private fun MagicScreen(
     }
 }
 
-private class Stat2ePreviewParameterProvider : PreviewParameterProvider<State> {
+private class StatePreviewParameterProvider : PreviewParameterProvider<State> {
     override val values: Sequence<State> = DefaultAnswerPacks.magicEightBallAnswers
         .map { answer -> State(answer = answer) }
         .asSequence()
@@ -111,7 +111,7 @@ private class Stat2ePreviewParameterProvider : PreviewParameterProvider<State> {
 @Preview
 @Composable
 private fun MagicScreenPreview(
-    @PreviewParameter(Stat2ePreviewParameterProvider::class) state: State,
+    @PreviewParameter(StatePreviewParameterProvider::class) state: State,
 ) {
     MagicScreen(
         state = state,
