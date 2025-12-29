@@ -10,6 +10,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
@@ -18,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -29,10 +31,13 @@ import glass.yasan.magic.domain.model.Answer
 import glass.yasan.magic.presentation.route.magic.MagicViewModel.Event
 import glass.yasan.magic.presentation.util.SystemBarColorsEffect
 import glass.yasan.magic.presentation.route.magic.MagicViewModel.State
+import glass.yasan.magic.resources.Res
+import glass.yasan.magic.resources.long_click_for_settings
 import glass.yasan.magic.util.PreviewWithTest
 import glass.yasan.toolkit.about.presentation.compose.ToolkitDeveloperLogoHorizontal
 import glass.yasan.toolkit.compose.color.toContentColor
 import glass.yasan.toolkit.compose.viewmodel.rememberSendViewEvent
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -71,6 +76,18 @@ private fun MagicScreen(
                 sendEvent(Event.OnClick)
             },
     ) {
+        Text(
+            text = stringResource(Res.string.long_click_for_settings),
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Light,
+            fontStyle = FontStyle.Italic,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .alpha(extraContentAlpha)
+                .align(Alignment.TopCenter)
+                .padding(16.dp),
+        )
         AnimatedContent(
             targetState = state.answer,
             transitionSpec = { fadeIn() togetherWith fadeOut() },
@@ -92,6 +109,7 @@ private fun MagicScreen(
         ToolkitDeveloperLogoHorizontal(
             color = contentColor,
             modifier = Modifier
+                .fillMaxWidth()
                 .alpha(extraContentAlpha)
                 .align(Alignment.BottomCenter)
                 .padding(16.dp)
