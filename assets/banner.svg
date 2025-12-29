@@ -2,14 +2,12 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="100%" height="100%" viewBox="0 0 2000 500" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
     <g transform="matrix(110,0,0,1.259836,-8020,-35.667307)">
-        <g transform="matrix(1,0,0,1,-6.355164,0)">
-            <g transform="matrix(0.02139,0,0,1.404875,81.125217,-51.415558)">
-                <ellipse cx="338" cy="198" rx="85" ry="113" style="fill:white;"/>
-            </g>
-            <g transform="matrix(0.013152,0,0,1.148371,83.194375,214.249162)">
-                <g transform="matrix(288,0,0,288,494.913105,111.685363)">
-                </g>
-                <text x="289.857px" y="111.685px" style="font-family:'Rubik-Black', 'Rubik';font-weight:900;font-size:288px;">8</text>
+        <g transform="matrix(0.02139,0,0,1.404875,74.770053,-51.415558)">
+            <ellipse cx="338" cy="198" rx="85" ry="113" style="fill:white;stroke:rgb(216,216,216);stroke-width:1.92px;"/>
+        </g>
+        <g transform="matrix(0.013152,0,0,1.148371,76.839211,214.249162)">
+            <g transform="matrix(1,0,0,1,289.857,111.685)">
+                <text x="0px" y="0px" style="font-family:'Rubik-Black', 'Rubik';font-weight:900;font-size:288px;">8</text>
             </g>
         </g>
     </g>
