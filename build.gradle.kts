@@ -77,7 +77,9 @@ subprojects {
 moduleGraphConfig {
     readmePath.set("${rootDir}/README.md")
     heading.set("### Modules")
-    showFullPath.set(false)
     setStyleByModuleType.set(true)
     nestingEnabled.set(true)
+    rootModulesRegex.set(":app:composeApp")
+    excludedModulesRegex.set(":app$")
+    focusedModulesRegex.set(":app:composeApp")
 }
