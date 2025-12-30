@@ -79,6 +79,8 @@ kotlin {
         }
         commonMain {
             dependencies {
+                implementation(project(":feature:settings"))
+
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
                 implementation(compose.foundation)

@@ -26,13 +26,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import glass.yasan.kepko.component.Text
-import glass.yasan.kepko.foundation.theme.ThemeStyle
 import glass.yasan.magic.data.local.DefaultAnswerPacks
 import glass.yasan.magic.domain.model.Answer
+import glass.yasan.magic.feature.settings.domain.model.Settings
 import glass.yasan.magic.presentation.navigation.Route
 import glass.yasan.magic.presentation.route.magic.MagicViewModel.Action.NavigateToSettings
 import glass.yasan.magic.presentation.route.magic.MagicViewModel.Event
@@ -53,7 +52,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun MagicScreen(
     navController: NavHostController,
-    themeStyle: MutableState<ThemeStyle>,
+    settings: Settings,
 ) {
     val viewModel: MagicViewModel = koinViewModel()
     val state by viewModel.viewState.collectAsStateWithLifecycle()
@@ -62,7 +61,7 @@ fun MagicScreen(
     MagicScreen(
         state = state,
         sendEvent = sendEvent,
-        darkIcons = !themeStyle.value.isDark,
+        darkIcons = !settings.theme.asKepkoThemeStyle().isDark,
     )
 
     ViewActionEffect(

@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 rootProject.name = "magic"
 include(":app")
 include(":app:composeApp")
+include(":feature:settings")

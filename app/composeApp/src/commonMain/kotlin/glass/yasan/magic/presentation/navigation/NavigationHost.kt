@@ -1,29 +1,29 @@
 package glass.yasan.magic.presentation.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import glass.yasan.kepko.foundation.theme.ThemeStyle
+import glass.yasan.magic.feature.settings.domain.model.Settings
 import glass.yasan.magic.presentation.route.about.AboutScreen
-import glass.yasan.magic.presentation.route.settings.SettingsScreen
 import glass.yasan.magic.presentation.route.magic.MagicScreen
+import glass.yasan.magic.presentation.route.settings.SettingsScreen
 
 @Composable
 internal fun NavigationHost(
     navController: NavHostController,
-    themeStyle: MutableState<ThemeStyle>,
+    settings: Settings,
+    updateSettings: (Settings.() -> Settings) -> Unit,
 ) {
     NavHost(
         navController = navController,
         startDestination = Route.Magic,
     ) {
         composable<Route.Magic> {
-            MagicScreen(navController, themeStyle)
+            MagicScreen(navController, settings)
         }
         composable<Route.Settings> {
-            SettingsScreen(navController, themeStyle)
+            SettingsScreen(navController, settings, updateSettings)
         }
         composable<Route.About> {
             AboutScreen(navController)

@@ -23,17 +23,29 @@
 
 graph LR
   :app["app"]
+  :feature["feature"]
   subgraph :app
     :app:composeApp["composeApp"]
+    :app:composeApp["composeApp"]
+  end
+  subgraph :feature
+    :feature:settings["settings"]
+    :feature:settings["settings"]
   end
 
+  :app:composeApp --> :feature:settings
   : --> :app
+  : --> :feature
   : --> :app:composeApp
+  : --> :feature:settings
 
-classDef unknown fill:#676767,stroke:#fff,stroke-width:2px,color:#fff;
 classDef android-application fill:#2C4162,stroke:#fff,stroke-width:2px,color:#fff;
+classDef kotlin-multiplatform fill:#C792EA,stroke:#fff,stroke-width:2px,color:#fff;
+classDef unknown fill:#676767,stroke:#fff,stroke-width:2px,color:#fff;
+class :app:composeApp android-application
+class :feature:settings kotlin-multiplatform
 class : unknown
 class :app unknown
-class :app:composeApp android-application
+class :feature unknown
 
 ```
