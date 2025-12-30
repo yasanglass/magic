@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
@@ -46,20 +47,24 @@ fun SettingsScreen(
             modifier = Modifier.padding(contentPadding),
         ) {
             verticalSpacerItem(height = 16.dp)
-            themePreference(themeStyle)
-            item {
-                ButtonText(
-                    text = stringResource(Res.string.about),
-                    onClick = { navController.navigate(Route.About) },
-                    leadingIcon = null,
-                    trailingIcon = painterResource(KepkoComponentRes.drawable.ic_chevron_forward),
-                )
-            }
+            themePreferenceItem(themeStyle)
+            aboutButtonItem { navController.navigate(Route.About) }
         }
     }
 }
 
-private fun LazyListScope.themePreference(themeStyle: MutableState<ThemeStyle>) {
+private fun LazyListScope.aboutButtonItem(onClick: () -> Unit) {
+    item {
+        ButtonText(
+            text = stringResource(Res.string.about),
+            leadingIcon = null,
+            trailingIcon = painterResource(KepkoComponentRes.drawable.ic_chevron_forward),
+            onClick = onClick,
+        )
+    }
+}
+
+private fun LazyListScope.themePreferenceItem(themeStyle: MutableState<ThemeStyle>) {
     item {
         PreferenceRadioGroup(
             title = stringResource(Res.string.theme),
