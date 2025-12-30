@@ -8,14 +8,19 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 
 @Composable
-actual fun SystemBarColorsEffect(color: Color) {
+actual fun SystemBarColorsEffect(
+    statusBarColor: Color,
+    navigationBarColor: Color,
+) {
     val view = LocalView.current
 
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
             @Suppress("DEPRECATION")
-            window.navigationBarColor = color.toArgb()
+            window.statusBarColor = statusBarColor.toArgb()
+            @Suppress("DEPRECATION")
+            window.navigationBarColor = navigationBarColor.toArgb()
         }
     }
 }
