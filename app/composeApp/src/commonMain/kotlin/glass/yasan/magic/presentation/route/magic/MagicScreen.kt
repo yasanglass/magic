@@ -26,9 +26,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.runtime.MutableState
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import glass.yasan.kepko.component.Text
+import glass.yasan.kepko.foundation.theme.ThemeStyle
 import glass.yasan.magic.data.local.DefaultAnswerPacks
 import glass.yasan.magic.domain.model.Answer
 import glass.yasan.magic.presentation.navigation.Route
@@ -51,6 +53,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun MagicScreen(
     navController: NavHostController,
+    themeStyle: MutableState<ThemeStyle>,
 ) {
     val viewModel: MagicViewModel = koinViewModel()
     val state by viewModel.viewState.collectAsStateWithLifecycle()
@@ -59,6 +62,7 @@ fun MagicScreen(
     MagicScreen(
         state = state,
         sendEvent = sendEvent,
+        darkIcons = !themeStyle.value.isDark,
     )
 
     ViewActionEffect(
@@ -74,12 +78,13 @@ fun MagicScreen(
 private fun MagicScreen(
     state: State,
     sendEvent: (Event) -> Unit,
+    darkIcons: Boolean = true,
 ) {
     val containerColor by animateColorAsState(state.answer.type.getContainerColor())
     val contentColor by animateColorAsState(containerColor.toContentColor())
     val extraContentAlpha by animateFloatAsState(if (state.answer == Answer.empty) 1f else 0f)
 
-    SystemBarColorsEffect(containerColor)
+    SystemBarColorsEffect(containerColor, darkIcons = darkIcons)
 
     Box(
         contentAlignment = Alignment.Center,
