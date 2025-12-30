@@ -6,9 +6,11 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import glass.yasan.kepko.foundation.theme.ThemeStyle
 import glass.yasan.magic.presentation.route.about.AboutScreen
 import glass.yasan.magic.presentation.route.settings.SettingsScreen
 import glass.yasan.magic.presentation.route.magic.MagicScreen
@@ -16,6 +18,7 @@ import glass.yasan.magic.presentation.route.magic.MagicScreen
 @Composable
 internal fun NavigationHost(
     navController: NavHostController,
+    themeStyle: MutableState<ThemeStyle>,
 ) {
     NavHost(
         navController = navController,
@@ -37,7 +40,7 @@ internal fun NavigationHost(
             MagicScreen(navController)
         }
         composable<Route.Settings> {
-            SettingsScreen(navController)
+            SettingsScreen(navController, themeStyle)
         }
         composable<Route.About> {
             AboutScreen(navController)
