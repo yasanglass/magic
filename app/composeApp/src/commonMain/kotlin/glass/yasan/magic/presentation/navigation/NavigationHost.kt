@@ -1,13 +1,16 @@
 package glass.yasan.magic.presentation.navigation
 
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import glass.yasan.magic.presentation.route.SettingsScreen
+import glass.yasan.magic.presentation.route.about.AboutScreen
+import glass.yasan.magic.presentation.route.settings.SettingsScreen
 import glass.yasan.magic.presentation.route.magic.MagicScreen
 
 @Composable
@@ -18,28 +21,16 @@ internal fun NavigationHost(
         navController = navController,
         startDestination = Route.Magic,
         enterTransition = {
-            slideInHorizontally(
-                initialOffsetX = { it },
-                animationSpec = tween(300)
-            )
+            slideInVertically(animationSpec = tween(300)) { it }
         },
         exitTransition = {
-            slideOutHorizontally(
-                targetOffsetX = { -it },
-                animationSpec = tween(300)
-            )
+            fadeOut(animationSpec = tween(300))
         },
         popEnterTransition = {
-            slideInHorizontally(
-                initialOffsetX = { -it },
-                animationSpec = tween(300)
-            )
+            fadeIn(animationSpec = tween(300))
         },
         popExitTransition = {
-            slideOutHorizontally(
-                targetOffsetX = { it },
-                animationSpec = tween(300)
-            )
+            slideOutVertically(animationSpec = tween(300)) { it }
         },
     ) {
         composable<Route.Magic> {
@@ -47,6 +38,9 @@ internal fun NavigationHost(
         }
         composable<Route.Settings> {
             SettingsScreen(navController)
+        }
+        composable<Route.About> {
+            AboutScreen(navController)
         }
     }
 }
