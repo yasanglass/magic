@@ -22,4 +22,24 @@
     <string name="answer_negative_outlook_not_so_good">Outlook not so good</string>
     <string name="answer_negative_very_doubtful">Very doubtful</string>
     <string name="answer_ask">Ask</string>
+    <string name="dice_1">1</string>
+    <string name="dice_2">2</string>
+    <string name="dice_3">3</string>
+    <string name="dice_4">4</string>
+    <string name="dice_5">5</string>
+    <string name="dice_6">6</string>
+    <string name="dice_7">7</string>
+    <string name="dice_8">8</string>
+    <string name="dice_9">9</string>
+    <string name="dice_10">10</string>
+    <string name="dice_11">11</string>
+    <string name="dice_12">12</string>
+    <string name="dice_13">13</string>
+    <string name="dice_14">14</string>
+    <string name="dice_15">15</string>
+    <string name="dice_16">16</string>
+    <string name="dice_17">17</string>
+    <string name="dice_18">18</string>
+    <string name="dice_19">19</string>
+    <string name="dice_20">20</string>
 </resources>
