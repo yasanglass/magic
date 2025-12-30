@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -30,12 +29,13 @@ import glass.yasan.kepko.component.Res as KepkoComponentRes
 @Composable
 fun SettingsScreen(
     navController: NavHostController,
-    themeStyle: MutableState<ThemeStyle>,
+    themeStyle: ThemeStyle,
+    onThemeStyleChange: (ThemeStyle) -> Unit,
 ) {
     SystemBarColorsEffect(
         statusBarColor = KepkoTheme.colors.foreground,
         navigationBarColor = KepkoTheme.colors.midground,
-        darkIcons = !themeStyle.value.isDark,
+        darkIcons = !themeStyle.isDark,
     )
 
     Scaffold(
@@ -47,7 +47,7 @@ fun SettingsScreen(
             modifier = Modifier.padding(contentPadding),
         ) {
             verticalSpacerItem(height = 16.dp)
-            themePreferenceItem(themeStyle)
+            themePreferenceItem(themeStyle, onThemeStyleChange)
             aboutButtonItem { navController.navigate(Route.About) }
         }
     }
@@ -64,13 +64,18 @@ private fun LazyListScope.aboutButtonItem(onClick: () -> Unit) {
     }
 }
 
-private fun LazyListScope.themePreferenceItem(themeStyle: MutableState<ThemeStyle>) {
+private fun LazyListScope.themePreferenceItem(
+    themeStyle: ThemeStyle,
+    onThemeStyleChange: (ThemeStyle) -> Unit,
+) {
     item {
         PreferenceRadioGroup(
             title = stringResource(Res.string.theme),
             items = ThemeStyle.asPreferenceRadioGroupItems(),
-            selectedId = themeStyle.value.id,
-            onSelectId = { themeStyle.value = ThemeStyle.fromId(it) ?: ThemeStyle.LIGHT },
+            selectedId = themeStyle.id,
+            onSelectId = { id ->
+                ThemeStyle.fromId(id)?.let { onThemeStyleChange(it) }
+            },
         )
     }
 }

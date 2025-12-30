@@ -99,6 +99,8 @@ kotlin {
                 implementation(libs.koin.compose)
                 implementation(libs.koin.compose.viewmodel)
                 implementation(libs.koin.core)
+                implementation(libs.russhwolf.multiplatform.settings)
+                implementation(libs.russhwolf.multiplatform.settings.coroutines)
                 implementation(libs.touchlab.kermit)
             }
         }

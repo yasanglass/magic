@@ -26,7 +26,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import glass.yasan.kepko.component.Text
@@ -53,7 +52,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun MagicScreen(
     navController: NavHostController,
-    themeStyle: MutableState<ThemeStyle>,
+    themeStyle: ThemeStyle,
 ) {
     val viewModel: MagicViewModel = koinViewModel()
     val state by viewModel.viewState.collectAsStateWithLifecycle()
@@ -62,7 +61,7 @@ fun MagicScreen(
     MagicScreen(
         state = state,
         sendEvent = sendEvent,
-        darkIcons = !themeStyle.value.isDark,
+        darkIcons = !themeStyle.isDark,
     )
 
     ViewActionEffect(
