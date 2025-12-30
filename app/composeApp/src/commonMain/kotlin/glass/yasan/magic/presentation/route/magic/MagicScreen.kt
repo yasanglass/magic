@@ -123,10 +123,7 @@ private fun Answer(
             textAlign = TextAlign.Center,
             color = contentColor,
             modifier = Modifier
-                .padding(
-                    vertical = 128.dp,
-                    horizontal = 32.dp,
-                ),
+                .padding(32.dp),
         )
     }
 }
