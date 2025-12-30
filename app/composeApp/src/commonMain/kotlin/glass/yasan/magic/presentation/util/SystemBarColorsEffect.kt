@@ -7,4 +7,5 @@ import androidx.compose.ui.graphics.Color
 expect fun SystemBarColorsEffect(
     statusBarColor: Color,
     navigationBarColor: Color = statusBarColor,
+    darkIcons: Boolean = true,
 )

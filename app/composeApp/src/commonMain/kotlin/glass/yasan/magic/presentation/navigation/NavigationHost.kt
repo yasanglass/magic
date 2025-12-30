@@ -37,7 +37,7 @@ internal fun NavigationHost(
         },
     ) {
         composable<Route.Magic> {
-            MagicScreen(navController)
+            MagicScreen(navController, themeStyle)
         }
         composable<Route.Settings> {
             SettingsScreen(navController, themeStyle)

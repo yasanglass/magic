@@ -35,6 +35,7 @@ fun SettingsScreen(
     SystemBarColorsEffect(
         statusBarColor = KepkoTheme.colors.foreground,
         navigationBarColor = KepkoTheme.colors.midground,
+        darkIcons = !themeStyle.value.isDark,
     )
 
     Scaffold(
