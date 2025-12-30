@@ -1,10 +1,5 @@
 package glass.yasan.magic.presentation.navigation
 
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.navigation.NavHostController
@@ -23,18 +18,6 @@ internal fun NavigationHost(
     NavHost(
         navController = navController,
         startDestination = Route.Magic,
-        enterTransition = {
-            slideInVertically(animationSpec = tween(300)) { it }
-        },
-        exitTransition = {
-            fadeOut(animationSpec = tween(300))
-        },
-        popEnterTransition = {
-            fadeIn(animationSpec = tween(300))
-        },
-        popExitTransition = {
-            slideOutVertically(animationSpec = tween(300)) { it }
-        },
     ) {
         composable<Route.Magic> {
             MagicScreen(navController, themeStyle)
