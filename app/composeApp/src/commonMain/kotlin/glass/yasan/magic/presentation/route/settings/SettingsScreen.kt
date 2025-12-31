@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -69,14 +70,18 @@ private fun LazyListScope.themePreferenceItem(
     updateSettings: (Settings.() -> Settings) -> Unit,
 ) {
     item {
-        PreferenceRadioGroup(
-            title = stringResource(Res.string.theme),
-            items = Settings.Theme.entries.map { theme ->
+        val items = remember {
+            Settings.Theme.entries.map { theme ->
                 PreferenceRadioGroupItem(
                     id = theme.id,
-                    title = { theme.name.lowercase().replaceFirstChar { it.uppercase() }.replace("_", " ") },
+                    title = theme.title,
                 )
-            },
+            }
+        }
+
+        PreferenceRadioGroup(
+            title = stringResource(Res.string.theme),
+            items = items,
             selectedId = settings.theme.id,
             onSelectId = { id ->
                 updateSettings {
