@@ -12,6 +12,10 @@
   <a href="https://github.com/yasanglass/magic/actions/workflows/wasm.yml"><img alt="Wasm" src="https://github.com/yasanglass/magic/actions/workflows/wasm.yml/badge.svg"/></a>
 </p>
 
+<p align="center">
+A simple randomizer app built with Compose Multiplatform
+<p align="center">
+
 ### Modules
 
 ```mermaid
