@@ -1,7 +1,11 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
+val appVersionName: String by project
+val appVersionCode: String by project
 
 plugins {
     alias(libs.plugins.jetbrains.kotlin.multiplatform)
@@ -11,6 +15,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.serialization)
     alias(libs.plugins.jetbrains.compose.hotreload)
     alias(libs.plugins.roborazzi)
+    alias(libs.plugins.codingfeline.buildkonfig)
 }
 
 kotlin {
@@ -144,8 +149,8 @@ android {
         applicationId = "me.yasan.magic_8_ball"
         minSdk = libs.versions.android.sdk.min.get().toInt()
         targetSdk = libs.versions.android.sdk.target.get().toInt()
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = appVersionCode.toInt()
+        versionName = appVersionName
     }
     packaging {
         resources {
@@ -183,7 +188,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Magic"
-            packageVersion = "1.0.0"
+            packageVersion = appVersionName
             macOS {
                 iconFile.set(project.file("src/jvmMain/resources/app_icon.icns"))
                 bundleID = "glass.yasan.magic"
@@ -197,6 +202,21 @@ compose.desktop {
             }
         }
     }
+}
+
+buildkonfig {
+    packageName = "glass.yasan.magic"
+    defaultConfigs {
+        buildConfigField(STRING, "VERSION_NAME", appVersionName)
+        buildConfigField(STRING, "VERSION_CODE", appVersionCode)
+    }
+}
+
+file("../iosApp/Configuration/Config.xcconfig").takeIf { it.exists() }?.let { iosAppConfig ->
+    val content = iosAppConfig.readText()
+        .replace(Regex("MARKETING_VERSION=.*"), "MARKETING_VERSION=$appVersionName")
+        .replace(Regex("CURRENT_PROJECT_VERSION=.*"), "CURRENT_PROJECT_VERSION=$appVersionCode")
+    iosAppConfig.writeText(content)
 }
 
 tasks.register<Delete>("cleanSnapshots") {

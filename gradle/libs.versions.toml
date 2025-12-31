@@ -9,6 +9,7 @@ androidx-compose-ui-tooling = "1.10.0"
 androidx-lifecycle = "2.9.6"
 androidx-navigation = "2.9.1"
 arturbosch-detekt = "1.23.8"
+codingfeline-buildkonfig = "0.17.1"
 glass-yasan-kepko = "1.2.7"
 glass-yasan-toolkit = "1.7.2"
 iurysouza-modulegraph = "0.13.0"
@@ -63,6 +64,7 @@ touchlab-kermit = { module = "co.touchlab:kermit", version.ref = "touchlab-kermi
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 arturbosch-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "arturbosch-detekt" }
+codingfeline-buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "codingfeline-buildkonfig" }
 iurysouza-modulegraph = { id = "dev.iurysouza.modulegraph", version.ref = "iurysouza-modulegraph" }
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
 jetbrains-compose-hotreload = { id = "org.jetbrains.compose.hot-reload", version.ref = "jetbrains-compose-hotreload" }

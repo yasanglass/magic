@@ -16,6 +16,7 @@ import glass.yasan.kepko.component.PreferenceRadioGroup
 import glass.yasan.kepko.component.PreferenceRadioGroupItem
 import glass.yasan.kepko.component.Scaffold
 import glass.yasan.kepko.foundation.theme.KepkoTheme
+import glass.yasan.magic.BuildKonfig
 import glass.yasan.kepko.resource.ic_chevron_forward
 import glass.yasan.magic.feature.settings.domain.model.Settings
 import glass.yasan.magic.presentation.navigation.Route
@@ -108,7 +109,7 @@ private fun LazyListScope.appIdentityItem() {
     item {
         PreferenceAppIdentity(
             title = stringResource(Res.string.app_name),
-            versionName = "1.0.0", // TODO replace with real value
+            versionName = BuildKonfig.VERSION_NAME,
             modifier = Modifier.fillMaxWidth(),
         )
     }

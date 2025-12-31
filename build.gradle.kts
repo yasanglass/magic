@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlinx.kover)
     alias(libs.plugins.iurysouza.modulegraph)
     alias(libs.plugins.roborazzi) apply false
+    alias(libs.plugins.codingfeline.buildkonfig) apply false
 }
 
 dependencies {
