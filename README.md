@@ -3,6 +3,7 @@
 </p>
 
 [![license](https://img.shields.io/github/license/yasanglass/magic.svg)](https://github.com/yasanglass/magic/blob/main/LICENSE)
+[![kotlin](https://img.shields.io/badge/kotlin-2.3.0-purple.svg?style=flat)](https://kotlinlang.org)
 [![crowdin](https://badges.crowdin.net/magic-8-ball/localized.svg)](https://crowdin.com/project/magic-8-ball)
 [![android](https://img.shields.io/github/actions/workflow/status/yasanglass/magic/android.yml?label=android)](https://github.com/yasanglass/magic/actions/workflows/android.yml)
 [![jvm](https://img.shields.io/github/actions/workflow/status/yasanglass/magic/jvm.yml?label=jvm)](https://github.com/yasanglass/magic/actions/workflows/jvm.yml)
