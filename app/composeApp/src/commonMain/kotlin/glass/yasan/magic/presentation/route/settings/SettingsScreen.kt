@@ -54,8 +54,8 @@ fun SettingsScreen(
             verticalSpacerItem(height = 16.dp)
             themePreferenceItem(settings, updateSettings)
             aboutButtonItem { navController.navigate(Route.About) }
-            developerBannerItem()
             appIdentityItem()
+            developerBannerItem()
         }
     }
 }
