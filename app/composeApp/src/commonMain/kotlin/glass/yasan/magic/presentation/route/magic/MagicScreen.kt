@@ -9,10 +9,8 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.runtime.Composable
@@ -42,7 +40,6 @@ import glass.yasan.magic.resources.answer_ask
 import glass.yasan.magic.resources.long_click_for_settings
 import glass.yasan.magic.resources.open_settings
 import glass.yasan.magic.util.PreviewWithTest
-import glass.yasan.toolkit.about.presentation.compose.ToolkitDeveloperLogoHorizontal
 import glass.yasan.toolkit.compose.color.toContentColor
 import glass.yasan.toolkit.compose.viewmodel.ViewActionEffect
 import glass.yasan.toolkit.compose.viewmodel.rememberSendViewEvent
@@ -81,7 +78,7 @@ private fun MagicScreen(
 ) {
     val containerColor by animateColorAsState(state.answer.type.getContainerColor())
     val contentColor by animateColorAsState(containerColor.toContentColor())
-    val extraContentAlpha by animateFloatAsState(if (state.answer == Answer.empty) 1f else 0f)
+    val additionalContentAlpha by animateFloatAsState(if (state.answer == Answer.empty) 1f else 0f)
 
     SystemBarColorsEffect(containerColor, darkIcons = darkIcons)
 
@@ -100,9 +97,12 @@ private fun MagicScreen(
                 onLongClick = { sendEvent(Event.OpenSettings) },
             ),
     ) {
-        Header(extraContentAlpha)
         Answer(state, contentColor)
-        Footer(contentColor, extraContentAlpha)
+        Tip(
+            modifier = Modifier
+                .alpha(additionalContentAlpha)
+                .align(Alignment.BottomCenter)
+        )
     }
 }
 
@@ -129,34 +129,21 @@ private fun Answer(
 }
 
 @Composable
-private fun BoxScope.Header(extraContentAlpha: Float) {
+private fun Tip(
+    modifier: Modifier = Modifier,
+) {
     Text(
         text = stringResource(Res.string.long_click_for_settings),
-        fontSize = 14.sp,
+        fontSize = 12.sp,
         fontWeight = FontWeight.Light,
         fontStyle = FontStyle.Italic,
         textAlign = TextAlign.Center,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .alpha(extraContentAlpha)
-            .align(Alignment.TopCenter)
-            .padding(16.dp),
-    )
-}
-
-@Composable
-private fun BoxScope.Footer(
-    contentColor: Color,
-    extraContentAlpha: Float
-) {
-    ToolkitDeveloperLogoHorizontal(
-        color = contentColor,
-        modifier = Modifier
-            .fillMaxWidth()
-            .alpha(extraContentAlpha)
-            .align(Alignment.BottomCenter)
-            .padding(16.dp)
-            .height(46.dp),
+            .padding(
+                vertical = 32.dp,
+                horizontal = 16.dp,
+            ),
     )
 }
 

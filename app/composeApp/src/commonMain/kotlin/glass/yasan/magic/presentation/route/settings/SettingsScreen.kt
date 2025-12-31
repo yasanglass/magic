@@ -1,6 +1,7 @@
 package glass.yasan.magic.presentation.route.settings
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -10,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import glass.yasan.kepko.component.ButtonText
+import glass.yasan.kepko.component.PreferenceAppIdentity
 import glass.yasan.kepko.component.PreferenceRadioGroup
 import glass.yasan.kepko.component.PreferenceRadioGroupItem
 import glass.yasan.kepko.component.Scaffold
@@ -20,8 +22,10 @@ import glass.yasan.magic.presentation.navigation.Route
 import glass.yasan.magic.presentation.util.SystemBarColorsEffect
 import glass.yasan.magic.resources.Res
 import glass.yasan.magic.resources.about
+import glass.yasan.magic.resources.app_name
 import glass.yasan.magic.resources.settings
 import glass.yasan.magic.resources.theme
+import glass.yasan.toolkit.about.presentation.compose.ToolkitDeveloperBanner
 import glass.yasan.toolkit.compose.spacer.verticalSpacerItem
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -50,6 +54,8 @@ fun SettingsScreen(
             verticalSpacerItem(height = 16.dp)
             themePreferenceItem(settings, updateSettings)
             aboutButtonItem { navController.navigate(Route.About) }
+            developerBannerItem()
+            appIdentityItem()
         }
     }
 }
@@ -90,6 +96,20 @@ private fun LazyListScope.themePreferenceItem(
                     )
                 }
             },
+        )
+    }
+}
+
+private fun LazyListScope.developerBannerItem() {
+    item { ToolkitDeveloperBanner() }
+}
+
+private fun LazyListScope.appIdentityItem() {
+    item {
+        PreferenceAppIdentity(
+            title = stringResource(Res.string.app_name),
+            versionName = "1.0.0", // TODO replace with real value
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }
