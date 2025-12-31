@@ -2,15 +2,15 @@
   <img src="./assets/banner.png" alt="Banner"/>
 </p>
 
-<p align="center">
-  <a href="https://crowdin.com/project/magic-8-ball"><img alt="Crowdin" src="https://badges.crowdin.net/magic-8-ball/localized.svg"/></a>
-  <a href="https://github.com/yasanglass/magic/actions/workflows/detekt.yml"><img alt="Detekt" src="https://github.com/yasanglass/magic/actions/workflows/detekt.yml/badge.svg"/></a>
-  <a href="https://github.com/yasanglass/magic/actions/workflows/android.yml"><img alt="Android" src="https://github.com/yasanglass/magic/actions/workflows/android.yml/badge.svg"/></a>
-  <a href="https://github.com/yasanglass/magic/actions/workflows/jvm.yml"><img alt="JVM" src="https://github.com/yasanglass/magic/actions/workflows/jvm.yml/badge.svg"/></a>
-  <a href="https://github.com/yasanglass/magic/actions/workflows/ios.yml"><img alt="iOS" src="https://github.com/yasanglass/magic/actions/workflows/ios.yml/badge.svg"/></a>
-  <a href="https://github.com/yasanglass/magic/actions/workflows/js.yml"><img alt="JS" src="https://github.com/yasanglass/magic/actions/workflows/js.yml/badge.svg"/></a>
-  <a href="https://github.com/yasanglass/magic/actions/workflows/wasm.yml"><img alt="Wasm" src="https://github.com/yasanglass/magic/actions/workflows/wasm.yml/badge.svg"/></a>
-</p>
+[![license](https://img.shields.io/github/license/yasanglass/magic.svg)](https://github.com/yasanglass/magic/blob/main/LICENSE)
+[![crowdin](https://badges.crowdin.net/magic-8-ball/localized.svg)](https://crowdin.com/project/magic-8-ball)
+[![android](https://img.shields.io/github/actions/workflow/status/yasanglass/magic/android.yml?label=android)](https://github.com/yasanglass/magic/actions/workflows/android.yml)
+[![jvm](https://img.shields.io/github/actions/workflow/status/yasanglass/magic/jvm.yml?label=jvm)](https://github.com/yasanglass/magic/actions/workflows/jvm.yml)
+[![ios](https://img.shields.io/github/actions/workflow/status/yasanglass/magic/ios.yml?label=ios)](https://github.com/yasanglass/magic/actions/workflows/ios.yml)
+[![js](https://img.shields.io/github/actions/workflow/status/yasanglass/magic/js.yml?label=js)](https://github.com/yasanglass/magic/actions/workflows/js.yml)
+[![wasm](https://img.shields.io/github/actions/workflow/status/yasanglass/magic/wasm.yml?label=wasm)](https://github.com/yasanglass/magic/actions/workflows/wasm.yml)
+[![detekt](https://img.shields.io/github/actions/workflow/status/yasanglass/magic/detekt.yml?label=detekt)](https://github.com/yasanglass/magic/actions/workflows/detekt.yml)
+[![snapshots](https://img.shields.io/github/actions/workflow/status/yasanglass/magic/snapshots.yml?label=snapshots)](https://github.com/yasanglass/magic/actions/workflows/snapshots.yml)
 
 <p align="center">
 A simple randomizer app built with Compose Multiplatform
