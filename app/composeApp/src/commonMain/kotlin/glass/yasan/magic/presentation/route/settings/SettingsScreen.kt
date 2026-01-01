@@ -110,6 +110,7 @@ private fun LazyListScope.appIdentityItem() {
         PreferenceAppIdentity(
             title = stringResource(Res.string.app_name),
             versionName = BuildKonfig.VERSION_NAME,
+            extras = arrayOf(BuildKonfig.VERSION_CODE),
             modifier = Modifier.fillMaxWidth(),
         )
     }
