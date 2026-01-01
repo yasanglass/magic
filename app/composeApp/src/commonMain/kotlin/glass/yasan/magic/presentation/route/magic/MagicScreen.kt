@@ -9,10 +9,13 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -27,9 +30,19 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import glass.yasan.kepko.component.Text
+import glass.yasan.kepko.foundation.theme.KepkoTheme
+import glass.yasan.kepko.foundation.theme.ThemeStyle
 import glass.yasan.magic.data.local.DefaultAnswerPacks
 import glass.yasan.magic.domain.model.Answer
+import glass.yasan.magic.domain.model.Answer.Type.CAUTION
+import glass.yasan.magic.domain.model.Answer.Type.GENERIC
+import glass.yasan.magic.domain.model.Answer.Type.DANGER
+import glass.yasan.magic.domain.model.Answer.Type.INFO
+import glass.yasan.magic.domain.model.Answer.Type.SUCCESS
 import glass.yasan.magic.feature.settings.domain.model.Settings
+import glass.yasan.magic.feature.settings.domain.model.Settings.Theme.DARK
+import glass.yasan.magic.feature.settings.domain.model.Settings.Theme.LIGHT
+import glass.yasan.magic.feature.settings.domain.model.Settings.Theme.SYSTEM
 import glass.yasan.magic.presentation.navigation.Route
 import glass.yasan.magic.presentation.route.magic.MagicViewModel.Action.NavigateToSettings
 import glass.yasan.magic.presentation.route.magic.MagicViewModel.Event
@@ -40,6 +53,7 @@ import glass.yasan.magic.resources.answer_ask
 import glass.yasan.magic.resources.long_click_for_settings
 import glass.yasan.magic.resources.open_settings
 import glass.yasan.magic.util.PreviewWithTest
+import glass.yasan.toolkit.compose.color.isDark
 import glass.yasan.toolkit.compose.color.toContentColor
 import glass.yasan.toolkit.compose.viewmodel.ViewActionEffect
 import glass.yasan.toolkit.compose.viewmodel.rememberSendViewEvent
@@ -56,9 +70,9 @@ fun MagicScreen(
     val sendEvent = rememberSendViewEvent(viewModel)
 
     MagicScreen(
+        settings = settings,
         state = state,
         sendEvent = sendEvent,
-        darkIcons = !settings.theme.asKepkoThemeStyle().isDark,
     )
 
     ViewActionEffect(
@@ -72,21 +86,26 @@ fun MagicScreen(
 
 @Composable
 private fun MagicScreen(
+    settings: Settings,
     state: State,
     sendEvent: (Event) -> Unit,
-    darkIcons: Boolean = true,
 ) {
-    val containerColor by animateColorAsState(state.answer.type.getContainerColor())
-    val contentColor by animateColorAsState(containerColor.toContentColor())
-    val additionalContentAlpha by animateFloatAsState(if (state.answer == Answer.empty) 1f else 0f)
+    val themeStyle = settings.theme.asKepkoThemeStyle()
+    val (backgroundColor, contentColor) = state.answer.resolveColors(themeStyle)
+    val animatedBackgroundColor by animateColorAsState(backgroundColor)
+    val animatedContentColor by animateColorAsState(contentColor)
+    val tipAlpha by animateFloatAsState(if (state.answer == Answer.empty) 1f else 0f)
 
-    SystemBarColorsEffect(containerColor, darkIcons = darkIcons)
+    SystemBarColorsEffect(
+        statusBarColor = animatedBackgroundColor,
+        darkIcons = !animatedBackgroundColor.isDark(),
+    )
 
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .fillMaxSize()
-            .background(containerColor)
+            .background(animatedBackgroundColor)
             .safeContentPadding()
             .combinedClickable(
                 interactionSource = null,
@@ -97,10 +116,11 @@ private fun MagicScreen(
                 onLongClick = { sendEvent(Event.OpenSettings) },
             ),
     ) {
-        Answer(state, contentColor)
+        Answer(state, animatedContentColor)
         Tip(
+            color = animatedContentColor,
             modifier = Modifier
-                .alpha(additionalContentAlpha)
+                .alpha(tipAlpha)
                 .align(Alignment.BottomCenter)
         )
     }
@@ -130,10 +150,12 @@ private fun Answer(
 
 @Composable
 private fun Tip(
+    color: Color,
     modifier: Modifier = Modifier,
 ) {
     Text(
         text = stringResource(Res.string.long_click_for_settings),
+        color = color,
         fontSize = 12.sp,
         fontWeight = FontWeight.Light,
         fontStyle = FontStyle.Italic,
@@ -147,46 +169,140 @@ private fun Tip(
     )
 }
 
+@Composable
+private fun Answer.resolveColors(
+    themeStyle: ThemeStyle,
+): Pair<Color, Color> {
+    val typeColor = when (type) {
+        GENERIC -> KepkoTheme.colors.content
+        SUCCESS -> KepkoTheme.colors.success
+        INFO -> KepkoTheme.colors.information
+        CAUTION -> KepkoTheme.colors.caution
+        DANGER -> KepkoTheme.colors.danger
+    }
+
+    val backgroundColor = if (themeStyle.isDark) KepkoTheme.colors.midground else typeColor
+    val contentColor = if (themeStyle.isDark) typeColor else backgroundColor.toContentColor()
+
+    return backgroundColor to contentColor
+}
+
 @PreviewWithTest
 @Composable
-internal fun MagicScreenEmptyPreview() {
+internal fun MagicScreenEmptyLightPreview() {
+    PreviewContent(answer = Answer.empty, theme = LIGHT)
+}
+
+@PreviewWithTest
+@Composable
+internal fun MagicScreenEmptyDarkPreview() {
+    PreviewContent(answer = Answer.empty, theme = DARK)
+}
+
+@PreviewWithTest
+@Composable
+internal fun MagicScreenSuccessLightPreview() {
     PreviewContent(
-        answer = Answer.empty,
+        answer = DefaultAnswerPacks.magicEightBallAnswers.first { it.type == SUCCESS },
+        theme = LIGHT,
     )
 }
 
 @PreviewWithTest
 @Composable
-internal fun MagicScreenSuccessPreview() {
+internal fun MagicScreenSuccessDarkPreview() {
     PreviewContent(
-        answer = DefaultAnswerPacks.magicEightBallAnswers.first { it.type == Answer.Type.SUCCESS },
+        answer = DefaultAnswerPacks.magicEightBallAnswers.first { it.type == SUCCESS },
+        theme = DARK,
     )
 }
 
 @PreviewWithTest
 @Composable
-internal fun MagicScreenCautionPreview() {
+internal fun MagicScreenCautionLightPreview() {
     PreviewContent(
-        answer = DefaultAnswerPacks.magicEightBallAnswers.first { it.type == Answer.Type.CAUTION },
+        answer = DefaultAnswerPacks.magicEightBallAnswers.first { it.type == CAUTION },
+        theme = LIGHT,
     )
 }
 
 @PreviewWithTest
 @Composable
-internal fun MagicScreenDangerPreview() {
+internal fun MagicScreenCautionDarkPreview() {
     PreviewContent(
-        answer = DefaultAnswerPacks.magicEightBallAnswers.first { it.type == Answer.Type.DANGER },
+        answer = DefaultAnswerPacks.magicEightBallAnswers.first { it.type == CAUTION },
+        theme = DARK,
+    )
+}
+
+@PreviewWithTest
+@Composable
+internal fun MagicScreenDangerLightPreview() {
+    PreviewContent(
+        answer = DefaultAnswerPacks.magicEightBallAnswers.first { it.type == DANGER },
+        theme = LIGHT,
+    )
+}
+
+@PreviewWithTest
+@Composable
+internal fun MagicScreenDangerDarkPreview() {
+    PreviewContent(
+        answer = DefaultAnswerPacks.magicEightBallAnswers.first { it.type == DANGER },
+        theme = DARK,
     )
 }
 
 @Composable
 private fun PreviewContent(
     answer: Answer,
+    theme: Settings.Theme,
 ) {
-    MagicScreen(
-        state = State(
-            answer = answer,
-        ),
-        sendEvent = {},
-    )
+    KepkoTheme(
+        style = theme.asKepkoThemeStyle(),
+    ) {
+        MagicScreen(
+            state = State(
+                answer = answer,
+            ),
+            sendEvent = {},
+            settings = Settings.default.copy(
+                theme = theme,
+            ),
+        )
+    }
+}
+
+@PreviewWithTest
+@Composable
+internal fun MagicScreenColorMatrixPreview() {
+    val themes = Settings.Theme.entries.filterNot { it == SYSTEM }
+
+    Column {
+        themes.forEach { theme ->
+            val themeStyle = theme.asKepkoThemeStyle()
+            KepkoTheme(style = themeStyle) {
+                Row {
+                    Answer.Type.entries.forEach { type ->
+                        val answer = Answer(getText = { type.name }, type = type)
+                        val (backgroundColor, contentColor) = answer.resolveColors(themeStyle)
+
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .size(64.dp)
+                                .background(backgroundColor),
+                        ) {
+                            Text(
+                                text = type.name,
+                                color = contentColor,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 10.sp,
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
