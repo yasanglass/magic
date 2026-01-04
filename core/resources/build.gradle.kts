@@ -25,30 +25,20 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(project(":core:resources"))
-
                 implementation(compose.components.resources)
-                implementation(compose.foundation)
-                implementation(compose.material3)
                 implementation(compose.runtime)
-                implementation(compose.ui)
-
-                implementation(libs.androidx.lifecycle.viewmodel.compose)
-                implementation(libs.androidx.navigation.compose)
-                implementation(libs.glass.yasan.kepko.component)
-                implementation(libs.glass.yasan.kepko.foundation)
-                implementation(libs.glass.yasan.toolkit.compose)
-                implementation(libs.koin.compose)
-                implementation(libs.koin.core)
-                implementation(libs.russhwolf.multiplatform.settings)
-                implementation(libs.russhwolf.multiplatform.settings.coroutines)
             }
         }
     }
 }
 
+compose.resources {
+    packageOfResClass = "glass.yasan.magic.core.resources"
+    publicResClass = true
+}
+
 android {
-    namespace = "glass.yasan.magic.feature.settings"
+    namespace = "glass.yasan.magic.core.resources"
     compileSdk = libs.versions.android.sdk.compile.get().toInt()
 
     defaultConfig {

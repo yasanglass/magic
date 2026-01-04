@@ -21,11 +21,11 @@ import glass.yasan.kepko.resource.ic_chevron_forward
 import glass.yasan.magic.feature.settings.domain.model.Settings
 import glass.yasan.magic.presentation.navigation.Route
 import glass.yasan.magic.presentation.util.SystemBarColorsEffect
-import glass.yasan.magic.resources.Res
-import glass.yasan.magic.resources.about
-import glass.yasan.magic.resources.app_name
-import glass.yasan.magic.resources.settings
-import glass.yasan.magic.resources.theme
+import glass.yasan.magic.core.resources.Res
+import glass.yasan.magic.core.resources.about
+import glass.yasan.magic.core.resources.app_name
+import glass.yasan.magic.core.resources.settings
+import glass.yasan.magic.core.resources.theme
 import glass.yasan.toolkit.about.presentation.compose.ToolkitDeveloperBanner
 import glass.yasan.toolkit.compose.spacer.verticalSpacerItem
 import org.jetbrains.compose.resources.painterResource

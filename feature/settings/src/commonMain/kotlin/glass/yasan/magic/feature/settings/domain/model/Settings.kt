@@ -2,8 +2,8 @@ package glass.yasan.magic.feature.settings.domain.model
 
 import androidx.compose.runtime.Composable
 import glass.yasan.kepko.foundation.theme.ThemeStyle
-import glass.yasan.magic.feature.settings.resources.Res
-import glass.yasan.magic.feature.settings.resources.theme_style_system
+import glass.yasan.magic.core.resources.Res
+import glass.yasan.magic.core.resources.theme_style_system
 import org.jetbrains.compose.resources.stringResource
 
 data class Settings(

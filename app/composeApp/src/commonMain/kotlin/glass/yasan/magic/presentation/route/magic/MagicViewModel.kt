@@ -1,14 +1,16 @@
 package glass.yasan.magic.presentation.route.magic
 
-import glass.yasan.magic.data.local.DefaultAnswerPacks
-import glass.yasan.magic.domain.model.Answer
+import glass.yasan.magic.feature.answers.domain.model.Answer
+import glass.yasan.magic.feature.answers.domain.usecase.GetNewAnswerUseCase
 import glass.yasan.magic.presentation.route.magic.MagicViewModel.Action.NavigateToSettings
 import glass.yasan.toolkit.compose.viewmodel.ToolkitViewModel
 import glass.yasan.toolkit.compose.viewmodel.ViewAction
 import glass.yasan.toolkit.compose.viewmodel.ViewEvent
 import glass.yasan.toolkit.compose.viewmodel.ViewState
 
-class MagicViewModel : ToolkitViewModel<
+class MagicViewModel(
+    private val getNewAnswer: GetNewAnswerUseCase,
+) : ToolkitViewModel<
         MagicViewModel.State,
         MagicViewModel.Event,
         MagicViewModel.Action,
@@ -41,7 +43,7 @@ class MagicViewModel : ToolkitViewModel<
     private fun fetchNewAnswer() {
         updateViewState {
             copy(
-                answer = DefaultAnswerPacks.magicEightBallAnswers.random(),
+                answer = getNewAnswer(),
             )
         }
     }

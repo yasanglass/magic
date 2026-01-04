@@ -84,6 +84,8 @@ kotlin {
         }
         commonMain {
             dependencies {
+                implementation(project(":core:resources"))
+                implementation(project(":feature:answers"))
                 implementation(project(":feature:settings"))
 
                 implementation(compose.components.resources)
@@ -177,10 +179,6 @@ dependencies {
     debugImplementation(compose.uiTooling)
 }
 
-compose.resources {
-    packageOfResClass = "glass.yasan.magic.resources"
-}
-
 compose.desktop {
     application {
         mainClass = "glass.yasan.magic.MainKt"
@@ -195,10 +193,10 @@ compose.desktop {
                 dockName = "Magic"
             }
             windows {
-                iconFile.set(project.file("src/commonMain/composeResources/drawable/app_icon.png"))
+                iconFile.set(project.file("src/jvmMain/resources/app_icon.png"))
             }
             linux {
-                iconFile.set(project.file("src/commonMain/composeResources/drawable/app_icon.png"))
+                iconFile.set(project.file("src/jvmMain/resources/app_icon.png"))
             }
         }
     }

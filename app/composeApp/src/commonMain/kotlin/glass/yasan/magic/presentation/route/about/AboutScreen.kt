@@ -7,8 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import glass.yasan.kepko.component.Scaffold
-import glass.yasan.magic.resources.Res
-import glass.yasan.magic.resources.about
+import glass.yasan.magic.core.resources.Res
+import glass.yasan.magic.core.resources.about
 import glass.yasan.toolkit.about.presentation.compose.ToolkitDeveloperContent
 import glass.yasan.toolkit.compose.spacer.verticalSpacerItem
 import org.jetbrains.compose.resources.stringResource
