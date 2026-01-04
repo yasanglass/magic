@@ -9,6 +9,8 @@ plugins {
 }
 
 kotlin {
+    explicitApi()
+
     androidTarget {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
@@ -48,7 +50,7 @@ kotlin {
 }
 
 android {
-    namespace = "glass.yasan.magic.feature.settings"
+    namespace = "glass.yasan.magic.feature.answers"
     compileSdk = libs.versions.android.sdk.compile.get().toInt()
 
     defaultConfig {

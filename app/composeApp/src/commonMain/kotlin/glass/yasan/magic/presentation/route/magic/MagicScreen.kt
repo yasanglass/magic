@@ -32,13 +32,13 @@ import androidx.navigation.NavHostController
 import glass.yasan.kepko.component.Text
 import glass.yasan.kepko.foundation.theme.KepkoTheme
 import glass.yasan.kepko.foundation.theme.ThemeStyle
-import glass.yasan.magic.data.local.DefaultAnswerPacks
-import glass.yasan.magic.domain.model.Answer
-import glass.yasan.magic.domain.model.Answer.Type.CAUTION
-import glass.yasan.magic.domain.model.Answer.Type.GENERIC
-import glass.yasan.magic.domain.model.Answer.Type.DANGER
-import glass.yasan.magic.domain.model.Answer.Type.INFO
-import glass.yasan.magic.domain.model.Answer.Type.SUCCESS
+import glass.yasan.magic.feature.answers.domain.model.Answer
+import glass.yasan.magic.feature.answers.domain.model.Answer.Type.CAUTION
+import glass.yasan.magic.feature.answers.domain.model.Answer.Type.GENERIC
+import glass.yasan.magic.feature.answers.domain.model.Answer.Type.DANGER
+import glass.yasan.magic.feature.answers.domain.model.Answer.Type.INFO
+import glass.yasan.magic.feature.answers.domain.model.Answer.Type.SUCCESS
+import glass.yasan.magic.feature.answers.util.preview.PreviewAnswers
 import glass.yasan.magic.feature.settings.domain.model.Settings
 import glass.yasan.magic.feature.settings.domain.model.Settings.Theme.DARK
 import glass.yasan.magic.feature.settings.domain.model.Settings.Theme.LIGHT
@@ -48,10 +48,10 @@ import glass.yasan.magic.presentation.route.magic.MagicViewModel.Action.Navigate
 import glass.yasan.magic.presentation.route.magic.MagicViewModel.Event
 import glass.yasan.magic.presentation.util.SystemBarColorsEffect
 import glass.yasan.magic.presentation.route.magic.MagicViewModel.State
-import glass.yasan.magic.resources.Res
-import glass.yasan.magic.resources.answer_ask
-import glass.yasan.magic.resources.long_click_for_settings
-import glass.yasan.magic.resources.open_settings
+import glass.yasan.magic.core.resources.Res
+import glass.yasan.magic.core.resources.answer_ask
+import glass.yasan.magic.core.resources.long_click_for_settings
+import glass.yasan.magic.core.resources.open_settings
 import glass.yasan.magic.util.PreviewWithTest
 import glass.yasan.toolkit.compose.color.isDark
 import glass.yasan.toolkit.compose.color.toContentColor
@@ -203,7 +203,7 @@ internal fun MagicScreenEmptyDarkPreview() {
 @Composable
 internal fun MagicScreenSuccessLightPreview() {
     PreviewContent(
-        answer = DefaultAnswerPacks.magicEightBallAnswers.first { it.type == SUCCESS },
+        answer = PreviewAnswers.successAnswer,
         theme = LIGHT,
     )
 }
@@ -212,7 +212,7 @@ internal fun MagicScreenSuccessLightPreview() {
 @Composable
 internal fun MagicScreenSuccessDarkPreview() {
     PreviewContent(
-        answer = DefaultAnswerPacks.magicEightBallAnswers.first { it.type == SUCCESS },
+        answer = PreviewAnswers.successAnswer,
         theme = DARK,
     )
 }
@@ -221,7 +221,7 @@ internal fun MagicScreenSuccessDarkPreview() {
 @Composable
 internal fun MagicScreenCautionLightPreview() {
     PreviewContent(
-        answer = DefaultAnswerPacks.magicEightBallAnswers.first { it.type == CAUTION },
+        answer = PreviewAnswers.cautionAnswer,
         theme = LIGHT,
     )
 }
@@ -230,7 +230,7 @@ internal fun MagicScreenCautionLightPreview() {
 @Composable
 internal fun MagicScreenCautionDarkPreview() {
     PreviewContent(
-        answer = DefaultAnswerPacks.magicEightBallAnswers.first { it.type == CAUTION },
+        answer = PreviewAnswers.cautionAnswer,
         theme = DARK,
     )
 }
@@ -239,7 +239,7 @@ internal fun MagicScreenCautionDarkPreview() {
 @Composable
 internal fun MagicScreenDangerLightPreview() {
     PreviewContent(
-        answer = DefaultAnswerPacks.magicEightBallAnswers.first { it.type == DANGER },
+        answer = PreviewAnswers.dangerAnswer,
         theme = LIGHT,
     )
 }
@@ -248,7 +248,25 @@ internal fun MagicScreenDangerLightPreview() {
 @Composable
 internal fun MagicScreenDangerDarkPreview() {
     PreviewContent(
-        answer = DefaultAnswerPacks.magicEightBallAnswers.first { it.type == DANGER },
+        answer = PreviewAnswers.dangerAnswer,
+        theme = DARK,
+    )
+}
+
+@PreviewWithTest
+@Composable
+internal fun MagicScreenInfoLightPreview() {
+    PreviewContent(
+        answer = PreviewAnswers.infoAnswer,
+        theme = LIGHT,
+    )
+}
+
+@PreviewWithTest
+@Composable
+internal fun MagicScreenInfoDarkPreview() {
+    PreviewContent(
+        answer = PreviewAnswers.infoAnswer,
         theme = DARK,
     )
 }

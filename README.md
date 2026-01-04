@@ -32,15 +32,23 @@ graph LR
   subgraph :app
     :app:composeApp["composeApp"]
   end
+  subgraph :core
+    :core:resources["resources"]
+  end
   subgraph :feature
+    :feature:answers["answers"]
     :feature:settings["settings"]
   end
 
+  :app:composeApp --> :core:resources
+  :app:composeApp --> :feature:answers
   :app:composeApp --> :feature:settings
 
 classDef android-application fill:#2C4162,stroke:#fff,stroke-width:2px,color:#fff;
 classDef kotlin-multiplatform fill:#C792EA,stroke:#fff,stroke-width:2px,color:#fff;
 class :app:composeApp android-application
+class :core:resources kotlin-multiplatform
+class :feature:answers kotlin-multiplatform
 class :feature:settings kotlin-multiplatform
 
 classDef focus fill:#769566,stroke:#fff,stroke-width:2px,color:#fff;
