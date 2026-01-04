@@ -40,6 +40,7 @@ kotlin {
                 implementation(libs.glass.yasan.kepko.component)
                 implementation(libs.glass.yasan.kepko.foundation)
                 implementation(libs.glass.yasan.toolkit.compose)
+                implementation(libs.jetbrains.kotlinx.collections.immutable)
                 implementation(libs.koin.compose)
                 implementation(libs.koin.core)
                 implementation(libs.russhwolf.multiplatform.settings)
