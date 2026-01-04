@@ -13,4 +13,7 @@ sealed interface Route {
 
     @Serializable
     data object About : Route
+
+    @Serializable
+    data object AnswerPacks : Route
 }

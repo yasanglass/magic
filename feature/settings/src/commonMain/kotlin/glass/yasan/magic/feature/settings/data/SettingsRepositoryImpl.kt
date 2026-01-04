@@ -2,11 +2,13 @@ package glass.yasan.magic.feature.settings.data
 
 import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.ObservableSettings
+import com.russhwolf.settings.coroutines.getLongOrNullFlow
 import com.russhwolf.settings.coroutines.getStringOrNullFlow
 import glass.yasan.magic.feature.settings.domain.model.Settings
 import glass.yasan.magic.feature.settings.domain.repository.SettingsRepository
 import glass.yasan.toolkit.core.coroutines.ApplicationScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -22,13 +24,23 @@ internal class SettingsRepositoryImpl(
 
     private companion object {
         const val KEY_THEME = "theme"
+        const val KEY_ANSWER_PACK = "answer_pack"
     }
 
     private val updateMutex = Mutex()
 
     private val theme: Flow<String?> = observableSettings.getStringOrNullFlow(KEY_THEME)
+    private val answerPackId: Flow<Long?> = observableSettings.getLongOrNullFlow(KEY_ANSWER_PACK)
 
-    override val settings: Flow<Settings> = theme.map(mapper::map)
+    override val settings: Flow<Settings> = combine(
+        theme,
+        answerPackId,
+    ) { theme, answerPackId ->
+        mapper.map(
+            theme = theme,
+            answerPackId = answerPackId,
+        )
+    }
 
     override fun update(transform: Settings.() -> Settings) {
         applicationScope.launch {
@@ -38,6 +50,9 @@ internal class SettingsRepositoryImpl(
 
                 if (current.theme.id != new.theme.id) {
                     observableSettings.putString(KEY_THEME, new.theme.id)
+                }
+                if (current.activeAnswerPackId != new.activeAnswerPackId) {
+                    observableSettings.putLong(KEY_ANSWER_PACK, new.activeAnswerPackId)
                 }
             }
         }

@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import glass.yasan.magic.feature.settings.domain.model.Settings
 import glass.yasan.magic.presentation.route.about.AboutScreen
+import glass.yasan.magic.presentation.route.answerpacks.AnswerPacksScreen
 import glass.yasan.magic.presentation.route.magic.MagicScreen
 import glass.yasan.magic.presentation.route.settings.SettingsScreen
 
@@ -27,6 +28,9 @@ internal fun NavigationHost(
         }
         composable<Route.About> {
             AboutScreen(navController)
+        }
+        composable<Route.AnswerPacks> {
+            AnswerPacksScreen(navController, settings, updateSettings)
         }
     }
 }

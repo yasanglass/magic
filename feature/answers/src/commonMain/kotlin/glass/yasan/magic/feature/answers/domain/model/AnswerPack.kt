@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import kotlinx.collections.immutable.ImmutableList
 
 public data class AnswerPack(
+    val id: Long,
     val name: @Composable () -> String,
     val answers: ImmutableList<Answer>,
 )

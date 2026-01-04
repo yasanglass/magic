@@ -2,7 +2,6 @@ package glass.yasan.magic.presentation.route.settings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.runtime.Composable
@@ -23,6 +22,7 @@ import glass.yasan.magic.presentation.navigation.Route
 import glass.yasan.magic.presentation.util.SystemBarColorsEffect
 import glass.yasan.magic.core.resources.Res
 import glass.yasan.magic.core.resources.about
+import glass.yasan.magic.core.resources.answer_packs
 import glass.yasan.magic.core.resources.app_name
 import glass.yasan.magic.core.resources.settings
 import glass.yasan.magic.core.resources.theme
@@ -47,15 +47,27 @@ fun SettingsScreen(
         onBackClick = { navController.navigateUp() },
     ) { contentPadding ->
         LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier.padding(contentPadding),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = contentPadding,
         ) {
-            verticalSpacerItem(height = 16.dp)
+            verticalSpacerItem(height = 12.dp)
+            answerPacksButtonItem { navController.navigate(Route.AnswerPacks) }
             themePreferenceItem(settings, updateSettings)
             aboutButtonItem { navController.navigate(Route.About) }
             appIdentityItem()
             developerBannerItem()
         }
+    }
+}
+
+private fun LazyListScope.answerPacksButtonItem(onClick: () -> Unit) {
+    item {
+        ButtonText(
+            text = stringResource(Res.string.answer_packs),
+            leadingIcon = null,
+            trailingIcon = Icons.chevronForward,
+            onClick = onClick,
+        )
     }
 }
 

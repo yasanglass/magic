@@ -54,9 +54,10 @@ import glass.yasan.magic.core.resources.answer_pack_d12
 import glass.yasan.magic.core.resources.answer_pack_d20
 import org.jetbrains.compose.resources.stringResource
 
-internal object DefaultAnswerPacks {
+public object DefaultAnswerPacks {
 
-    val magicEightBall: AnswerPack = AnswerPack(
+    internal val magicEightBall: AnswerPack = AnswerPack(
+        id = -1L,
         name = { stringResource(Res.string.answer_pack_magic_8_ball) },
         answers = persistentListOf(
             Answer(
@@ -142,7 +143,8 @@ internal object DefaultAnswerPacks {
         ),
     )
 
-    val d4: AnswerPack = AnswerPack(
+    internal val d4: AnswerPack = AnswerPack(
+        id = -2L,
         name = { stringResource(Res.string.answer_pack_d4) },
         answers = persistentListOf(
             Answer(getText = { stringResource(Res.string.dice_1) }),
@@ -152,7 +154,8 @@ internal object DefaultAnswerPacks {
         ),
     )
 
-    val d6: AnswerPack = AnswerPack(
+    internal val d6: AnswerPack = AnswerPack(
+        id = -3L,
         name = { stringResource(Res.string.answer_pack_d6) },
         answers = persistentListOf(
             Answer(getText = { stringResource(Res.string.dice_1) }),
@@ -164,7 +167,8 @@ internal object DefaultAnswerPacks {
         ),
     )
 
-    val d8: AnswerPack = AnswerPack(
+    internal val d8: AnswerPack = AnswerPack(
+        id = -4L,
         name = { stringResource(Res.string.answer_pack_d8) },
         answers = persistentListOf(
             Answer(getText = { stringResource(Res.string.dice_1) }),
@@ -178,7 +182,8 @@ internal object DefaultAnswerPacks {
         ),
     )
 
-    val d10: AnswerPack = AnswerPack(
+    internal val d10: AnswerPack = AnswerPack(
+        id = -5L,
         name = { stringResource(Res.string.answer_pack_d10) },
         answers = persistentListOf(
             Answer(getText = { stringResource(Res.string.dice_1) }),
@@ -194,7 +199,8 @@ internal object DefaultAnswerPacks {
         ),
     )
 
-    val d12: AnswerPack = AnswerPack(
+    internal val d12: AnswerPack = AnswerPack(
+        id = -6L,
         name = { stringResource(Res.string.answer_pack_d12) },
         answers = persistentListOf(
             Answer(getText = { stringResource(Res.string.dice_1) }),
@@ -212,7 +218,8 @@ internal object DefaultAnswerPacks {
         ),
     )
 
-    val d20: AnswerPack = AnswerPack(
+    internal val d20: AnswerPack = AnswerPack(
+        id = -7L,
         name = { stringResource(Res.string.answer_pack_d20) },
         answers = persistentListOf(
             Answer(getText = { stringResource(Res.string.dice_1) }),
@@ -237,5 +244,17 @@ internal object DefaultAnswerPacks {
             Answer(getText = { stringResource(Res.string.dice_20) }),
         ),
     )
+
+    internal val all = listOf(
+        magicEightBall,
+        d4,
+        d6,
+        d8,
+        d10,
+        d12,
+        d20,
+    )
+
+    public val default: AnswerPack = magicEightBall
 
 }
