@@ -51,7 +51,7 @@ data class Settings(
         }
 
         @Composable
-        fun asKepkoThemeStyle(): ThemeStyle = ThemeStyle.fromId(id) ?: ThemeStyle.fromSystemDarkTheme()
+        fun asKepkoThemeStyle(): ThemeStyle = ThemeStyle.fromIdOrSystemDarkTheme(id)
 
     }
 

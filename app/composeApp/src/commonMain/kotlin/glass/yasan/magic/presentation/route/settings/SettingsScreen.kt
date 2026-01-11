@@ -16,8 +16,8 @@ import glass.yasan.kepko.component.PreferenceRadioGroup
 import glass.yasan.kepko.component.PreferenceRadioGroupItem
 import glass.yasan.kepko.component.Scaffold
 import glass.yasan.kepko.foundation.theme.KepkoTheme
+import glass.yasan.kepko.resource.Icons
 import glass.yasan.magic.BuildKonfig
-import glass.yasan.kepko.resource.ic_chevron_forward
 import glass.yasan.magic.feature.settings.domain.model.Settings
 import glass.yasan.magic.presentation.navigation.Route
 import glass.yasan.magic.presentation.util.SystemBarColorsEffect
@@ -28,9 +28,7 @@ import glass.yasan.magic.core.resources.settings
 import glass.yasan.magic.core.resources.theme
 import glass.yasan.toolkit.about.presentation.compose.ToolkitDeveloperBanner
 import glass.yasan.toolkit.compose.spacer.verticalSpacerItem
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import glass.yasan.kepko.resource.Res as KepkoRes
 
 @Composable
 fun SettingsScreen(
@@ -66,7 +64,7 @@ private fun LazyListScope.aboutButtonItem(onClick: () -> Unit) {
         ButtonText(
             text = stringResource(Res.string.about),
             leadingIcon = null,
-            trailingIcon = painterResource(KepkoRes.drawable.ic_chevron_forward),
+            trailingIcon = Icons.chevronForward,
             onClick = onClick,
         )
     }
