@@ -11,7 +11,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import glass.yasan.kepko.component.Surface
-import glass.yasan.kepko.foundation.theme.AnimatedKepkoTheme
+import glass.yasan.kepko.foundation.theme.KepkoTheme
 import glass.yasan.magic.feature.settings.domain.model.Settings
 import glass.yasan.magic.feature.settings.domain.repository.SettingsRepository
 import glass.yasan.magic.presentation.navigation.NavigationHost
@@ -46,7 +46,7 @@ private fun App(
             modifier = Modifier.fillMaxSize(),
         ) {
             settings?.let { nonNullSettings ->
-                AnimatedKepkoTheme(
+                KepkoTheme(
                     style = nonNullSettings.theme.asKepkoThemeStyle(),
                 ) {
                     NavigationHost(
