@@ -20,7 +20,6 @@
     <string name="answer_negative_my_sources_say_no">My sources say no</string>
     <string name="answer_negative_outlook_not_so_good">Outlook not so good</string>
     <string name="answer_negative_very_doubtful">Very doubtful</string>
-    <string name="answer_ask">Ask</string>
     <string name="long_click_for_settings">Long click anywhere at anytime to open settings</string>
     <string name="open_settings">Open settings</string>
     <string name="settings">Settings</string>
@@ -29,6 +28,8 @@
     <string name="go_back">Go back</string>
     <string name="about">About</string>
     <string name="answer_packs">Answer Packs</string>
+    <string name="answer_pack_prompt_magic_8_ball">Ask</string>
+    <string name="answer_pack_prompt_dice">Roll</string>
     <string name="dice_1">1</string>
     <string name="dice_2">2</string>
     <string name="dice_3">3</string>

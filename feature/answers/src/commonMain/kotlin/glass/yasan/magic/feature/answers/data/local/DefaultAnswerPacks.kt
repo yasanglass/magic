@@ -52,6 +52,8 @@ import glass.yasan.magic.core.resources.answer_pack_d8
 import glass.yasan.magic.core.resources.answer_pack_d10
 import glass.yasan.magic.core.resources.answer_pack_d12
 import glass.yasan.magic.core.resources.answer_pack_d20
+import glass.yasan.magic.core.resources.answer_pack_prompt_dice
+import glass.yasan.magic.core.resources.answer_pack_prompt_magic_8_ball
 import org.jetbrains.compose.resources.stringResource
 
 public object DefaultAnswerPacks {
@@ -59,6 +61,7 @@ public object DefaultAnswerPacks {
     internal val magicEightBall: AnswerPack = AnswerPack(
         id = -1L,
         name = { stringResource(Res.string.answer_pack_magic_8_ball) },
+        prompt = { stringResource(Res.string.answer_pack_prompt_magic_8_ball) },
         answers = persistentListOf(
             Answer(
                 getText = { stringResource(Res.string.answer_affirmative_as_i_see_it_yes) },
@@ -146,6 +149,7 @@ public object DefaultAnswerPacks {
     internal val d4: AnswerPack = AnswerPack(
         id = -2L,
         name = { stringResource(Res.string.answer_pack_d4) },
+        prompt = { stringResource(Res.string.answer_pack_prompt_dice) },
         answers = persistentListOf(
             Answer(getText = { stringResource(Res.string.dice_1) }),
             Answer(getText = { stringResource(Res.string.dice_2) }),
@@ -157,6 +161,7 @@ public object DefaultAnswerPacks {
     internal val d6: AnswerPack = AnswerPack(
         id = -3L,
         name = { stringResource(Res.string.answer_pack_d6) },
+        prompt = { stringResource(Res.string.answer_pack_prompt_dice) },
         answers = persistentListOf(
             Answer(getText = { stringResource(Res.string.dice_1) }),
             Answer(getText = { stringResource(Res.string.dice_2) }),
@@ -170,6 +175,7 @@ public object DefaultAnswerPacks {
     internal val d8: AnswerPack = AnswerPack(
         id = -4L,
         name = { stringResource(Res.string.answer_pack_d8) },
+        prompt = { stringResource(Res.string.answer_pack_prompt_dice) },
         answers = persistentListOf(
             Answer(getText = { stringResource(Res.string.dice_1) }),
             Answer(getText = { stringResource(Res.string.dice_2) }),
@@ -185,6 +191,7 @@ public object DefaultAnswerPacks {
     internal val d10: AnswerPack = AnswerPack(
         id = -5L,
         name = { stringResource(Res.string.answer_pack_d10) },
+        prompt = { stringResource(Res.string.answer_pack_prompt_dice) },
         answers = persistentListOf(
             Answer(getText = { stringResource(Res.string.dice_1) }),
             Answer(getText = { stringResource(Res.string.dice_2) }),
@@ -202,6 +209,7 @@ public object DefaultAnswerPacks {
     internal val d12: AnswerPack = AnswerPack(
         id = -6L,
         name = { stringResource(Res.string.answer_pack_d12) },
+        prompt = { stringResource(Res.string.answer_pack_prompt_dice) },
         answers = persistentListOf(
             Answer(getText = { stringResource(Res.string.dice_1) }),
             Answer(getText = { stringResource(Res.string.dice_2) }),
@@ -221,6 +229,7 @@ public object DefaultAnswerPacks {
     internal val d20: AnswerPack = AnswerPack(
         id = -7L,
         name = { stringResource(Res.string.answer_pack_d20) },
+        prompt = { stringResource(Res.string.answer_pack_prompt_dice) },
         answers = persistentListOf(
             Answer(getText = { stringResource(Res.string.dice_1) }),
             Answer(getText = { stringResource(Res.string.dice_2) }),

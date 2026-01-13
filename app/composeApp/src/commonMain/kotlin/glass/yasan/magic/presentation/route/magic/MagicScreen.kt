@@ -49,7 +49,7 @@ import glass.yasan.magic.presentation.route.magic.MagicViewModel.Event
 import glass.yasan.magic.presentation.util.SystemBarColorsEffect
 import glass.yasan.magic.presentation.route.magic.MagicViewModel.State
 import glass.yasan.magic.core.resources.Res
-import glass.yasan.magic.core.resources.answer_ask
+import glass.yasan.magic.core.resources.answer_pack_prompt_magic_8_ball
 import glass.yasan.magic.core.resources.long_click_for_settings
 import glass.yasan.magic.core.resources.open_settings
 import glass.yasan.magic.util.PreviewWithTest
@@ -110,7 +110,7 @@ private fun MagicScreen(
             .combinedClickable(
                 interactionSource = null,
                 indication = null,
-                onClickLabel = stringResource(Res.string.answer_ask),
+                onClickLabel = stringResource(Res.string.answer_pack_prompt_magic_8_ball),
                 onClick = { sendEvent(Event.Ask) },
                 onLongClickLabel = stringResource(Res.string.open_settings),
                 onLongClick = { sendEvent(Event.OpenSettings) },
