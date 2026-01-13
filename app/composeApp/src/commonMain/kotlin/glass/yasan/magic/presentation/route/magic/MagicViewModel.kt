@@ -1,14 +1,20 @@
 package glass.yasan.magic.presentation.route.magic
 
+import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewModelScope
+import glass.yasan.magic.domain.usecase.GetActiveAnswerPackUseCase
 import glass.yasan.magic.feature.answers.domain.model.Answer
 import glass.yasan.magic.domain.usecase.GetNewAnswerUseCase
+import glass.yasan.magic.feature.answers.domain.model.AnswerPack
 import glass.yasan.magic.presentation.route.magic.MagicViewModel.Action.NavigateToSettings
 import glass.yasan.toolkit.compose.viewmodel.ToolkitViewModel
 import glass.yasan.toolkit.compose.viewmodel.ViewAction
 import glass.yasan.toolkit.compose.viewmodel.ViewEvent
 import glass.yasan.toolkit.compose.viewmodel.ViewState
+import kotlinx.coroutines.launch
 
 class MagicViewModel(
+    private val getActiveAnswerPack: GetActiveAnswerPackUseCase,
     private val getNewAnswer: GetNewAnswerUseCase,
 ) : ToolkitViewModel<
         MagicViewModel.State,
@@ -17,12 +23,27 @@ class MagicViewModel(
         >() {
 
     data class State(
-        val answer: Answer = Answer.empty,
-    ) : ViewState
+        val pack: AnswerPack? = null,
+        val answer: Answer? = null,
+        val isLoading: Boolean = true,
+    ) : ViewState {
+
+        /**
+         * The main text to show on [MagicScreen].
+         */
+        val text: String?
+            @Composable
+            get() {
+                if (isLoading) return null
+
+                return answer?.getText() ?: pack?.prompt()
+            }
+
+    }
 
     interface Event : ViewEvent {
 
-        data object Ask : Event
+        data object RequestNewAnswer : Event
         data object OpenSettings : Event
 
     }
@@ -33,10 +54,27 @@ class MagicViewModel(
 
     override fun defaultViewState(): State = State()
 
+    init {
+        initializeViewState()
+    }
+
     override suspend fun onViewEvent(event: Event) {
         when (event) {
-            is Event.Ask -> fetchNewAnswer()
+            is Event.RequestNewAnswer -> fetchNewAnswer()
             is Event.OpenSettings -> openSettings()
+        }
+    }
+
+    private fun initializeViewState() {
+        viewModelScope.launch {
+            val activeAnswerPack = getActiveAnswerPack()
+
+            updateViewState {
+                copy(
+                    pack = activeAnswerPack,
+                    isLoading = false,
+                )
+            }
         }
     }
 
@@ -46,6 +84,7 @@ class MagicViewModel(
         updateViewState {
             copy(
                 answer = newAnswer,
+                isLoading = false,
             )
         }
     }

@@ -49,7 +49,6 @@ import glass.yasan.magic.presentation.route.magic.MagicViewModel.Event
 import glass.yasan.magic.presentation.util.SystemBarColorsEffect
 import glass.yasan.magic.presentation.route.magic.MagicViewModel.State
 import glass.yasan.magic.core.resources.Res
-import glass.yasan.magic.core.resources.answer_pack_prompt_magic_8_ball
 import glass.yasan.magic.core.resources.long_click_for_settings
 import glass.yasan.magic.core.resources.open_settings
 import glass.yasan.magic.util.PreviewWithTest
@@ -91,7 +90,7 @@ private fun MagicScreen(
     sendEvent: (Event) -> Unit,
 ) {
     val themeStyle = settings.theme.asKepkoThemeStyle()
-    val (backgroundColor, contentColor) = state.answer.resolveColors(themeStyle)
+    val (backgroundColor, contentColor) = state.resolveColors(themeStyle)
     val animatedBackgroundColor by animateColorAsState(backgroundColor)
     val animatedContentColor by animateColorAsState(contentColor)
     val tipAlpha by animateFloatAsState(if (state.answer == Answer.empty) 1f else 0f)
@@ -110,8 +109,8 @@ private fun MagicScreen(
             .combinedClickable(
                 interactionSource = null,
                 indication = null,
-                onClickLabel = stringResource(Res.string.answer_pack_prompt_magic_8_ball),
-                onClick = { sendEvent(Event.Ask) },
+                onClickLabel = state.pack?.prompt(),
+                onClick = { sendEvent(Event.RequestNewAnswer) },
                 onLongClickLabel = stringResource(Res.string.open_settings),
                 onLongClick = { sendEvent(Event.OpenSettings) },
             ),
@@ -132,19 +131,21 @@ private fun Answer(
     contentColor: Color
 ) {
     AnimatedContent(
-        targetState = state.answer,
+        targetState = state.text,
         transitionSpec = { fadeIn() togetherWith fadeOut() },
-    ) { answer ->
-        Text(
-            text = answer.getText(),
-            fontSize = 32.sp,
-            lineHeight = 32.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            color = contentColor,
-            modifier = Modifier
-                .padding(32.dp),
-        )
+    ) { text ->
+        if (text != null) {
+            Text(
+                text = text,
+                fontSize = 32.sp,
+                lineHeight = 32.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                color = contentColor,
+                modifier = Modifier
+                    .padding(32.dp),
+            )
+        }
     }
 }
 
@@ -170,15 +171,18 @@ private fun Tip(
 }
 
 @Composable
-private fun Answer.resolveColors(
+private fun State?.resolveColors(
     themeStyle: ThemeStyle,
 ): Pair<Color, Color> {
-    val typeColor = when (type) {
+    if (this == null) return KepkoTheme.colors.content to KepkoTheme.colors.midground
+
+    val typeColor = when (answer?.type) {
         GENERIC -> KepkoTheme.colors.content
         SUCCESS -> KepkoTheme.colors.success
         INFO -> KepkoTheme.colors.information
         CAUTION -> KepkoTheme.colors.caution
         DANGER -> KepkoTheme.colors.danger
+        null -> KepkoTheme.colors.content
     }
 
     val backgroundColor = if (themeStyle.isDark) KepkoTheme.colors.midground else typeColor
@@ -303,7 +307,8 @@ internal fun MagicScreenColorMatrixPreview() {
                 Row {
                     Answer.Type.entries.forEach { type ->
                         val answer = Answer(getText = { type.name }, type = type)
-                        val (backgroundColor, contentColor) = answer.resolveColors(themeStyle)
+                        val state = State(answer = answer)
+                        val (backgroundColor, contentColor) = state.resolveColors(themeStyle)
 
                         Box(
                             contentAlignment = Alignment.Center,

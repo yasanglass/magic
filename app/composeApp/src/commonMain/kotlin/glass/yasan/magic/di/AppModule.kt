@@ -1,5 +1,6 @@
 package glass.yasan.magic.di
 
+import glass.yasan.magic.domain.usecase.GetActiveAnswerPackUseCase
 import glass.yasan.magic.domain.usecase.GetNewAnswerUseCase
 import glass.yasan.magic.feature.answers.di.answersModule
 import glass.yasan.magic.feature.settings.di.settingsModule
@@ -19,5 +20,6 @@ val appModule = module {
     viewModelOf(::MagicViewModel)
 
     singleOf(::GetNewAnswerUseCase)
+    singleOf(::GetActiveAnswerPackUseCase)
 }
 
