@@ -57,6 +57,7 @@ koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 roborazzi-compose-desktop = { module = "io.github.takahirom.roborazzi:roborazzi-compose-desktop", version.ref = "roborazzi" }
 russhwolf-multiplatform-settings = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "russhwolf-multiplatform-settings" }
 russhwolf-multiplatform-settings-coroutines = { module = "com.russhwolf:multiplatform-settings-coroutines", version.ref = "russhwolf-multiplatform-settings" }
+russhwolf-multiplatform-settings-make-observable = { module = "com.russhwolf:multiplatform-settings-make-observable", version.ref = "russhwolf-multiplatform-settings" }
 sergio-sastre-composable-preview-scanner-jvm = { module = "io.github.sergio-sastre.ComposablePreviewScanner:jvm", version.ref = "sergio-sastre-composable-preview-scanner" }
 touchlab-kermit = { module = "co.touchlab:kermit", version.ref = "touchlab-kermit" }
 
