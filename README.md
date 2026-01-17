@@ -15,9 +15,7 @@
   <a href="https://github.com/yasanglass/magic/actions/workflows/snapshots.yml"><img src="https://img.shields.io/github/actions/workflow/status/yasanglass/magic/snapshots.yml?label=snapshots" alt="snapshots"/></a>
 </p>
 
-<p align="center">
-A simple randomizer app built with Compose Multiplatform
-<p align="center">
+A simple randomizer app built with Compose Multiplatform. This is a work-in-progress reimplementation of my original [Magic 8 Ball app](https://play.google.com/store/apps/details?id=me.yasan.magic_8_ball).
 
 ### Modules
 

@@ -12,9 +12,9 @@ import org.koin.dsl.module
 
 val appModule = module {
     includes(
+        toolkitModule,
         answersModule,
         settingsModule,
-        toolkitModule,
     )
 
     viewModelOf(::MagicViewModel)
