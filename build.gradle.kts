@@ -68,6 +68,22 @@ fun Project.configureKover() {
 subprojects {
     configureDetekt()
     configureKover()
+
+    pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
+        extensions.configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
+            compilerOptions {
+                freeCompilerArgs.add("-Xcontext-parameters")
+            }
+        }
+    }
+
+    pluginManager.withPlugin("org.jetbrains.kotlin.android") {
+        extensions.configure<org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension> {
+            compilerOptions {
+                freeCompilerArgs.add("-Xcontext-parameters")
+            }
+        }
+    }
 }
 
 moduleGraphConfig {

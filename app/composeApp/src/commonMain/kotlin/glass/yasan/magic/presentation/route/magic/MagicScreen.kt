@@ -33,16 +33,8 @@ import glass.yasan.kepko.component.Text
 import glass.yasan.kepko.foundation.theme.KepkoTheme
 import glass.yasan.kepko.foundation.theme.ThemeStyle
 import glass.yasan.magic.feature.answers.domain.model.Answer
-import glass.yasan.magic.feature.answers.domain.model.Answer.Type.CAUTION
-import glass.yasan.magic.feature.answers.domain.model.Answer.Type.GENERIC
-import glass.yasan.magic.feature.answers.domain.model.Answer.Type.DANGER
-import glass.yasan.magic.feature.answers.domain.model.Answer.Type.INFO
-import glass.yasan.magic.feature.answers.domain.model.Answer.Type.SUCCESS
 import glass.yasan.magic.feature.answers.util.preview.PreviewAnswers
 import glass.yasan.magic.feature.settings.domain.model.Settings
-import glass.yasan.magic.feature.settings.domain.model.Settings.Theme.DARK
-import glass.yasan.magic.feature.settings.domain.model.Settings.Theme.LIGHT
-import glass.yasan.magic.feature.settings.domain.model.Settings.Theme.SYSTEM
 import glass.yasan.magic.presentation.navigation.Route
 import glass.yasan.magic.presentation.route.magic.MagicViewModel.Action.NavigateToSettings
 import glass.yasan.magic.presentation.route.magic.MagicViewModel.Event
@@ -110,9 +102,9 @@ private fun MagicScreen(
                 interactionSource = null,
                 indication = null,
                 onClickLabel = state.pack?.prompt(),
-                onClick = { sendEvent(Event.RequestNewAnswer) },
+                onClick = { sendEvent(RequestNewAnswer) },
                 onLongClickLabel = stringResource(Res.string.open_settings),
-                onLongClick = { sendEvent(Event.OpenSettings) },
+                onLongClick = { sendEvent(OpenSettings) },
             ),
     ) {
         Answer(state, animatedContentColor)
