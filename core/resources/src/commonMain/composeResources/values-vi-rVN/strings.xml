@@ -28,6 +28,9 @@
     <string name="back">Back</string>
     <string name="go_back">Go back</string>
     <string name="about">About</string>
+    <string name="answer_packs">Answer Packs</string>
+    <string name="answer_pack_prompt_magic_8_ball">Ask</string>
+    <string name="answer_pack_prompt_dice">Roll</string>
     <string name="dice_1">1</string>
     <string name="dice_2">2</string>
     <string name="dice_3">3</string>
@@ -48,4 +51,12 @@
     <string name="dice_18">18</string>
     <string name="dice_19">19</string>
     <string name="dice_20">20</string>
+    <string name="theme_style_system">System</string>
+    <string name="answer_pack_magic_8_ball">Magic 8 Ball</string>
+    <string name="answer_pack_d4">D4 Dice</string>
+    <string name="answer_pack_d6">D6 Dice</string>
+    <string name="answer_pack_d8">D8 Dice</string>
+    <string name="answer_pack_d10">D10 Dice</string>
+    <string name="answer_pack_d12">D12 Dice</string>
+    <string name="answer_pack_d20">D20 Dice</string>
 </resources>
