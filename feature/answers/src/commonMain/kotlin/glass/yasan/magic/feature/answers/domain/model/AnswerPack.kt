@@ -8,4 +8,5 @@ public data class AnswerPack(
     val name: @Composable () -> String,
     val prompt: @Composable () -> String,
     val answers: ImmutableList<Answer>,
+    val isEditable: Boolean = false,
 )

@@ -28,6 +28,7 @@
     <string name="go_back">Go back</string>
     <string name="about">About</string>
     <string name="answer_packs">Answer Packs</string>
+    <string name="new_answer_pack">New Answer Pack</string>
     <string name="answer_pack_prompt_magic_8_ball">Ask</string>
     <string name="answer_pack_prompt_dice">Roll</string>
     <string name="dice_1">1</string>
