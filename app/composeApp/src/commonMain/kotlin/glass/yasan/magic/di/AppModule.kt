@@ -4,6 +4,7 @@ import glass.yasan.magic.domain.usecase.GetActiveAnswerPackUseCase
 import glass.yasan.magic.domain.usecase.GetNewAnswerUseCase
 import glass.yasan.magic.feature.answers.di.answersModule
 import glass.yasan.magic.feature.settings.di.settingsModule
+import glass.yasan.magic.presentation.route.answerpacks.AnswerPacksViewModel
 import glass.yasan.magic.presentation.route.magic.MagicViewModel
 import glass.yasan.toolkit.koin.toolkitModule
 import org.koin.core.module.dsl.singleOf
@@ -18,6 +19,7 @@ val appModule = module {
     )
 
     viewModelOf(::MagicViewModel)
+    viewModelOf(::AnswerPacksViewModel)
 
     singleOf(::GetNewAnswerUseCase)
     singleOf(::GetActiveAnswerPackUseCase)

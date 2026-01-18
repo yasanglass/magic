@@ -30,7 +30,7 @@ internal fun NavigationHost(
             AboutScreen(navController)
         }
         composable<Route.AnswerPacks> {
-            AnswerPacksScreen(navController, settings, updateSettings)
+            AnswerPacksScreen(navController)
         }
     }
 }
