@@ -8,8 +8,8 @@ internal interface AnswerPackLocalDataSource {
 
     val answerPacks: StateFlow<ImmutableList<AnswerPack>>
 
-    fun insertAnswerPack(answerPack: AnswerPack)
+    suspend fun insertAnswerPack(answerPack: AnswerPack)
 
-    fun removeAnswerPack(answerPack: AnswerPack)
+    suspend fun removeAnswerPack(answerPack: AnswerPack)
 
 }

@@ -12,11 +12,11 @@ internal class AnswerRepositoryImpl(
     override val answerPacks: StateFlow<ImmutableList<AnswerPack>> =
         localDataSource.answerPacks
 
-    override fun insertAnswerPack(answerPack: AnswerPack) {
+    override suspend fun insertAnswerPack(answerPack: AnswerPack) {
         localDataSource.insertAnswerPack(answerPack)
     }
 
-    override fun removeAnswerPack(answerPack: AnswerPack) {
+    override suspend fun removeAnswerPack(answerPack: AnswerPack) {
         localDataSource.removeAnswerPack(answerPack)
     }
 }

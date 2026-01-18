@@ -8,7 +8,7 @@ public interface AnswerRepository {
 
     public val answerPacks: StateFlow<ImmutableList<AnswerPack>>
 
-    public fun insertAnswerPack(answerPack: AnswerPack)
+    public suspend fun insertAnswerPack(answerPack: AnswerPack)
 
-    public fun removeAnswerPack(answerPack: AnswerPack)
+    public suspend fun removeAnswerPack(answerPack: AnswerPack)
 }
