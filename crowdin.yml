@@ -1,10 +1,9 @@
-base_path: "app"
 preserve_hierarchy: false
 commit_message: "Update translations (%language%)"
 pull_request_title: "Update Translations [skip ci]"
 
 files:
-  - source: "/composeApp/src/commonMain/composeResources/values/strings.xml"
-    translation: "/composeApp/src/commonMain/composeResources/values-%android_code%/strings.xml"
-  - source: "/composeApp/src/androidMain/res/values/strings.xml"
-    translation: "/composeApp/src/androidMain/res/values-%android_code%/strings.xml"
+  - source: "/core/resources/src/commonMain/composeResources/values/strings.xml"
+    translation: "/core/resources/src/commonMain/composeResources/values-%android_code%/strings.xml"
+  - source: "/app/composeApp/src/androidMain/res/values/strings.xml"
+    translation: "/app/composeApp/src/androidMain/res/values-%android_code%/strings.xml"
