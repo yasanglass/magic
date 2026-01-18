@@ -20,6 +20,7 @@ jobs:
         with:
           submodules: true
           lfs: true
+          ref: ${{ github.head_ref || github.ref }}
 
       - name: Setup Java
         uses: actions/setup-java@v5
