@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Magic</string>
+    <string name="app_name">جادو</string>
     <string name="answer_affirmative_it_is_certain">It is certain</string>
     <string name="answer_affirmative_it_is_decidedly_so">It is decidedly so</string>
     <string name="answer_affirmative_without_a_doubt">Without a doubt</string>
@@ -9,7 +9,7 @@
     <string name="answer_affirmative_as_i_see_it_yes">As I see it, yes</string>
     <string name="answer_affirmative_most_likely">Most likely</string>
     <string name="answer_affirmative_outlook_good">Outlook good</string>
-    <string name="answer_affirmative_yes">Yes</string>
+    <string name="answer_affirmative_yes">بله</string>
     <string name="answer_affirmative_signs_point_to_yes">Signs point to yes</string>
     <string name="answer_non_committal_reply_hazy_try_again">Reply hazy, try again</string>
     <string name="answer_non_committal_ask_again_later">Ask again later</string>
@@ -25,9 +25,9 @@
     <string name="open_settings">Open settings</string>
     <string name="settings">Settings</string>
     <string name="theme">Theme</string>
-    <string name="back">Back</string>
+    <string name="back">برگشت</string>
     <string name="go_back">Go back</string>
-    <string name="about">About</string>
+    <string name="about">درباره</string>
     <string name="answer_packs">Answer Packs</string>
     <string name="answer_pack_prompt_magic_8_ball">Ask</string>
     <string name="answer_pack_prompt_dice">Roll</string>
