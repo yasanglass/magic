@@ -46,5 +46,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add app/composeApp/src/jvmTest/snapshots/
-          git commit -m "Regenerate snapshots [skip ci]"
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            git commit -m "Regenerate snapshots [skip ci]"
+          else
+            git commit -m "Regenerate snapshots"
+          fi
           git push
