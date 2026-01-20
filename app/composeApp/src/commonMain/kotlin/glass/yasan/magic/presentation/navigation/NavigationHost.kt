@@ -4,9 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import glass.yasan.magic.feature.settings.domain.model.Settings
 import glass.yasan.magic.presentation.route.about.AboutScreen
 import glass.yasan.magic.presentation.route.answerpacks.AnswerPacksScreen
+import glass.yasan.magic.presentation.route.answerpacks.edit.EditAnswerPackScreen
 import glass.yasan.magic.presentation.route.magic.MagicScreen
 import glass.yasan.magic.presentation.route.settings.SettingsScreen
 
@@ -30,7 +32,15 @@ internal fun NavigationHost(
             AboutScreen(navController)
         }
         composable<Route.AnswerPacks> {
-            AnswerPacksScreen(navController, settings, updateSettings)
+            AnswerPacksScreen(navController)
+        }
+        composable<Route.EditAnswerPack> { backStackEntry ->
+            val route = backStackEntry.toRoute<Route.EditAnswerPack>()
+
+            EditAnswerPackScreen(
+                navController = navController,
+                answerPackId = route.answerPackId,
+            )
         }
     }
 }

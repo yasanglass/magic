@@ -6,10 +6,10 @@ internal class SettingsMapper {
 
     fun map(
         theme: String?,
-        answerPackId: Long?,
+        answerPackId: String?,
     ): Settings = Settings(
         theme = Settings.Theme.fromId(theme) ?: Settings.default.theme,
-        activeAnswerPackId = answerPackId ?: -1L,
+        activeAnswerPackId = answerPackId ?: Settings.default.activeAnswerPackId,
     )
 
 }

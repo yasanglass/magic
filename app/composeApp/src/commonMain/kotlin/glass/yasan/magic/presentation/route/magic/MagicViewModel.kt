@@ -23,20 +23,18 @@ class MagicViewModel(
         >() {
 
     data class State(
-        val pack: AnswerPack? = null,
+        val pack: AnswerPack<*>? = null,
         val answer: Answer? = null,
         val isLoading: Boolean = true,
+        val showAdditionalContent: Boolean = true,
     ) : ViewState {
 
-        /**
-         * The main text to show on [MagicScreen].
-         */
         val text: String?
             @Composable
             get() {
                 if (isLoading) return null
 
-                return answer?.getText() ?: pack?.prompt()
+                return answer?.resolveText() ?: pack?.resolvePrompt()
             }
 
     }
@@ -85,6 +83,7 @@ class MagicViewModel(
             copy(
                 answer = newAnswer,
                 isLoading = false,
+                showAdditionalContent = false,
             )
         }
     }

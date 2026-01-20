@@ -2,7 +2,6 @@ package glass.yasan.magic.feature.settings.data
 
 import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.ObservableSettings
-import com.russhwolf.settings.coroutines.getLongOrNullFlow
 import com.russhwolf.settings.coroutines.getStringOrNullFlow
 import glass.yasan.magic.feature.settings.domain.model.Settings
 import glass.yasan.magic.feature.settings.domain.repository.SettingsRepository
@@ -30,7 +29,7 @@ internal class SettingsRepositoryImpl(
     private val updateMutex = Mutex()
 
     private val theme: Flow<String?> = observableSettings.getStringOrNullFlow(KEY_THEME)
-    private val answerPackId: Flow<Long?> = observableSettings.getLongOrNullFlow(KEY_ANSWER_PACK)
+    private val answerPackId: Flow<String?> = observableSettings.getStringOrNullFlow(KEY_ANSWER_PACK)
 
     override val settings: Flow<Settings> = combine(
         theme,
@@ -52,7 +51,7 @@ internal class SettingsRepositoryImpl(
                     observableSettings.putString(KEY_THEME, new.theme.id)
                 }
                 if (current.activeAnswerPackId != new.activeAnswerPackId) {
-                    observableSettings.putLong(KEY_ANSWER_PACK, new.activeAnswerPackId)
+                    observableSettings.putString(KEY_ANSWER_PACK, new.activeAnswerPackId)
                 }
             }
         }

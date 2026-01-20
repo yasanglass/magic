@@ -8,13 +8,13 @@ import org.jetbrains.compose.resources.stringResource
 
 data class Settings(
     val theme: Theme,
-    val activeAnswerPackId: Long,
+    val activeAnswerPackId: String,
 ) {
 
     companion object {
         val default: Settings = Settings(
             theme = Theme.SYSTEM,
-            activeAnswerPackId = -1L,
+            activeAnswerPackId = "magic-8-ball",
         )
     }
 

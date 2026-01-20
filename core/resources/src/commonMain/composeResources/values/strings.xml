@@ -27,7 +27,16 @@
     <string name="back">Back</string>
     <string name="go_back">Go back</string>
     <string name="about">About</string>
+    <string name="answer">Answer</string>
+    <string name="answers">Answers</string>
+    <string name="answer_pack_delete">Delete</string>
+    <string name="answer_pack_discard">Discard</string>
+    <string name="answer_pack_save">Save</string>
+    <string name="answer_pack_name">Name</string>
+    <string name="answer_pack_prompt">Prompt</string>
     <string name="answer_packs">Answer Packs</string>
+    <string name="new_answer_pack">New Answer Pack</string>
+    <string name="edit_answer_pack">Edit Answer Pack</string>
     <string name="answer_pack_prompt_magic_8_ball">Ask</string>
     <string name="answer_pack_prompt_dice">Roll</string>
     <string name="dice_1">1</string>
@@ -58,4 +67,7 @@
     <string name="answer_pack_d10">D10 Dice</string>
     <string name="answer_pack_d12">D12 Dice</string>
     <string name="answer_pack_d20">D20 Dice</string>
+    <string name="error_name_required">Name is required</string>
+    <string name="error_prompt_required">Prompt is required</string>
+    <string name="error_answer_empty">Answer cannot be empty</string>
 </resources>

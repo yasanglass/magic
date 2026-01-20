@@ -1,7 +1,9 @@
 package glass.yasan.magic.feature.answers.data.local
 
-import glass.yasan.magic.feature.answers.domain.model.AnswerPack
+import glass.yasan.magic.feature.answers.domain.model.BuiltInAnswerPack
+import glass.yasan.magic.feature.answers.domain.model.CustomAnswerPack
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,29 +15,34 @@ internal class InMemoryAnswerPackLocalDataSource : AnswerPackLocalDataSource {
 
     private val modificationMutex = Mutex()
 
-    private val _answerPacks = MutableStateFlow(
-        DefaultAnswerPacks.all.toImmutableList()
-    )
-    override val answerPacks: StateFlow<ImmutableList<AnswerPack>> =
-        _answerPacks.asStateFlow()
+    override val builtInAnswerPacks: StateFlow<ImmutableList<BuiltInAnswerPack>> =
+        MutableStateFlow(DefaultAnswerPacks.all.toImmutableList()).asStateFlow()
 
-    override suspend fun insertAnswerPack(answerPack: AnswerPack) {
+    private val _customAnswerPacks = MutableStateFlow<ImmutableList<CustomAnswerPack>>(
+        persistentListOf()
+    )
+    override val customAnswerPacks: StateFlow<ImmutableList<CustomAnswerPack>> =
+        _customAnswerPacks.asStateFlow()
+
+    override suspend fun insertAnswerPack(answerPack: CustomAnswerPack) {
         modificationMutex.withLock {
-            val current = _answerPacks.value
-            if (!current.contains(answerPack)) {
-                _answerPacks.value = (current + answerPack).toImmutableList()
+            val current = _customAnswerPacks.value
+            val existingIndex = current.indexOfFirst { it.id == answerPack.id }
+            _customAnswerPacks.value = if (existingIndex >= 0) {
+                current.mapIndexed { index, pack ->
+                    if (index == existingIndex) answerPack else pack
+                }.toImmutableList()
+            } else {
+                (current + answerPack).toImmutableList()
             }
         }
     }
 
-    override suspend fun removeAnswerPack(answerPack: AnswerPack) {
+    override suspend fun removeAnswerPack(answerPack: CustomAnswerPack) {
         modificationMutex.withLock {
-            val current = _answerPacks.value
+            val current = _customAnswerPacks.value
             val updated = current.filterNot { it == answerPack }.toImmutableList()
-
-            if (updated.isNotEmpty()) {
-                _answerPacks.value = updated
-            }
+            _customAnswerPacks.value = updated
         }
     }
 }
