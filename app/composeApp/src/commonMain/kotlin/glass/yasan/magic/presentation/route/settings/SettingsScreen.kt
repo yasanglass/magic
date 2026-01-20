@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import glass.yasan.kepko.component.ButtonText
 import glass.yasan.kepko.component.PreferenceAppIdentity
 import glass.yasan.kepko.component.PreferenceRadioGroup
@@ -26,6 +27,7 @@ import glass.yasan.magic.core.resources.answer_packs
 import glass.yasan.magic.core.resources.app_name
 import glass.yasan.magic.core.resources.settings
 import glass.yasan.magic.core.resources.theme
+import glass.yasan.magic.util.PreviewWithTest
 import glass.yasan.toolkit.about.presentation.compose.ToolkitDeveloperBanner
 import glass.yasan.toolkit.compose.spacer.verticalSpacerItem
 import org.jetbrains.compose.resources.stringResource
@@ -122,6 +124,18 @@ private fun LazyListScope.appIdentityItem() {
             versionName = BuildKonfig.VERSION_NAME,
             extras = arrayOf(BuildKonfig.VERSION_CODE),
             modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@PreviewWithTest
+@Composable
+internal fun SettingsScreenPreview() {
+    KepkoTheme {
+        SettingsScreen(
+            navController = rememberNavController(),
+            settings = Settings.default,
+            updateSettings = {}
         )
     }
 }

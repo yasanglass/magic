@@ -33,6 +33,7 @@ import glass.yasan.kepko.component.Text
 import glass.yasan.kepko.foundation.theme.KepkoTheme
 import glass.yasan.kepko.foundation.theme.ThemeStyle
 import glass.yasan.magic.feature.answers.domain.model.Answer
+import glass.yasan.magic.feature.answers.domain.model.CustomAnswer
 import glass.yasan.magic.feature.answers.util.preview.PreviewAnswers
 import glass.yasan.magic.feature.settings.domain.model.Settings
 import glass.yasan.magic.presentation.navigation.Route
@@ -85,7 +86,7 @@ private fun MagicScreen(
     val (backgroundColor, contentColor) = state.resolveColors(themeStyle)
     val animatedBackgroundColor by animateColorAsState(backgroundColor)
     val animatedContentColor by animateColorAsState(contentColor)
-    val tipAlpha by animateFloatAsState(if (state.answer == Answer.empty) 1f else 0f)
+    val tipAlpha by animateFloatAsState(if (state.showAdditionalContent) 1f else 0f)
 
     SystemBarColorsEffect(
         statusBarColor = animatedBackgroundColor,
@@ -101,7 +102,7 @@ private fun MagicScreen(
             .combinedClickable(
                 interactionSource = null,
                 indication = null,
-                onClickLabel = state.pack?.prompt(),
+                onClickLabel = state.pack?.resolvePrompt(),
                 onClick = { sendEvent(RequestNewAnswer) },
                 onLongClickLabel = stringResource(Res.string.open_settings),
                 onLongClick = { sendEvent(OpenSettings) },
@@ -168,31 +169,12 @@ private fun State?.resolveColors(
 ): Pair<Color, Color> {
     if (this == null) return KepkoTheme.colors.content to KepkoTheme.colors.midground
 
-    val typeColor = when (answer?.type) {
-        GENERIC -> KepkoTheme.colors.content
-        SUCCESS -> KepkoTheme.colors.success
-        INFO -> KepkoTheme.colors.information
-        CAUTION -> KepkoTheme.colors.caution
-        DANGER -> KepkoTheme.colors.danger
-        null -> KepkoTheme.colors.content
-    }
+    val typeColor = answer?.type?.resolveColor() ?: KepkoTheme.colors.content
 
     val backgroundColor = if (themeStyle.isDark) KepkoTheme.colors.midground else typeColor
     val contentColor = if (themeStyle.isDark) typeColor else backgroundColor.toContentColor()
 
     return backgroundColor to contentColor
-}
-
-@PreviewWithTest
-@Composable
-internal fun MagicScreenEmptyLightPreview() {
-    PreviewContent(answer = Answer.empty, theme = LIGHT)
-}
-
-@PreviewWithTest
-@Composable
-internal fun MagicScreenEmptyDarkPreview() {
-    PreviewContent(answer = Answer.empty, theme = DARK)
 }
 
 @PreviewWithTest
@@ -298,7 +280,10 @@ internal fun MagicScreenColorMatrixPreview() {
             KepkoTheme(style = themeStyle) {
                 Row {
                     Answer.Type.entries.forEach { type ->
-                        val answer = Answer(getText = { type.name }, type = type)
+                        val answer = CustomAnswer(
+                            text = type.name,
+                            type = type
+                        )
                         val state = State(answer = answer)
                         val (backgroundColor, contentColor) = state.resolveColors(themeStyle)
 

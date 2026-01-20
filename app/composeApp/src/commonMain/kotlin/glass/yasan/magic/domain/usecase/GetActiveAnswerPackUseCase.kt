@@ -11,13 +11,17 @@ class GetActiveAnswerPackUseCase(
     private val answerRepository: AnswerRepository,
 ) {
 
-    suspend operator fun invoke(): AnswerPack {
+    suspend operator fun invoke(): AnswerPack<*> {
         val settings = settingsRepository.settings.first()
-        val answerPack = answerRepository.answerPacks.value.firstOrNull {
-            it.id == settings.activeAnswerPackId
-        } ?: DefaultAnswerPacks.default
+        val activeId = settings.activeAnswerPackId
 
-        return answerPack
+        val builtIn = answerRepository.builtInAnswerPacks.value.firstOrNull { it.id == activeId }
+        if (builtIn != null) return builtIn
+
+        val custom = answerRepository.customAnswerPacks.value.firstOrNull { it.id == activeId }
+        if (custom != null) return custom
+
+        return DefaultAnswerPacks.default
     }
 
 }

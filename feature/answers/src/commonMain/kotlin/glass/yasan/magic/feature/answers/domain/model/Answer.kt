@@ -1,23 +1,15 @@
 package glass.yasan.magic.feature.answers.domain.model
 
 import androidx.compose.runtime.Composable
-import glass.yasan.magic.core.resources.Res
-import glass.yasan.magic.core.resources.answer_pack_prompt_magic_8_ball
-import org.jetbrains.compose.resources.stringResource
+import androidx.compose.ui.graphics.Color
+import glass.yasan.kepko.foundation.theme.KepkoTheme
 
-public data class Answer(
-    val getText: @Composable () -> String,
-    val type: Type = Type.GENERIC,
-) {
+public sealed interface Answer {
 
-    public companion object {
+    public val type: Type
 
-        public val empty: Answer = Answer(
-            getText = { stringResource(Res.string.answer_pack_prompt_magic_8_ball) },
-            type = Type.GENERIC,
-        )
-
-    }
+    @Composable
+    public fun resolveText(): String
 
     public enum class Type {
         GENERIC,
@@ -26,6 +18,16 @@ public data class Answer(
         CAUTION,
         DANGER,
         ;
+
+        @Composable
+        public fun resolveColor(): Color = when (this) {
+            GENERIC -> KepkoTheme.colors.content
+            SUCCESS -> KepkoTheme.colors.success
+            INFO -> KepkoTheme.colors.information
+            CAUTION -> KepkoTheme.colors.caution
+            DANGER -> KepkoTheme.colors.danger
+        }
+
     }
 
 }

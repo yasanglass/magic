@@ -16,4 +16,9 @@ sealed interface Route {
 
     @Serializable
     data object AnswerPacks : Route
+
+    @Serializable
+    data class EditAnswerPack(
+        val answerPackId: String? = null,
+    ) : Route
 }
