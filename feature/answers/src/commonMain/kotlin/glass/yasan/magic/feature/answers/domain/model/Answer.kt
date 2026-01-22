@@ -11,13 +11,18 @@ public sealed interface Answer {
     @Composable
     public fun resolveText(): String
 
-    public enum class Type {
-        GENERIC,
-        SUCCESS,
-        INFO,
-        CAUTION,
-        DANGER,
+    public enum class Type(public val id: String) {
+        GENERIC("generic"),
+        SUCCESS("success"),
+        INFO("info"),
+        CAUTION("caution"),
+        DANGER("danger"),
         ;
+
+
+        public companion object {
+            public fun fromIdOrDefault(id: String): Type = entries.firstOrNull { it.id == id } ?: GENERIC
+        }
 
         @Composable
         public fun resolveColor(): Color = when (this) {

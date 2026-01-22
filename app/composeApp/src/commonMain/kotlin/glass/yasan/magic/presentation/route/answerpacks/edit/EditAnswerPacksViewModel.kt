@@ -1,18 +1,19 @@
 package glass.yasan.magic.presentation.route.answerpacks.edit
 
 import androidx.lifecycle.viewModelScope
-import glass.yasan.magic.feature.answers.data.local.DefaultAnswerPacks
 import glass.yasan.magic.feature.answers.domain.model.Answer
 import glass.yasan.magic.feature.answers.domain.model.CustomAnswer
 import glass.yasan.magic.feature.answers.domain.model.CustomAnswerPack
-import glass.yasan.magic.feature.answers.domain.repository.AnswerRepository
+import glass.yasan.magic.feature.answers.domain.provider.BuiltInAnswerPackProvider
+import glass.yasan.magic.feature.answers.domain.repository.CustomAnswerPackRepository
 import glass.yasan.magic.feature.settings.domain.repository.SettingsRepository
 import glass.yasan.magic.presentation.route.answerpacks.edit.EditAnswerPacksViewModel.State.Error
-import kotlinx.coroutines.launch
 import glass.yasan.toolkit.compose.viewmodel.ToolkitViewModel
 import glass.yasan.toolkit.compose.viewmodel.ViewAction
 import glass.yasan.toolkit.compose.viewmodel.ViewEvent
 import glass.yasan.toolkit.compose.viewmodel.ViewState
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentListOf
@@ -20,14 +21,14 @@ import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
 
 @OptIn(ExperimentalUuidApi::class)
 internal class EditAnswerPacksViewModel(
     private val answerPackId: String?,
-    private val answerRepository: AnswerRepository,
+    private val builtInAnswerPackProvider: BuiltInAnswerPackProvider,
+    private val customAnswerPackRepository: CustomAnswerPackRepository,
     private val settingsRepository: SettingsRepository,
 ) : ToolkitViewModel<
         EditAnswerPacksViewModel.State,
@@ -91,25 +92,27 @@ internal class EditAnswerPacksViewModel(
     }
 
     init {
-        val pack = answerPackId?.let { id ->
-            answerRepository.customAnswerPacks.value.find { it.id == id }
-        }
-
-        if (answerPackId != null && pack == null) {
-            logger.e { "Could not find an answer pack for the given id: $answerPackId" }
-        }
-
-        if (pack != null) {
-            updateViewState {
-                copy(
-                    isLoading = false,
-                    name = pack.name,
-                    prompt = pack.prompt,
-                    answers = pack.answers,
-                )
+        viewModelScope.launch {
+            val pack = answerPackId?.let { id ->
+                customAnswerPackRepository.answerPacks.first().find { it.id == id }
             }
-        } else {
-            updateViewState { copy(isLoading = false) }
+
+            if (answerPackId != null && pack == null) {
+                logger.e { "Could not find an answer pack for the given id: $answerPackId" }
+            }
+
+            if (pack != null) {
+                updateViewState {
+                    copy(
+                        isLoading = false,
+                        name = pack.name,
+                        prompt = pack.prompt,
+                        answers = pack.answers,
+                    )
+                }
+            } else {
+                updateViewState { copy(isLoading = false) }
+            }
         }
     }
 
@@ -198,7 +201,7 @@ internal class EditAnswerPacksViewModel(
                 }
 
                 val pack = state.asCustomAnswerPack(answerPackId)
-                answerRepository.insertAnswerPack(pack)
+                customAnswerPackRepository.insertAnswerPack(pack)
                 setActiveAnswerPack(pack.id)
 
                 sendViewAction(NavigateBack)
@@ -213,7 +216,7 @@ internal class EditAnswerPacksViewModel(
             if (!operationMutex.tryLock()) return@launch
             try {
                 val pack = answerPackId?.let { id ->
-                    answerRepository.customAnswerPacks.value.find { it.id == id }
+                    customAnswerPackRepository.answerPacks.first().firstOrNull { it.id == id }
                 }
 
                 if (pack == null) {
@@ -223,9 +226,9 @@ internal class EditAnswerPacksViewModel(
 
                 updateViewState { copy(isLoading = true) }
 
-                answerRepository.removeAnswerPack(pack)
+                customAnswerPackRepository.removeAnswerPack(pack)
                 if (settingsRepository.settings.first().activeAnswerPackId == pack.id) {
-                    setActiveAnswerPack(DefaultAnswerPacks.default.id)
+                    setActiveAnswerPack(builtInAnswerPackProvider.getDefault().id)
                 }
 
                 sendViewAction(NavigateBack)

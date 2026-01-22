@@ -1,5 +1,6 @@
 package glass.yasan.magic.feature.settings.data
 
+import co.touchlab.kermit.Logger
 import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.coroutines.getStringOrNullFlow
@@ -7,9 +8,9 @@ import glass.yasan.magic.feature.settings.domain.model.Settings
 import glass.yasan.magic.feature.settings.domain.repository.SettingsRepository
 import glass.yasan.toolkit.core.coroutines.ApplicationScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -26,10 +27,19 @@ internal class SettingsRepositoryImpl(
         const val KEY_ANSWER_PACK = "answer_pack"
     }
 
+    private val logger = Logger.withTag("SettingsRepositoryImpl")
     private val updateMutex = Mutex()
 
     private val theme: Flow<String?> = observableSettings.getStringOrNullFlow(KEY_THEME)
+        .catch { e ->
+            logger.e(e) { "Failed to read theme setting" }
+            emit(null)
+        }
     private val answerPackId: Flow<String?> = observableSettings.getStringOrNullFlow(KEY_ANSWER_PACK)
+        .catch { e ->
+            logger.e(e) { "Failed to read answer pack setting" }
+            emit(null)
+        }
 
     override val settings: Flow<Settings> = combine(
         theme,

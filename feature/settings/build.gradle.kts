@@ -43,6 +43,7 @@ kotlin {
                 implementation(libs.russhwolf.multiplatform.settings)
                 implementation(libs.russhwolf.multiplatform.settings.coroutines)
                 implementation(libs.russhwolf.multiplatform.settings.make.observable)
+                implementation(libs.touchlab.kermit)
             }
         }
     }

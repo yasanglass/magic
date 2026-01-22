@@ -25,6 +25,7 @@ koin = "4.1.1"
 roborazzi = "1.56.0"
 russhwolf-multiplatform-settings = "1.3.0"
 sergio-sastre-composable-preview-scanner = "0.8.1"
+sqldelight = "2.2.1"
 touchlab-kermit = "2.0.8"
 
 [libraries]
@@ -59,6 +60,11 @@ russhwolf-multiplatform-settings = { module = "com.russhwolf:multiplatform-setti
 russhwolf-multiplatform-settings-coroutines = { module = "com.russhwolf:multiplatform-settings-coroutines", version.ref = "russhwolf-multiplatform-settings" }
 russhwolf-multiplatform-settings-make-observable = { module = "com.russhwolf:multiplatform-settings-make-observable", version.ref = "russhwolf-multiplatform-settings" }
 sergio-sastre-composable-preview-scanner-jvm = { module = "io.github.sergio-sastre.ComposablePreviewScanner:jvm", version.ref = "sergio-sastre-composable-preview-scanner" }
+sqldelight-android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }
+sqldelight-native-driver = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
+sqldelight-runtime = { module = "app.cash.sqldelight:runtime", version.ref = "sqldelight" }
+sqldelight-coroutines-extensions = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
+sqldelight-sqlite-driver = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqldelight" }
 touchlab-kermit = { module = "co.touchlab:kermit", version.ref = "touchlab-kermit" }
 
 [plugins]
@@ -75,3 +81,4 @@ jetbrains-kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", ve
 jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlinx-kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "jetbrains-kotlinx-kover" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
+sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }

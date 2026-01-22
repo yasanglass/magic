@@ -2,7 +2,7 @@ package glass.yasan.magic.presentation.route.answerpacks
 
 import androidx.lifecycle.viewModelScope
 import glass.yasan.magic.feature.answers.domain.model.AnswerPack
-import glass.yasan.magic.feature.answers.domain.repository.AnswerRepository
+import glass.yasan.magic.feature.answers.domain.usecase.GetAllAnswerPacksUseCase
 import glass.yasan.magic.feature.settings.domain.repository.SettingsRepository
 import glass.yasan.toolkit.compose.viewmodel.ToolkitViewModel
 import glass.yasan.toolkit.compose.viewmodel.ViewAction
@@ -10,13 +10,11 @@ import glass.yasan.toolkit.compose.viewmodel.ViewEvent
 import glass.yasan.toolkit.compose.viewmodel.ViewState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 internal class AnswerPacksViewModel(
-    answerRepository: AnswerRepository,
+    getAllAnswerPacks: GetAllAnswerPacksUseCase,
     private val settingsRepository: SettingsRepository,
 ) : ToolkitViewModel<
         AnswerPacksViewModel.State,
@@ -66,12 +64,7 @@ internal class AnswerPacksViewModel(
     }
 
     init {
-        combine(
-            answerRepository.builtInAnswerPacks,
-            answerRepository.customAnswerPacks,
-        ) { builtIn, custom ->
-            (builtIn + custom).toImmutableList()
-        }
+        getAllAnswerPacks()
             .onEach { answerPacks ->
                 updateViewState { copy(answerPacks = answerPacks) }
             }
