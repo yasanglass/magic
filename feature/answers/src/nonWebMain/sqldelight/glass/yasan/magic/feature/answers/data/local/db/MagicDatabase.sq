@@ -1,0 +1,33 @@
+CREATE TABLE CustomAnswerPackEntity (
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    prompt TEXT NOT NULL
+);
+
+CREATE TABLE CustomAnswerEntity (
+    id TEXT NOT NULL PRIMARY KEY,
+    pack_id TEXT NOT NULL,
+    text TEXT NOT NULL,
+    type TEXT NOT NULL,
+    FOREIGN KEY (pack_id) REFERENCES CustomAnswerPackEntity(id) ON DELETE CASCADE
+);
+
+CREATE INDEX idx_custom_answer_pack_id ON CustomAnswerEntity(pack_id);
+
+selectAllPacks:
+SELECT * FROM CustomAnswerPackEntity;
+
+selectAllAnswers:
+SELECT * FROM CustomAnswerEntity;
+
+insertPack:
+INSERT OR REPLACE INTO CustomAnswerPackEntity(id, name, prompt) VALUES (:id, :name, :prompt);
+
+insertAnswer:
+INSERT OR REPLACE INTO CustomAnswerEntity(id, pack_id, text, type) VALUES (:id, :packId, :text, :type);
+
+deletePack:
+DELETE FROM CustomAnswerPackEntity WHERE id = :id;
+
+deleteAnswersForPack:
+DELETE FROM CustomAnswerEntity WHERE pack_id = :packId;

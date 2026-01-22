@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.iurysouza.modulegraph)
     alias(libs.plugins.roborazzi) apply false
     alias(libs.plugins.codingfeline.buildkonfig) apply false
+    alias(libs.plugins.sqldelight) apply false
 }
 
 dependencies {

@@ -1,14 +1,12 @@
 package glass.yasan.magic.feature.answers.data.local
 
-import glass.yasan.magic.feature.answers.domain.model.BuiltInAnswerPack
 import glass.yasan.magic.feature.answers.domain.model.CustomAnswerPack
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
 
-internal interface AnswerPackLocalDataSource {
+internal interface CustomAnswerPackLocalDataSource {
 
-    val builtInAnswerPacks: StateFlow<ImmutableList<BuiltInAnswerPack>>
-    val customAnswerPacks: StateFlow<ImmutableList<CustomAnswerPack>>
+    val answerPacks: Flow<ImmutableList<CustomAnswerPack>>
 
     suspend fun insertAnswerPack(answerPack: CustomAnswerPack)
 

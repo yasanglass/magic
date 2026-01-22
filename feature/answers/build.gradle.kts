@@ -6,10 +6,15 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.compose)
     alias(libs.plugins.jetbrains.kotlin.compose)
+    alias(libs.plugins.sqldelight)
 }
 
 kotlin {
     explicitApi()
+
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
 
     androidTarget {
         compilerOptions {
@@ -47,7 +52,76 @@ kotlin {
                 implementation(libs.russhwolf.multiplatform.settings.coroutines)
             }
         }
+
+        val nonWebMain by creating {
+            dependsOn(commonMain.get())
+            dependencies {
+                implementation(libs.sqldelight.runtime)
+                implementation(libs.sqldelight.coroutines.extensions)
+            }
+        }
+
+        val iosMain by creating {
+            dependsOn(nonWebMain)
+            dependencies {
+                implementation(libs.sqldelight.native.driver)
+            }
+        }
+        iosX64Main {
+            dependsOn(iosMain)
+        }
+        iosArm64Main {
+            dependsOn(iosMain)
+        }
+        iosSimulatorArm64Main {
+            dependsOn(iosMain)
+        }
+
+        androidMain {
+            dependsOn(nonWebMain)
+            dependencies {
+                implementation(libs.sqldelight.android.driver)
+            }
+        }
+
+        jvmMain {
+            dependsOn(nonWebMain)
+            dependencies {
+                implementation(libs.sqldelight.sqlite.driver)
+            }
+        }
+
+        jvmTest {
+            dependencies {
+                implementation(libs.jetbrains.kotlin.test)
+                implementation(libs.jetbrains.kotlinx.coroutines.test)
+                implementation(libs.sqldelight.sqlite.driver)
+            }
+        }
+
+        val webMain by creating {
+            dependsOn(commonMain.get())
+        }
+
+        jsMain {
+            dependsOn(webMain)
+        }
+
+        wasmJsMain {
+            dependsOn(webMain)
+        }
     }
+}
+
+
+sqldelight {
+    databases {
+        create("MagicDatabase") {
+            packageName.set("glass.yasan.magic.feature.answers.data.local.db")
+            srcDirs("src/nonWebMain/sqldelight")
+        }
+    }
+    linkSqlite = false
 }
 
 android {

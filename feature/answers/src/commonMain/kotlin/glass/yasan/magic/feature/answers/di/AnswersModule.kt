@@ -1,19 +1,26 @@
 package glass.yasan.magic.feature.answers.di
 
-import glass.yasan.magic.feature.answers.data.local.AnswerPackLocalDataSource
-import glass.yasan.magic.feature.answers.data.local.AnswerRepositoryImpl
-import glass.yasan.magic.feature.answers.data.local.InMemoryAnswerPackLocalDataSource
-import glass.yasan.magic.feature.answers.domain.repository.AnswerRepository
+import glass.yasan.magic.feature.answers.data.provider.BuiltInAnswerPackProviderImpl
+import glass.yasan.magic.feature.answers.data.repository.CustomAnswerPackRepositoryImpl
+import glass.yasan.magic.feature.answers.domain.provider.BuiltInAnswerPackProvider
+import glass.yasan.magic.feature.answers.domain.repository.CustomAnswerPackRepository
+import glass.yasan.magic.feature.answers.domain.usecase.GetAllAnswerPacksUseCase
+import glass.yasan.magic.feature.answers.domain.usecase.GetDefaultAnswerPackUseCase
+import org.koin.core.module.Module
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
-import org.koin.core.module.Module
 import org.koin.dsl.module
 
 public val answersModule: Module = module {
-    singleOf(::InMemoryAnswerPackLocalDataSource) {
-        bind<AnswerPackLocalDataSource>()
+    includes(answersPlatformModule)
+    singleOf(::BuiltInAnswerPackProviderImpl) {
+        bind<BuiltInAnswerPackProvider>()
     }
-    singleOf(::AnswerRepositoryImpl) {
-        bind<AnswerRepository>()
+    singleOf(::CustomAnswerPackRepositoryImpl) {
+        bind<CustomAnswerPackRepository>()
     }
+    singleOf(::GetAllAnswerPacksUseCase)
+    singleOf(::GetDefaultAnswerPackUseCase)
 }
+
+internal expect val answersPlatformModule: Module

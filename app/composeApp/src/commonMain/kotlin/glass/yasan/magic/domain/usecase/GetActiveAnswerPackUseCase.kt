@@ -1,27 +1,27 @@
 package glass.yasan.magic.domain.usecase
 
-import glass.yasan.magic.feature.answers.data.local.DefaultAnswerPacks
 import glass.yasan.magic.feature.answers.domain.model.AnswerPack
-import glass.yasan.magic.feature.answers.domain.repository.AnswerRepository
+import glass.yasan.magic.feature.answers.domain.usecase.GetAllAnswerPacksUseCase
+import glass.yasan.magic.feature.answers.domain.usecase.GetDefaultAnswerPackUseCase
 import glass.yasan.magic.feature.settings.domain.repository.SettingsRepository
 import kotlinx.coroutines.flow.first
 
 class GetActiveAnswerPackUseCase(
     private val settingsRepository: SettingsRepository,
-    private val answerRepository: AnswerRepository,
+    private val getAllAnswerPacks: GetAllAnswerPacksUseCase,
+    private val getDefaultAnswerPack: GetDefaultAnswerPackUseCase,
 ) {
 
     suspend operator fun invoke(): AnswerPack<*> {
         val settings = settingsRepository.settings.first()
-        val activeId = settings.activeAnswerPackId
+        val allAnswerPacks = getAllAnswerPacks().first()
 
-        val builtIn = answerRepository.builtInAnswerPacks.value.firstOrNull { it.id == activeId }
-        if (builtIn != null) return builtIn
+        val activeAnswerPackId = settings.activeAnswerPackId
 
-        val custom = answerRepository.customAnswerPacks.value.firstOrNull { it.id == activeId }
-        if (custom != null) return custom
+        val activeAnswerPack = allAnswerPacks.firstOrNull { it.id == activeAnswerPackId }
+        if (activeAnswerPack != null) return activeAnswerPack
 
-        return DefaultAnswerPacks.default
+        return getDefaultAnswerPack()
     }
 
 }

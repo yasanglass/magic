@@ -1,14 +1,12 @@
 package glass.yasan.magic.feature.answers.domain.repository
 
-import glass.yasan.magic.feature.answers.domain.model.BuiltInAnswerPack
 import glass.yasan.magic.feature.answers.domain.model.CustomAnswerPack
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
 
-public interface AnswerRepository {
+public interface CustomAnswerPackRepository {
 
-    public val builtInAnswerPacks: StateFlow<ImmutableList<BuiltInAnswerPack>>
-    public val customAnswerPacks: StateFlow<ImmutableList<CustomAnswerPack>>
+    public val answerPacks: Flow<ImmutableList<CustomAnswerPack>>
 
     public suspend fun insertAnswerPack(answerPack: CustomAnswerPack)
 

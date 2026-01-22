@@ -25,7 +25,8 @@ val appModule = module {
     viewModel { parameters ->
         EditAnswerPacksViewModel(
             answerPackId = parameters.getOrNull(),
-            answerRepository = get(),
+            builtInAnswerPackProvider = get(),
+            customAnswerPackRepository = get(),
             settingsRepository = get(),
         )
     }
