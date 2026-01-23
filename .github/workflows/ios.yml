@@ -36,7 +36,7 @@ jobs:
       - name: Build Debug Frameworks
         run: ./gradlew linkDebugFrameworkIosSimulatorArm64
 
-      - name: Build iOS App
+      - name: Build Debug App
         run: xcodebuild -project app/iosApp/iosApp.xcodeproj -scheme iosApp -sdk iphonesimulator -configuration Debug build CODE_SIGNING_ALLOWED=NO -quiet
 
       - name: Upload Artifacts
