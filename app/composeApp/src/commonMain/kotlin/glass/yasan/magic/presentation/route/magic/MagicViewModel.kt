@@ -11,6 +11,7 @@ import glass.yasan.toolkit.compose.viewmodel.ToolkitViewModel
 import glass.yasan.toolkit.compose.viewmodel.ViewAction
 import glass.yasan.toolkit.compose.viewmodel.ViewEvent
 import glass.yasan.toolkit.compose.viewmodel.ViewState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MagicViewModel(
@@ -77,8 +78,13 @@ class MagicViewModel(
     }
 
     private suspend fun fetchNewAnswer() {
-        val newAnswer = getNewAnswer()
+        updateViewState {
+            copy(isLoading = true)
+        }
 
+        delay(500)
+
+        val newAnswer = getNewAnswer()
         updateViewState {
             copy(
                 answer = newAnswer,
