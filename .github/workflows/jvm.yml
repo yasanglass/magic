@@ -26,15 +26,15 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
 
-      - name: Assemble
-        run: ./gradlew jvmJar
+      - name: Build Debug App
+        run: ./gradlew :app:composeApp:createDistributable
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v6
         with:
           name: artifacts
           path: |
-            **/build/libs/*-jvm.jar
+            app/composeApp/build/compose/binaries/main/app/
           retention-days: 30
 
   test:
