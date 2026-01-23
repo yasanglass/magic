@@ -56,7 +56,9 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
-            isStatic = true
+            isStatic = false
+            binaryOption("bundleId", "glass.yasan.magic.ComposeApp")
+            linkerOpts("-lsqlite3")
         }
     }
 

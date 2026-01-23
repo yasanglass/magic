@@ -121,7 +121,7 @@ sqldelight {
             srcDirs("src/nonWebMain/sqldelight")
         }
     }
-    linkSqlite = false
+    linkSqlite = true
 }
 
 android {
