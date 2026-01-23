@@ -260,6 +260,7 @@ private fun PreviewContent(
         MagicScreen(
             state = State(
                 answer = answer,
+                isLoading = false
             ),
             sendEvent = {},
             settings = Settings.default.copy(
