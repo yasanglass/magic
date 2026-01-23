@@ -2,20 +2,26 @@
   <img src="./assets/banner.png" alt="Banner"/>
 </p>
 
-<p align="center">
-  <a href="https://github.com/yasanglass/magic/blob/main/LICENSE"><img src="https://img.shields.io/github/license/yasanglass/magic.svg" alt="license"/></a>
-  <a href="https://kotlinlang.org"><img src="https://img.shields.io/badge/kotlin-2.3.0-purple.svg?style=flat" alt="kotlin"/></a>
-  <a href="https://crowdin.com/project/magic-8-ball"><img src="https://badges.crowdin.net/magic-8-ball/localized.svg" alt="crowdin"/></a>
-  <a href="https://github.com/yasanglass/magic/actions/workflows/android.yml"><img src="https://img.shields.io/github/actions/workflow/status/yasanglass/magic/android.yml?label=android" alt="android"/></a>
-  <a href="https://github.com/yasanglass/magic/actions/workflows/jvm.yml"><img src="https://img.shields.io/github/actions/workflow/status/yasanglass/magic/jvm.yml?label=jvm" alt="jvm"/></a>
-  <a href="https://github.com/yasanglass/magic/actions/workflows/ios.yml"><img src="https://img.shields.io/github/actions/workflow/status/yasanglass/magic/ios.yml?label=ios" alt="ios"/></a>
-  <a href="https://github.com/yasanglass/magic/actions/workflows/js.yml"><img src="https://img.shields.io/github/actions/workflow/status/yasanglass/magic/js.yml?label=js" alt="js"/></a>
-  <a href="https://github.com/yasanglass/magic/actions/workflows/wasm.yml"><img src="https://img.shields.io/github/actions/workflow/status/yasanglass/magic/wasm.yml?label=wasm" alt="wasm"/></a>
-  <a href="https://github.com/yasanglass/magic/actions/workflows/detekt.yml"><img src="https://img.shields.io/github/actions/workflow/status/yasanglass/magic/detekt.yml?label=detekt" alt="detekt"/></a>
-  <a href="https://github.com/yasanglass/magic/actions/workflows/snapshots.yml"><img src="https://img.shields.io/github/actions/workflow/status/yasanglass/magic/snapshots.yml?label=snapshots" alt="snapshots"/></a>
-</p>
+<a href="https://github.com/yasanglass/magic/blob/main/LICENSE"><img src="https://img.shields.io/github/license/yasanglass/magic.svg" alt="license"/></a>
+<a href="https://kotlinlang.org"><img src="https://img.shields.io/badge/kotlin-2.3.0-purple.svg?style=flat" alt="kotlin"/></a>
+<a href="https://crowdin.com/project/magic-8-ball"><img src="https://badges.crowdin.net/magic-8-ball/localized.svg" alt="crowdin"/></a>
+<a href="https://github.com/yasanglass/magic/actions/workflows/android.yml"><img src="https://img.shields.io/github/actions/workflow/status/yasanglass/magic/android.yml?label=android" alt="android"/></a>
+<a href="https://github.com/yasanglass/magic/actions/workflows/jvm.yml"><img src="https://img.shields.io/github/actions/workflow/status/yasanglass/magic/jvm.yml?label=jvm" alt="jvm"/></a>
+<a href="https://github.com/yasanglass/magic/actions/workflows/ios.yml"><img src="https://img.shields.io/github/actions/workflow/status/yasanglass/magic/ios.yml?label=ios" alt="ios"/></a>
+<a href="https://github.com/yasanglass/magic/actions/workflows/js.yml"><img src="https://img.shields.io/github/actions/workflow/status/yasanglass/magic/js.yml?label=js" alt="js"/></a>
+<a href="https://github.com/yasanglass/magic/actions/workflows/wasm.yml"><img src="https://img.shields.io/github/actions/workflow/status/yasanglass/magic/wasm.yml?label=wasm" alt="wasm"/></a>
+<a href="https://github.com/yasanglass/magic/actions/workflows/detekt.yml"><img src="https://img.shields.io/github/actions/workflow/status/yasanglass/magic/detekt.yml?label=detekt" alt="detekt"/></a>
+<a href="https://github.com/yasanglass/magic/actions/workflows/snapshots.yml"><img src="https://img.shields.io/github/actions/workflow/status/yasanglass/magic/snapshots.yml?label=snapshots" alt="snapshots"/></a>
 
-A simple randomizer app built with Compose Multiplatform. This is a work-in-progress reimplementation of my original [Magic 8 Ball app](https://play.google.com/store/apps/details?id=me.yasan.magic_8_ball).
+A simple randomizer app built with Compose Multiplatform. This is a work-in-progress reimplementation of my
+original [Magic 8 Ball app](https://play.google.com/store/apps/details?id=me.yasan.magic_8_ball).
+
+### Platforms
+
+|           | Android                                                                                             | iOS                                                                                              | Desktop (JVM)                                                                                      | Web (JS)                                                                                       | Web (WebAssembly)                                                                              |
+|-----------|-----------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|
+| Key-Value | ✅ [Multiplatform Settings](https://github.com/russhwolf/multiplatform-settings) (SharedPreferences) | ✅ [Multiplatform Settings](https://github.com/russhwolf/multiplatform-settings) (NSUserDefaults) | ✅ [Multiplatform Settings](https://github.com/russhwolf/multiplatform-settings) (Java Preferences) | ✅ [Multiplatform Settings](https://github.com/russhwolf/multiplatform-settings) (localStorage) | ✅ [Multiplatform Settings](https://github.com/russhwolf/multiplatform-settings) (localStorage) |
+| Database  | ✅ [SQLDelight](https://github.com/cashapp/sqldelight) (AndroidSqliteDriver)                         | ✅ [SQLDelight](https://github.com/cashapp/sqldelight) (NativeSqliteDriver)                       | ✅ [SQLDelight](https://github.com/cashapp/sqldelight) (JdbcSqliteDriver)                           | ❌                                                                                              | ❌                                                                                              |
 
 ### Modules
 
