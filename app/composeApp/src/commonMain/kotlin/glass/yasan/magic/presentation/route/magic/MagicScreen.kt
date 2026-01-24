@@ -1,11 +1,10 @@
 package glass.yasan.magic.presentation.route.magic
 
-import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.togetherWith
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
@@ -84,8 +83,8 @@ private fun MagicScreen(
 ) {
     val themeStyle = settings.theme.asKepkoThemeStyle()
     val (backgroundColor, contentColor) = state.resolveColors(themeStyle)
-    val animatedBackgroundColor by animateColorAsState(backgroundColor)
-    val animatedContentColor by animateColorAsState(contentColor)
+    val animatedBackgroundColor by animateColorAsState(backgroundColor, tween(500))
+    val animatedContentColor by animateColorAsState(contentColor, tween(500))
     val tipAlpha by animateFloatAsState(if (state.showAdditionalContent) 1f else 0f)
 
     SystemBarColorsEffect(
@@ -123,9 +122,9 @@ private fun Answer(
     state: State,
     contentColor: Color
 ) {
-    AnimatedContent(
+    Crossfade(
         targetState = state.text,
-        transitionSpec = { fadeIn() togetherWith fadeOut() },
+        animationSpec = tween(500),
     ) { text ->
         if (text != null) {
             Text(
@@ -136,6 +135,8 @@ private fun Answer(
                 textAlign = TextAlign.Center,
                 color = contentColor,
                 modifier = Modifier
+                    .animateContentSize()
+                    .fillMaxWidth()
                     .padding(32.dp),
             )
         }
@@ -169,7 +170,11 @@ private fun State?.resolveColors(
 ): Pair<Color, Color> {
     if (this == null) return KepkoTheme.colors.content to KepkoTheme.colors.midground
 
-    val typeColor = answer?.type?.resolveColor() ?: KepkoTheme.colors.content
+    val typeColor = if (isLoading) {
+        KepkoTheme.colors.content
+    } else {
+        answer?.type?.resolveColor() ?: KepkoTheme.colors.content
+    }
 
     val backgroundColor = if (themeStyle.isDark) KepkoTheme.colors.midground else typeColor
     val contentColor = if (themeStyle.isDark) typeColor else backgroundColor.toContentColor()
