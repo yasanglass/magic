@@ -60,7 +60,7 @@ fun AnswerPacksScreen(
         when (action) {
             is Action.NavigateToEditAnswerPack -> {
                 navController.navigate(
-                    route = Route.EditAnswerPack(
+                    route = Route.Settings.AnswerPacks.Edit(
                         answerPackId = action.id,
                     ),
                 )

@@ -11,6 +11,7 @@ import glass.yasan.magic.presentation.route.answerpacks.AnswerPacksScreen
 import glass.yasan.magic.presentation.route.answerpacks.edit.EditAnswerPackScreen
 import glass.yasan.magic.presentation.route.magic.MagicScreen
 import glass.yasan.magic.presentation.route.settings.SettingsScreen
+import glass.yasan.magic.presentation.route.style.StyleScreen
 
 @Composable
 internal fun NavigationHost(
@@ -26,16 +27,19 @@ internal fun NavigationHost(
             MagicScreen(navController, settings)
         }
         composable<Route.Settings> {
-            SettingsScreen(navController, settings, updateSettings)
+            SettingsScreen(navController, settings)
         }
-        composable<Route.About> {
+        composable<Route.Settings.About> {
             AboutScreen(navController)
         }
-        composable<Route.AnswerPacks> {
+        composable<Route.Settings.Style> {
+            StyleScreen(navController, settings, updateSettings)
+        }
+        composable<Route.Settings.AnswerPacks> {
             AnswerPacksScreen(navController)
         }
-        composable<Route.EditAnswerPack> { backStackEntry ->
-            val route = backStackEntry.toRoute<Route.EditAnswerPack>()
+        composable<Route.Settings.AnswerPacks.Edit> { backStackEntry ->
+            val route: Route.Settings.AnswerPacks.Edit = backStackEntry.toRoute()
 
             EditAnswerPackScreen(
                 navController = navController,

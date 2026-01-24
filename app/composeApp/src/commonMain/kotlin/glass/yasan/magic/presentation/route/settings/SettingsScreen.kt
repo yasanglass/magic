@@ -5,15 +5,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import glass.yasan.kepko.component.ButtonText
 import glass.yasan.kepko.component.PreferenceAppIdentity
-import glass.yasan.kepko.component.PreferenceRadioGroup
-import glass.yasan.kepko.component.PreferenceRadioGroupItem
 import glass.yasan.kepko.component.Scaffold
 import glass.yasan.kepko.foundation.theme.KepkoTheme
 import glass.yasan.kepko.resource.Icons
@@ -26,7 +23,7 @@ import glass.yasan.magic.core.resources.about
 import glass.yasan.magic.core.resources.answer_packs
 import glass.yasan.magic.core.resources.app_name
 import glass.yasan.magic.core.resources.settings
-import glass.yasan.magic.core.resources.theme
+import glass.yasan.magic.core.resources.style
 import glass.yasan.magic.util.PreviewWithTest
 import glass.yasan.toolkit.about.presentation.compose.ToolkitDeveloperBanner
 import glass.yasan.toolkit.compose.spacer.verticalSpacerItem
@@ -36,7 +33,6 @@ import org.jetbrains.compose.resources.stringResource
 fun SettingsScreen(
     navController: NavHostController,
     settings: Settings,
-    updateSettings: (Settings.() -> Settings) -> Unit,
 ) {
     SystemBarColorsEffect(
         statusBarColor = KepkoTheme.colors.foreground,
@@ -53,9 +49,9 @@ fun SettingsScreen(
             contentPadding = contentPadding,
         ) {
             verticalSpacerItem(height = 12.dp)
-            answerPacksButtonItem { navController.navigate(Route.AnswerPacks) }
-            themePreferenceItem(settings, updateSettings)
-            aboutButtonItem { navController.navigate(Route.About) }
+            answerPacksButtonItem { navController.navigate(Route.Settings.AnswerPacks) }
+            styleButtonItem { navController.navigate(Route.Settings.Style) }
+            aboutButtonItem { navController.navigate(Route.Settings.About) }
             appIdentityItem()
             developerBannerItem()
         }
@@ -73,10 +69,10 @@ private fun LazyListScope.answerPacksButtonItem(onClick: () -> Unit) {
     }
 }
 
-private fun LazyListScope.aboutButtonItem(onClick: () -> Unit) {
+private fun LazyListScope.styleButtonItem(onClick: () -> Unit) {
     item {
         ButtonText(
-            text = stringResource(Res.string.about),
+            text = stringResource(Res.string.style),
             leadingIcon = null,
             trailingIcon = Icons.chevronForward,
             onClick = onClick,
@@ -84,31 +80,13 @@ private fun LazyListScope.aboutButtonItem(onClick: () -> Unit) {
     }
 }
 
-private fun LazyListScope.themePreferenceItem(
-    settings: Settings,
-    updateSettings: (Settings.() -> Settings) -> Unit,
-) {
+private fun LazyListScope.aboutButtonItem(onClick: () -> Unit) {
     item {
-        val items = remember {
-            Settings.Theme.entries.map { theme ->
-                PreferenceRadioGroupItem(
-                    id = theme.id,
-                    title = theme.title,
-                )
-            }
-        }
-
-        PreferenceRadioGroup(
-            title = stringResource(Res.string.theme),
-            items = items,
-            selectedId = settings.theme.id,
-            onSelectId = { id ->
-                updateSettings {
-                    copy(
-                        theme = Settings.Theme.fromId(id) ?: error("Unexpected theme selected: $id")
-                    )
-                }
-            },
+        ButtonText(
+            text = stringResource(Res.string.about),
+            leadingIcon = null,
+            trailingIcon = Icons.chevronForward,
+            onClick = onClick,
         )
     }
 }
@@ -135,7 +113,6 @@ internal fun SettingsScreenPreview() {
         SettingsScreen(
             navController = rememberNavController(),
             settings = Settings.default,
-            updateSettings = {}
         )
     }
 }
