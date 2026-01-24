@@ -129,6 +129,7 @@ kotlin {
             dependencies {
                 implementation(libs.sergio.sastre.composable.preview.scanner.jvm)
                 implementation(libs.roborazzi.compose.desktop)
+                implementation(libs.koin.test)
                 implementation(kotlin("reflect"))
                 implementation(kotlin("test"))
                 @OptIn(ExperimentalComposeLibrary::class)
