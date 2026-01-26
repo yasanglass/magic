@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		80D0FE2D2F27F52A00629A25 /* Sentry-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 80D0FE2C2F27F52A00629A25 /* Sentry-Dynamic */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		D82B06831CD4352C17B6056B /* magic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = magic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -41,6 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80D0FE2D2F27F52A00629A25 /* Sentry-Dynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,8 +65,16 @@
 			children = (
 				C3DFC868EC5E3B87E1123635 /* Configuration */,
 				E0CCD5CC30A31D9916BCE30A /* iosApp */,
+				80D0FE2B2F27F52A00629A25 /* Frameworks */,
 				0EE0DC990413E3141B4033CF /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		80D0FE2B2F27F52A00629A25 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -75,6 +88,7 @@
 				2A66970767BE3DD203FD743A /* Sources */,
 				E6A88F8490327CF26C0813FE /* Frameworks */,
 				8A1DE72104113375E3F4589F /* Resources */,
+				80D0FE302F28000000629A25 /* Upload dSYMs to Sentry */,
 			);
 			buildRules = (
 			);
@@ -85,6 +99,7 @@
 			);
 			name = iosApp;
 			packageProductDependencies = (
+				80D0FE2C2F27F52A00629A25 /* Sentry-Dynamic */,
 			);
 			productName = iosApp;
 			productReference = D82B06831CD4352C17B6056B /* magic.app */;
@@ -114,6 +129,9 @@
 			);
 			mainGroup = 3AC56F643EE2521A3165AF59;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				80D0FE2A2F27F1D700629A25 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 0EE0DC990413E3141B4033CF /* Products */;
 			projectDirPath = "";
@@ -153,6 +171,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ \"YES\" = \"$OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED\" ]; then\n  echo \"Skipping Gradle build task invocation due to OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED environment variable set to \\\"YES\\\"\"\n  exit 0\nfi\ncd \"$SRCROOT/../..\"\n./gradlew :app:composeApp:embedAndSignAppleFrameworkForXcode\n";
+		};
+		80D0FE302F28000000629A25 /* Upload dSYMs to Sentry */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Upload dSYMs to Sentry";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nSENTRY_PROPS=\"$SRCROOT/../../sentry.properties\"\nif [ ! -f \"$SENTRY_PROPS\" ]; then\n    echo \"warning: sentry.properties not found at $SENTRY_PROPS\"\n    exit 0\nfi\n\nif which sentry-cli >/dev/null; then\n    export SENTRY_PROPERTIES=\"$SENTRY_PROPS\"\n    ERROR=$(sentry-cli debug-files upload --include-sources \"$DWARF_DSYM_FOLDER_PATH\" 2>&1 >/dev/null)\n    if [ ! $? -eq 0 ]; then\n        echo \"warning: sentry-cli - $ERROR\"\n    fi\nelse\n    echo \"warning: sentry-cli not installed\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -329,7 +365,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -380,6 +416,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		80D0FE2A2F27F1D700629A25 /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/getsentry/sentry-cocoa";
+			requirement = {
+				kind = exactVersion;
+				version = 8.57.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		80D0FE2C2F27F52A00629A25 /* Sentry-Dynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80D0FE2A2F27F1D700629A25 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
+			productName = Sentry-Dynamic;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CCF1FB8677A24AF77DDE481E /* Project object */;
 }

@@ -1,8 +1,11 @@
 package glass.yasan.magic.di
 
+import glass.yasan.magic.BuildKonfig
 import glass.yasan.magic.domain.usecase.GetActiveAnswerPackUseCase
 import glass.yasan.magic.domain.usecase.GetNewAnswerUseCase
 import glass.yasan.magic.feature.answers.di.answersModule
+import glass.yasan.magic.feature.errors.di.errorsModule
+import glass.yasan.magic.feature.errors.domain.ErrorReportingConfig
 import glass.yasan.magic.feature.settings.di.settingsModule
 import glass.yasan.magic.presentation.route.answerpacks.AnswerPacksViewModel
 import glass.yasan.magic.presentation.route.answerpacks.edit.EditAnswerPacksViewModel
@@ -17,6 +20,7 @@ val appModule = module {
     includes(
         toolkitModule,
         answersModule,
+        errorsModule,
         settingsModule,
     )
 
@@ -31,7 +35,14 @@ val appModule = module {
         )
     }
 
+    single { createErrorReportingConfig() }
     singleOf(::GetNewAnswerUseCase)
     singleOf(::GetActiveAnswerPackUseCase)
 }
+
+private fun createErrorReportingConfig(): ErrorReportingConfig = ErrorReportingConfig(
+    sentryDsn = BuildKonfig.SENTRY_DSN,
+    versionName = BuildKonfig.VERSION_NAME,
+    versionCode = BuildKonfig.VERSION_CODE,
+)
 

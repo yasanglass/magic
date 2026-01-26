@@ -3,9 +3,28 @@ import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 val appVersionName: String by project
 val appVersionCode: String by project
+
+val localProperties = Properties().apply {
+    rootProject.file("local.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) }
+}
+
+val sentryProperties = Properties().apply {
+    rootProject.file("sentry.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) }
+}
+
+val sentryDsn: String = sentryProperties.getProperty("defaults.dsn") ?: ""
+val sentryAuthToken: String = sentryProperties.getProperty("auth.token") ?: ""
+val sentryOrg: String = sentryProperties.getProperty("defaults.org") ?: ""
+val sentryProject: String = sentryProperties.getProperty("defaults.project") ?: ""
+
+if (sentryDsn.isBlank()) logger.warn("⚠️ defaults.dsn is not set in sentry.properties")
+if (sentryAuthToken.isBlank()) logger.warn("⚠️ auth.token is not set in sentry.properties")
+if (sentryOrg.isBlank()) logger.warn("⚠️ defaults.org is not set in sentry.properties")
+if (sentryProject.isBlank()) logger.warn("⚠️ defaults.project is not set in sentry.properties")
 
 plugins {
     alias(libs.plugins.jetbrains.kotlin.multiplatform)
@@ -16,6 +35,8 @@ plugins {
     alias(libs.plugins.jetbrains.compose.hotreload)
     alias(libs.plugins.roborazzi)
     alias(libs.plugins.codingfeline.buildkonfig)
+    alias(libs.plugins.sentry.android)
+    alias(libs.plugins.sentry.kmp)
 }
 
 kotlin {
@@ -88,6 +109,7 @@ kotlin {
             dependencies {
                 implementation(project(":core:resources"))
                 implementation(project(":feature:answers"))
+                implementation(project(":feature:errors"))
                 implementation(project(":feature:settings"))
 
                 implementation(compose.components.resources)
@@ -210,6 +232,20 @@ buildkonfig {
     defaultConfigs {
         buildConfigField(STRING, "VERSION_NAME", appVersionName)
         buildConfigField(STRING, "VERSION_CODE", appVersionCode)
+        buildConfigField(STRING, "SENTRY_DSN", sentryDsn)
+    }
+}
+
+sentry {
+    autoInstallation.enabled.set(false)
+    org.set(sentryOrg)
+    projectName.set(sentryProject)
+    authToken.set(sentryAuthToken)
+}
+
+sentryKmp {
+    linker {
+        xcodeprojPath.set(file("../iosApp/iosApp.xcodeproj").absolutePath)
     }
 }
 
