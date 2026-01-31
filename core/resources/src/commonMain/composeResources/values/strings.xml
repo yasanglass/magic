@@ -71,4 +71,9 @@
     <string name="error_name_required">Name is required</string>
     <string name="error_prompt_required">Prompt is required</string>
     <string name="error_answer_empty">Answer cannot be empty</string>
+    <string name="privacy">Privacy</string>
+    <string name="privacy_product_analytics_title">Product Analytics</string>
+    <string name="privacy_product_analytics_description">Help us shape what's coming next</string>
+    <string name="privacy_error_reporting_title">Error Reporting</string>
+    <string name="privacy_error_reporting_description">Help us eliminate crashes and glitches</string>
 </resources>

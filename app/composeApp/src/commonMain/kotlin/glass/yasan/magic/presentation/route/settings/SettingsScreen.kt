@@ -22,6 +22,7 @@ import glass.yasan.magic.core.resources.Res
 import glass.yasan.magic.core.resources.about
 import glass.yasan.magic.core.resources.answer_packs
 import glass.yasan.magic.core.resources.app_name
+import glass.yasan.magic.core.resources.privacy
 import glass.yasan.magic.core.resources.settings
 import glass.yasan.magic.core.resources.style
 import glass.yasan.magic.util.PreviewWithTest
@@ -51,6 +52,7 @@ fun SettingsScreen(
             verticalSpacerItem(height = 12.dp)
             answerPacksButtonItem { navController.navigate(Route.Settings.AnswerPacks) }
             styleButtonItem { navController.navigate(Route.Settings.Style) }
+            privacyButtonItem { navController.navigate(Route.Settings.Privacy) }
             aboutButtonItem { navController.navigate(Route.Settings.About) }
             appIdentityItem()
             developerBannerItem()
@@ -73,6 +75,17 @@ private fun LazyListScope.styleButtonItem(onClick: () -> Unit) {
     item {
         ButtonText(
             text = stringResource(Res.string.style),
+            leadingIcon = null,
+            trailingIcon = Icons.chevronForward,
+            onClick = onClick,
+        )
+    }
+}
+
+private fun LazyListScope.privacyButtonItem(onClick: () -> Unit) {
+    item {
+        ButtonText(
+            text = stringResource(Res.string.privacy),
             leadingIcon = null,
             trailingIcon = Icons.chevronForward,
             onClick = onClick,
