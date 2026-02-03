@@ -10,6 +10,7 @@ import glass.yasan.magic.presentation.route.about.AboutScreen
 import glass.yasan.magic.presentation.route.answerpacks.AnswerPacksScreen
 import glass.yasan.magic.presentation.route.answerpacks.edit.EditAnswerPackScreen
 import glass.yasan.magic.presentation.route.magic.MagicScreen
+import glass.yasan.magic.presentation.route.privacy.PrivacySettingsScreen
 import glass.yasan.magic.presentation.route.settings.SettingsScreen
 import glass.yasan.magic.presentation.route.style.StyleScreen
 
@@ -34,6 +35,9 @@ internal fun NavigationHost(
         }
         composable<Route.Settings.Style> {
             StyleScreen(navController, settings, updateSettings)
+        }
+        composable<Route.Settings.Privacy> {
+            PrivacySettingsScreen(navController, settings, updateSettings)
         }
         composable<Route.Settings.AnswerPacks> {
             AnswerPacksScreen(navController)
