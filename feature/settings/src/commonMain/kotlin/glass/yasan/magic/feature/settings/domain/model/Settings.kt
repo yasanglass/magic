@@ -9,12 +9,16 @@ import org.jetbrains.compose.resources.stringResource
 data class Settings(
     val theme: Theme,
     val activeAnswerPackId: String,
+    val analyticsEnabled: Boolean,
+    val errorReportingEnabled: Boolean,
 ) {
 
     companion object {
         val default: Settings = Settings(
             theme = Theme.SYSTEM,
             activeAnswerPackId = "magic-8-ball",
+            analyticsEnabled = false,
+            errorReportingEnabled = false,
         )
     }
 

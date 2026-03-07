@@ -25,6 +25,9 @@ sealed interface Route {
         data object Style : Route
 
         @Serializable
+        data object Privacy : Route
+
+        @Serializable
         data object About : Route
 
     }

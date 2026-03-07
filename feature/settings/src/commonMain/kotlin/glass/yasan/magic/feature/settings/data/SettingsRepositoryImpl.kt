@@ -3,6 +3,7 @@ package glass.yasan.magic.feature.settings.data
 import co.touchlab.kermit.Logger
 import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.ObservableSettings
+import com.russhwolf.settings.coroutines.getBooleanOrNullFlow
 import com.russhwolf.settings.coroutines.getStringOrNullFlow
 import glass.yasan.magic.feature.settings.domain.model.Settings
 import glass.yasan.magic.feature.settings.domain.repository.SettingsRepository
@@ -25,6 +26,8 @@ internal class SettingsRepositoryImpl(
     private companion object {
         const val KEY_THEME = "theme"
         const val KEY_ANSWER_PACK = "answer_pack"
+        const val KEY_ANALYTICS = "analytics"
+        const val KEY_ERROR_REPORTING = "error_reporting"
     }
 
     private val logger = Logger.withTag("SettingsRepositoryImpl")
@@ -41,13 +44,29 @@ internal class SettingsRepositoryImpl(
             emit(null)
         }
 
+    private val analyticsEnabled: Flow<Boolean?> = observableSettings.getBooleanOrNullFlow(KEY_ANALYTICS)
+        .catch { e ->
+            logger.e(e) { "Failed to read analytics setting" }
+            emit(null)
+        }
+
+    private val errorReportingEnabled: Flow<Boolean?> = observableSettings.getBooleanOrNullFlow(KEY_ERROR_REPORTING)
+        .catch { e ->
+            logger.e(e) { "Failed to read error reporting setting" }
+            emit(null)
+        }
+
     override val settings: Flow<Settings> = combine(
         theme,
         answerPackId,
-    ) { theme, answerPackId ->
+        analyticsEnabled,
+        errorReportingEnabled
+    ) { theme, answerPackId, analyticsEnabled, errorReportingEnabled ->
         mapper.map(
             theme = theme,
             answerPackId = answerPackId,
+            analyticsEnabled = analyticsEnabled,
+            errorReportingEnabled = errorReportingEnabled
         )
     }
 
@@ -62,6 +81,12 @@ internal class SettingsRepositoryImpl(
                 }
                 if (current.activeAnswerPackId != new.activeAnswerPackId) {
                     observableSettings.putString(KEY_ANSWER_PACK, new.activeAnswerPackId)
+                }
+                if (current.analyticsEnabled != new.analyticsEnabled) {
+                    observableSettings.putBoolean(KEY_ANALYTICS, new.analyticsEnabled)
+                }
+                if (current.errorReportingEnabled != new.errorReportingEnabled) {
+                    observableSettings.putBoolean(KEY_ERROR_REPORTING, new.errorReportingEnabled)
                 }
             }
         }
