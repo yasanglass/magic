@@ -35,8 +35,7 @@ kotlin {
 
                 implementation(libs.androidx.lifecycle.viewmodel.compose)
                 implementation(libs.androidx.navigation.compose)
-                implementation(libs.glass.yasan.kepko.component)
-                implementation(libs.glass.yasan.kepko.foundation)
+                implementation(libs.bundles.glass.yasan.kepko)
                 implementation(libs.glass.yasan.toolkit.compose)
                 implementation(libs.koin.compose)
                 implementation(libs.koin.core)

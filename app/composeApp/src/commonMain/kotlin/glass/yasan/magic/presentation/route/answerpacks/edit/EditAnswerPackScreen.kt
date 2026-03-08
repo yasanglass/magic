@@ -373,7 +373,7 @@ private fun AnswerTypeChip(
         Icon(
             painter = Icons.check,
             contentDescription = null,
-            color = contentColor,
+            tint = contentColor,
             modifier = Modifier
                 .padding(all = 4.dp)
                 .padding(horizontal = horizontalPadding)
