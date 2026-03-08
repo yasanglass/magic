@@ -12,18 +12,17 @@ import androidx.navigation.compose.rememberNavController
 import glass.yasan.kepko.component.ButtonText
 import glass.yasan.kepko.component.PreferenceAppIdentity
 import glass.yasan.kepko.component.Scaffold
-import glass.yasan.kepko.foundation.theme.KepkoTheme
+import glass.yasan.kepko.persistence.PreviewPersistentKepkoTheme
 import glass.yasan.kepko.resource.Icons
 import glass.yasan.magic.BuildKonfig
-import glass.yasan.magic.feature.settings.domain.model.Settings
 import glass.yasan.magic.presentation.navigation.Route
-import glass.yasan.magic.presentation.util.SystemBarColorsEffect
 import glass.yasan.magic.core.resources.Res
 import glass.yasan.magic.core.resources.about
 import glass.yasan.magic.core.resources.answer_packs
 import glass.yasan.magic.core.resources.app_name
 import glass.yasan.magic.core.resources.settings
 import glass.yasan.magic.core.resources.style
+import glass.yasan.magic.presentation.util.SystemBarColorsEffect
 import glass.yasan.magic.util.PreviewWithTest
 import glass.yasan.toolkit.about.presentation.compose.ToolkitDeveloperBanner
 import glass.yasan.toolkit.compose.spacer.verticalSpacerItem
@@ -32,13 +31,8 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun SettingsScreen(
     navController: NavHostController,
-    settings: Settings,
 ) {
-    SystemBarColorsEffect(
-        statusBarColor = KepkoTheme.colors.foreground,
-        navigationBarColor = KepkoTheme.colors.midground,
-        darkIcons = !settings.theme.asKepkoThemeStyle().isDark,
-    )
+    SystemBarColorsEffect()
 
     Scaffold(
         title = stringResource(Res.string.settings),
@@ -109,10 +103,9 @@ private fun LazyListScope.appIdentityItem() {
 @PreviewWithTest
 @Composable
 internal fun SettingsScreenPreview() {
-    KepkoTheme {
+    PreviewPersistentKepkoTheme {
         SettingsScreen(
             navController = rememberNavController(),
-            settings = Settings.default,
         )
     }
 }

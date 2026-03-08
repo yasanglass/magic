@@ -31,6 +31,8 @@ import androidx.navigation.NavHostController
 import glass.yasan.kepko.component.Text
 import glass.yasan.kepko.foundation.theme.KepkoTheme
 import glass.yasan.kepko.foundation.theme.ThemeStyle
+import glass.yasan.kepko.persistence.LocalKepkoThemeStyle
+import glass.yasan.kepko.persistence.PreviewPersistentKepkoTheme
 import glass.yasan.magic.feature.answers.domain.model.Answer
 import glass.yasan.magic.feature.answers.domain.model.CustomAnswer
 import glass.yasan.magic.feature.answers.util.preview.PreviewAnswers
@@ -54,14 +56,12 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun MagicScreen(
     navController: NavHostController,
-    settings: Settings,
 ) {
     val viewModel: MagicViewModel = koinViewModel()
     val state by viewModel.viewState.collectAsStateWithLifecycle()
     val sendEvent = rememberSendViewEvent(viewModel)
 
     MagicScreen(
-        settings = settings,
         state = state,
         sendEvent = sendEvent,
     )
@@ -77,12 +77,11 @@ fun MagicScreen(
 
 @Composable
 private fun MagicScreen(
-    settings: Settings,
     state: State,
     sendEvent: (Event) -> Unit,
 ) {
-    val themeStyle = settings.theme.asKepkoThemeStyle()
-    val (backgroundColor, contentColor) = state.resolveColors(themeStyle)
+    val kepkoThemeStyle = LocalKepkoThemeStyle.current
+    val (backgroundColor, contentColor) = state.resolveColors(kepkoThemeStyle)
     val animatedBackgroundColor by animateColorAsState(backgroundColor, tween(500))
     val animatedContentColor by animateColorAsState(contentColor, tween(500))
     val tipAlpha by animateFloatAsState(if (state.showAdditionalContent) 1f else 0f)
@@ -187,7 +186,7 @@ private fun State?.resolveColors(
 internal fun MagicScreenSuccessLightPreview() {
     PreviewContent(
         answer = PreviewAnswers.successAnswer,
-        theme = LIGHT,
+        themeStyle = LIGHT,
     )
 }
 
@@ -196,7 +195,7 @@ internal fun MagicScreenSuccessLightPreview() {
 internal fun MagicScreenSuccessDarkPreview() {
     PreviewContent(
         answer = PreviewAnswers.successAnswer,
-        theme = DARK,
+        themeStyle = DARK,
     )
 }
 
@@ -205,7 +204,7 @@ internal fun MagicScreenSuccessDarkPreview() {
 internal fun MagicScreenCautionLightPreview() {
     PreviewContent(
         answer = PreviewAnswers.cautionAnswer,
-        theme = LIGHT,
+        themeStyle = LIGHT,
     )
 }
 
@@ -214,7 +213,7 @@ internal fun MagicScreenCautionLightPreview() {
 internal fun MagicScreenCautionDarkPreview() {
     PreviewContent(
         answer = PreviewAnswers.cautionAnswer,
-        theme = DARK,
+        themeStyle = DARK,
     )
 }
 
@@ -223,7 +222,7 @@ internal fun MagicScreenCautionDarkPreview() {
 internal fun MagicScreenDangerLightPreview() {
     PreviewContent(
         answer = PreviewAnswers.dangerAnswer,
-        theme = LIGHT,
+        themeStyle = LIGHT,
     )
 }
 
@@ -232,7 +231,7 @@ internal fun MagicScreenDangerLightPreview() {
 internal fun MagicScreenDangerDarkPreview() {
     PreviewContent(
         answer = PreviewAnswers.dangerAnswer,
-        theme = DARK,
+        themeStyle = DARK,
     )
 }
 
@@ -241,7 +240,7 @@ internal fun MagicScreenDangerDarkPreview() {
 internal fun MagicScreenInfoLightPreview() {
     PreviewContent(
         answer = PreviewAnswers.infoAnswer,
-        theme = LIGHT,
+        themeStyle = LIGHT,
     )
 }
 
@@ -250,17 +249,17 @@ internal fun MagicScreenInfoLightPreview() {
 internal fun MagicScreenInfoDarkPreview() {
     PreviewContent(
         answer = PreviewAnswers.infoAnswer,
-        theme = DARK,
+        themeStyle = DARK,
     )
 }
 
 @Composable
 private fun PreviewContent(
     answer: Answer,
-    theme: Settings.Theme,
+    themeStyle: ThemeStyle,
 ) {
-    KepkoTheme(
-        style = theme.asKepkoThemeStyle(),
+    PreviewPersistentKepkoTheme(
+        configure = { stylePrimary = themeStyle },
     ) {
         MagicScreen(
             state = State(
@@ -268,9 +267,6 @@ private fun PreviewContent(
                 isLoading = false
             ),
             sendEvent = {},
-            settings = Settings.default.copy(
-                theme = theme,
-            ),
         )
     }
 }
@@ -278,12 +274,11 @@ private fun PreviewContent(
 @PreviewWithTest
 @Composable
 internal fun MagicScreenColorMatrixPreview() {
-    val themes = Settings.Theme.entries.filterNot { it == SYSTEM }
-
     Column {
-        themes.forEach { theme ->
-            val themeStyle = theme.asKepkoThemeStyle()
-            KepkoTheme(style = themeStyle) {
+        ThemeStyle.entries.forEach { themeStyle ->
+            PreviewPersistentKepkoTheme(
+                configure = { stylePrimary = themeStyle },
+            ) {
                 Row {
                     Answer.Type.entries.forEach { type ->
                         val answer = CustomAnswer(
