@@ -26,6 +26,9 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
 
+      - name: Check Yarn Lock
+        run: ./gradlew kotlinUpgradeYarnLock && git diff --exit-code kotlin-js-store/
+
       - name: Build Debug App
         run: ./gradlew :app:composeApp:jsBrowserDevelopmentExecutableDistribution
 
