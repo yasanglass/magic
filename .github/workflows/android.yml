@@ -30,7 +30,7 @@ jobs:
         run: ./gradlew assembleDebug
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: artifacts
           path: |
@@ -66,7 +66,7 @@ jobs:
         run: ./gradlew koverXmlReport koverHtmlReport
 
       - name: Upload Coverage Report
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-report-android
           path: |
