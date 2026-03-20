@@ -82,7 +82,7 @@ class MagicViewModel(
             copy(isLoading = true)
         }
 
-        delay(500)
+        delay(200)
 
         val newAnswer = getNewAnswer()
         updateViewState {
