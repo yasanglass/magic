@@ -88,6 +88,7 @@ private fun MagicScreen(
 
     SystemBarColorsEffect(
         statusBarColor = animatedBackgroundColor,
+        navigationBarColor = animatedBackgroundColor,
         darkIcons = !animatedBackgroundColor.isDark(),
     )
 
