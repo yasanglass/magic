@@ -8,8 +8,6 @@ import glass.yasan.magic.presentation.navigation.NavigationHost
 @Composable
 fun App() {
     PersistentKepkoTheme {
-        NavigationHost(
-            navController = rememberNavController(),
-        )
+        NavigationHost()
     }
 }
