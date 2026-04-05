@@ -18,8 +18,3 @@
 # Suppress common warnings
 -dontwarn org.slf4j.**
 -dontwarn javax.annotation.**
-
-# Sentry - keep classes for proper stack traces
--keep class io.sentry.** { *; }
--keepnames class io.sentry.** { *; }
--dontwarn io.sentry.**
