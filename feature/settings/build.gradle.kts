@@ -27,16 +27,15 @@ kotlin {
             dependencies {
                 implementation(project(":core:resources"))
 
-                implementation(compose.components.resources)
-                implementation(compose.foundation)
-                implementation(compose.material3)
-                implementation(compose.runtime)
-                implementation(compose.ui)
-
                 implementation(libs.androidx.lifecycle.viewmodel.compose)
                 implementation(libs.androidx.navigation.compose)
                 implementation(libs.bundles.glass.yasan.kepko)
                 implementation(libs.glass.yasan.toolkit.compose)
+                implementation(libs.jetbrains.compose.components.resources)
+                implementation(libs.jetbrains.compose.foundation)
+                implementation(libs.jetbrains.compose.material3)
+                implementation(libs.jetbrains.compose.runtime)
+                implementation(libs.jetbrains.compose.ui)
                 implementation(libs.koin.compose)
                 implementation(libs.koin.core)
                 implementation(libs.russhwolf.multiplatform.settings)

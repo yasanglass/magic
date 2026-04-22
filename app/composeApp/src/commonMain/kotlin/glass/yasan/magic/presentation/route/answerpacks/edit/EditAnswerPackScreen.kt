@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -36,9 +35,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import glass.yasan.kepko.component.ButtonText
 import glass.yasan.kepko.component.Icon
+import glass.yasan.kepko.component.IconButton
 import glass.yasan.kepko.component.Scaffold
 import glass.yasan.kepko.component.Text
 import glass.yasan.kepko.component.TextField
+import glass.yasan.kepko.foundation.annotation.ExperimentalKepkoApi
+import glass.yasan.kepko.foundation.color.contentColorFor
 import glass.yasan.kepko.foundation.theme.KepkoTheme
 import glass.yasan.kepko.resource.Icons
 import glass.yasan.magic.core.resources.Res
@@ -62,7 +64,6 @@ import glass.yasan.magic.presentation.route.answerpacks.edit.EditAnswerPacksView
 import glass.yasan.magic.presentation.route.answerpacks.edit.EditAnswerPacksViewModel.State
 import glass.yasan.magic.util.PreviewWithTest
 import glass.yasan.toolkit.compose.viewmodel.ViewActionEffect
-import glass.yasan.toolkit.compose.color.toContentColor
 import glass.yasan.toolkit.compose.spacer.verticalSpacerItem
 import glass.yasan.toolkit.compose.viewmodel.rememberSendViewEvent
 import org.jetbrains.compose.resources.stringResource
@@ -225,6 +226,7 @@ private fun BottomBar(
     }
 }
 
+@OptIn(ExperimentalKepkoApi::class)
 @Composable
 private fun NameTextField(
     name: String,
@@ -250,6 +252,7 @@ private fun NameTextField(
     }
 }
 
+@OptIn(ExperimentalKepkoApi::class)
 @Composable
 private fun PromptTextField(
     prompt: String,
@@ -290,16 +293,11 @@ private fun AnswersHeader(
                 count = answerCount,
                 modifier = Modifier.weight(1f).padding(horizontal = 16.dp),
             )
-            Icon(
+            IconButton(
                 painter = Icons.add,
                 contentDescription = null,
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .clickable(
-                        enabled = enabled,
-                        onClick = { sendEvent(Event.OnNewAnswerClick) },
-                    )
-                    .padding(16.dp),
+                enabled = enabled,
+                onClick = { sendEvent(Event.OnNewAnswerClick) },
             )
         }
     }
@@ -360,13 +358,13 @@ private fun AnswerTypeChip(
     onClick: () -> Unit,
 ) {
     val containerColor = if (enabled) type.resolveColor() else KepkoTheme.colors.contentDisabled
-    val contentColor = containerColor.toContentColor()
+    val contentColor = contentColorFor(containerColor)
     val alpha by animateFloatAsState(if (isSelected) 1f else 0f)
     val horizontalPadding by animateDpAsState(if (isSelected) 16.dp else 0.dp)
 
     Box(
         modifier = Modifier
-            .clip(CircleShape)
+            .clip(KepkoTheme.shapes.extraLarge)
             .clickable(enabled = enabled, onClick = onClick)
             .background(containerColor),
     ) {
@@ -404,6 +402,7 @@ private fun AnswerTypeSelector(
     }
 }
 
+@OptIn(ExperimentalKepkoApi::class)
 @Composable
 private fun AnswerItem(
     answer: CustomAnswer,
@@ -433,16 +432,10 @@ private fun AnswerItem(
                     enter = expandHorizontally(),
                     exit = shrinkHorizontally(),
                 ) {
-                    Icon(
+                    IconButton(
                         painter = Icons.delete,
                         contentDescription = null,
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .clickable(
-                                enabled = enabled,
-                                onClick = { sendEvent(Event.OnAnswerDeleteClick(answerId = answer.id)) },
-                            )
-                            .padding(16.dp),
+                        onClick = { sendEvent(Event.OnAnswerDeleteClick(answerId = answer.id)) },
                     )
                 }
             }

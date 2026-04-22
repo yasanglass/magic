@@ -1,26 +1,23 @@
 package glass.yasan.magic.presentation.route.answerpacks
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import glass.yasan.kepko.component.ButtonText
-import glass.yasan.kepko.component.Icon
+import glass.yasan.kepko.component.IconButton
 import glass.yasan.kepko.component.Midground
 import glass.yasan.kepko.component.PreferenceRadioButton
 import glass.yasan.kepko.component.Scaffold
+import glass.yasan.kepko.foundation.annotation.ExperimentalKepkoApi
 import glass.yasan.kepko.foundation.theme.KepkoTheme
 import glass.yasan.kepko.resource.Icons
 import glass.yasan.magic.core.resources.Res
@@ -143,20 +140,16 @@ private fun AnswerPackItem(
             modifier = Modifier.weight(1f),
         )
         if (pack.isEditable) {
-            Icon(
+            IconButton(
                 painter = Icons.edit,
                 contentDescription = null,
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .clickable(
-                        onClick = onEditClick,
-                    )
-                    .padding(16.dp),
+                onClick = onEditClick,
             )
         }
     }
 }
 
+@OptIn(ExperimentalKepkoApi::class)
 @PreviewWithTest
 @Composable
 internal fun AnswerPackItemPreview() {

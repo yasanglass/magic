@@ -29,14 +29,15 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import glass.yasan.kepko.component.Text
+import glass.yasan.kepko.foundation.color.contentColorFor
+import glass.yasan.kepko.foundation.color.isDark
+import glass.yasan.kepko.foundation.theme.ColorPalette
 import glass.yasan.kepko.foundation.theme.KepkoTheme
-import glass.yasan.kepko.foundation.theme.ThemeStyle
-import glass.yasan.kepko.persistence.LocalKepkoThemeStyle
+import glass.yasan.kepko.persistence.LocalKepkoColorPalette
 import glass.yasan.kepko.persistence.PreviewPersistentKepkoTheme
 import glass.yasan.magic.feature.answers.domain.model.Answer
 import glass.yasan.magic.feature.answers.domain.model.CustomAnswer
 import glass.yasan.magic.feature.answers.util.preview.PreviewAnswers
-import glass.yasan.magic.feature.settings.domain.model.Settings
 import glass.yasan.magic.presentation.navigation.Route
 import glass.yasan.magic.presentation.route.magic.MagicViewModel.Action.NavigateToSettings
 import glass.yasan.magic.presentation.route.magic.MagicViewModel.Event
@@ -46,8 +47,6 @@ import glass.yasan.magic.core.resources.Res
 import glass.yasan.magic.core.resources.long_click_for_settings
 import glass.yasan.magic.core.resources.open_settings
 import glass.yasan.magic.util.PreviewWithTest
-import glass.yasan.toolkit.compose.color.isDark
-import glass.yasan.toolkit.compose.color.toContentColor
 import glass.yasan.toolkit.compose.viewmodel.ViewActionEffect
 import glass.yasan.toolkit.compose.viewmodel.rememberSendViewEvent
 import org.jetbrains.compose.resources.stringResource
@@ -80,8 +79,8 @@ private fun MagicScreen(
     state: State,
     sendEvent: (Event) -> Unit,
 ) {
-    val kepkoThemeStyle = LocalKepkoThemeStyle.current
-    val (backgroundColor, contentColor) = state.resolveColors(kepkoThemeStyle)
+    val colorPalette = LocalKepkoColorPalette.current
+    val (backgroundColor, contentColor) = state.resolveColors(colorPalette)
     val animatedBackgroundColor by animateColorAsState(backgroundColor, tween(500))
     val animatedContentColor by animateColorAsState(contentColor, tween(500))
     val tipAlpha by animateFloatAsState(if (state.showAdditionalContent) 1f else 0f)
@@ -166,7 +165,7 @@ private fun Tip(
 
 @Composable
 private fun State?.resolveColors(
-    themeStyle: ThemeStyle,
+    colorPalette: ColorPalette,
 ): Pair<Color, Color> {
     if (this == null) return KepkoTheme.colors.content to KepkoTheme.colors.midground
 
@@ -176,8 +175,8 @@ private fun State?.resolveColors(
         answer?.type?.resolveColor() ?: KepkoTheme.colors.content
     }
 
-    val backgroundColor = if (themeStyle.isDark) KepkoTheme.colors.midground else typeColor
-    val contentColor = if (themeStyle.isDark) typeColor else backgroundColor.toContentColor()
+    val backgroundColor = if (colorPalette.isDark) KepkoTheme.colors.midground else typeColor
+    val contentColor = if (colorPalette.isDark) typeColor else contentColorFor(backgroundColor)
 
     return backgroundColor to contentColor
 }
@@ -187,7 +186,7 @@ private fun State?.resolveColors(
 internal fun MagicScreenSuccessLightPreview() {
     PreviewContent(
         answer = PreviewAnswers.successAnswer,
-        themeStyle = LIGHT,
+        colorPalette = LIGHT,
     )
 }
 
@@ -196,7 +195,7 @@ internal fun MagicScreenSuccessLightPreview() {
 internal fun MagicScreenSuccessDarkPreview() {
     PreviewContent(
         answer = PreviewAnswers.successAnswer,
-        themeStyle = DARK,
+        colorPalette = DARK,
     )
 }
 
@@ -205,7 +204,7 @@ internal fun MagicScreenSuccessDarkPreview() {
 internal fun MagicScreenCautionLightPreview() {
     PreviewContent(
         answer = PreviewAnswers.cautionAnswer,
-        themeStyle = LIGHT,
+        colorPalette = LIGHT,
     )
 }
 
@@ -214,7 +213,7 @@ internal fun MagicScreenCautionLightPreview() {
 internal fun MagicScreenCautionDarkPreview() {
     PreviewContent(
         answer = PreviewAnswers.cautionAnswer,
-        themeStyle = DARK,
+        colorPalette = DARK,
     )
 }
 
@@ -223,7 +222,7 @@ internal fun MagicScreenCautionDarkPreview() {
 internal fun MagicScreenDangerLightPreview() {
     PreviewContent(
         answer = PreviewAnswers.dangerAnswer,
-        themeStyle = LIGHT,
+        colorPalette = LIGHT,
     )
 }
 
@@ -232,7 +231,7 @@ internal fun MagicScreenDangerLightPreview() {
 internal fun MagicScreenDangerDarkPreview() {
     PreviewContent(
         answer = PreviewAnswers.dangerAnswer,
-        themeStyle = DARK,
+        colorPalette = DARK,
     )
 }
 
@@ -241,7 +240,7 @@ internal fun MagicScreenDangerDarkPreview() {
 internal fun MagicScreenInfoLightPreview() {
     PreviewContent(
         answer = PreviewAnswers.infoAnswer,
-        themeStyle = LIGHT,
+        colorPalette = LIGHT,
     )
 }
 
@@ -250,17 +249,17 @@ internal fun MagicScreenInfoLightPreview() {
 internal fun MagicScreenInfoDarkPreview() {
     PreviewContent(
         answer = PreviewAnswers.infoAnswer,
-        themeStyle = DARK,
+        colorPalette = DARK,
     )
 }
 
 @Composable
 private fun PreviewContent(
     answer: Answer,
-    themeStyle: ThemeStyle,
+    colorPalette: ColorPalette,
 ) {
     PreviewPersistentKepkoTheme(
-        configure = { stylePrimary = themeStyle },
+        configure = { palettePrimary = colorPalette },
     ) {
         MagicScreen(
             state = State(
@@ -276,9 +275,9 @@ private fun PreviewContent(
 @Composable
 internal fun MagicScreenColorMatrixPreview() {
     Column {
-        ThemeStyle.entries.forEach { themeStyle ->
+        ColorPalette.entries.forEach { colorPalette ->
             PreviewPersistentKepkoTheme(
-                configure = { stylePrimary = themeStyle },
+                configure = { palettePrimary = colorPalette },
             ) {
                 Row {
                     Answer.Type.entries.forEach { type ->
@@ -287,7 +286,7 @@ internal fun MagicScreenColorMatrixPreview() {
                             type = type
                         )
                         val state = State(answer = answer)
-                        val (backgroundColor, contentColor) = state.resolveColors(themeStyle)
+                        val (backgroundColor, contentColor) = state.resolveColors(colorPalette)
 
                         Box(
                             contentAlignment = Alignment.Center,

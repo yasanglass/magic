@@ -1,11 +1,11 @@
 package glass.yasan.magic.presentation.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import glass.yasan.kepko.foundation.annotation.ExperimentalKepkoApi
 import glass.yasan.kepko.persistence.PersistentPreferenceThemeScreen
 import glass.yasan.magic.presentation.route.about.AboutScreen
 import glass.yasan.magic.presentation.route.answerpacks.AnswerPacksScreen
@@ -13,6 +13,7 @@ import glass.yasan.magic.presentation.route.answerpacks.edit.EditAnswerPackScree
 import glass.yasan.magic.presentation.route.magic.MagicScreen
 import glass.yasan.magic.presentation.route.settings.SettingsScreen
 
+@OptIn(ExperimentalKepkoApi::class)
 @Composable
 internal fun NavigationHost() {
     val navController = rememberNavController()

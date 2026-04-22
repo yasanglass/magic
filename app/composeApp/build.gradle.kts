@@ -1,6 +1,6 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
-import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -13,7 +13,6 @@ plugins {
     alias(libs.plugins.jetbrains.compose)
     alias(libs.plugins.jetbrains.kotlin.compose)
     alias(libs.plugins.jetbrains.kotlin.serialization)
-    alias(libs.plugins.jetbrains.compose.hotreload)
     alias(libs.plugins.roborazzi)
     alias(libs.plugins.codingfeline.buildkonfig)
 }
@@ -21,6 +20,16 @@ plugins {
 kotlin {
     compilerOptions {
         freeCompilerArgs.add("-Xcontext-sensitive-resolution")
+    }
+
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    applyDefaultHierarchyTemplate {
+        common {
+            group("web") {
+                withJs()
+                withWasmJs()
+            }
+        }
     }
 
     androidTarget {
@@ -63,39 +72,11 @@ kotlin {
     }
 
     sourceSets {
-        val webMain by creating {
-            dependsOn(commonMain.get())
-        }
-        jsMain {
-            dependsOn(webMain)
-        }
-        wasmJsMain {
-            dependsOn(webMain)
-        }
-        val iosMain by creating {
-            dependsOn(commonMain.get())
-        }
-        iosX64Main {
-            dependsOn(iosMain)
-        }
-        iosArm64Main {
-            dependsOn(iosMain)
-        }
-        iosSimulatorArm64Main {
-            dependsOn(iosMain)
-        }
         commonMain {
             dependencies {
                 implementation(project(":core:resources"))
                 implementation(project(":feature:answers"))
                 implementation(project(":feature:settings"))
-
-                implementation(compose.components.resources)
-                implementation(compose.components.uiToolingPreview)
-                implementation(compose.foundation)
-                implementation(compose.material3)
-                implementation(compose.runtime)
-                implementation(compose.ui)
 
                 implementation(libs.androidx.lifecycle.runtime.compose)
                 implementation(libs.androidx.lifecycle.viewmodel.compose)
@@ -105,10 +86,17 @@ kotlin {
                 implementation(libs.glass.yasan.toolkit.compose)
                 implementation(libs.glass.yasan.toolkit.core)
                 implementation(libs.glass.yasan.toolkit.koin)
+                implementation(libs.jetbrains.compose.components.resources)
+                implementation(libs.jetbrains.compose.foundation)
+                implementation(libs.jetbrains.compose.material3)
+                implementation(libs.jetbrains.compose.runtime)
+                implementation(libs.jetbrains.compose.ui)
+                implementation(libs.jetbrains.compose.ui.tooling.preview)
                 implementation(libs.jetbrains.kotlinx.serialization.core)
                 implementation(libs.koin.compose)
                 implementation(libs.koin.compose.viewmodel)
                 implementation(libs.koin.core)
+                implementation(libs.koin.core.annotations)
                 implementation(libs.touchlab.kermit)
             }
         }
@@ -131,13 +119,11 @@ kotlin {
                 implementation(libs.koin.test)
                 implementation(kotlin("reflect"))
                 implementation(kotlin("test"))
-                @OptIn(ExperimentalComposeLibrary::class)
-                implementation(compose.uiTest)
+                implementation(libs.jetbrains.compose.ui.test)
             }
         }
         androidMain {
             dependencies {
-                implementation(compose.preview)
                 implementation(libs.androidx.activity.compose)
                 implementation(libs.koin.android)
             }
@@ -178,7 +164,7 @@ android {
 }
 
 dependencies {
-    debugImplementation(compose.uiTooling)
+    debugImplementation(libs.jetbrains.compose.ui.tooling)
 }
 
 compose.desktop {

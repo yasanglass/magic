@@ -24,7 +24,11 @@ fun AboutScreen(
         LazyColumn(
             modifier = Modifier.padding(contentPadding),
         ) {
-            item { ToolkitDeveloperContent() }
+            item {
+                ToolkitDeveloperContent(
+                    onTrackDeveloperLinkClick = {},
+                )
+            }
             verticalSpacerItem(height = 32.dp)
         }
     }

@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -14,6 +15,21 @@ kotlin {
 
     compilerOptions {
         freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
+
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    applyDefaultHierarchyTemplate {
+        common {
+            group("nonWeb") {
+                withAndroidTarget()
+                withJvm()
+                withApple()
+            }
+            group("web") {
+                withJs()
+                withWasmJs()
+            }
+        }
     }
 
     androidTarget {
@@ -34,16 +50,15 @@ kotlin {
             dependencies {
                 implementation(project(":core:resources"))
 
-                implementation(compose.components.resources)
-                implementation(compose.foundation)
-                implementation(compose.material3)
-                implementation(compose.runtime)
-                implementation(compose.ui)
-
                 implementation(libs.androidx.lifecycle.viewmodel.compose)
                 implementation(libs.androidx.navigation.compose)
                 implementation(libs.bundles.glass.yasan.kepko)
                 implementation(libs.glass.yasan.toolkit.compose)
+                implementation(libs.jetbrains.compose.components.resources)
+                implementation(libs.jetbrains.compose.foundation)
+                implementation(libs.jetbrains.compose.material3)
+                implementation(libs.jetbrains.compose.runtime)
+                implementation(libs.jetbrains.compose.ui)
                 implementation(libs.jetbrains.kotlinx.collections.immutable)
                 implementation(libs.koin.compose)
                 implementation(libs.koin.core)
@@ -52,39 +67,26 @@ kotlin {
             }
         }
 
-        val nonWebMain by creating {
-            dependsOn(commonMain.get())
+        val nonWebMain by getting {
             dependencies {
                 implementation(libs.sqldelight.runtime)
                 implementation(libs.sqldelight.coroutines.extensions)
             }
         }
 
-        val iosMain by creating {
-            dependsOn(nonWebMain)
+        iosMain {
             dependencies {
                 implementation(libs.sqldelight.native.driver)
             }
         }
-        iosX64Main {
-            dependsOn(iosMain)
-        }
-        iosArm64Main {
-            dependsOn(iosMain)
-        }
-        iosSimulatorArm64Main {
-            dependsOn(iosMain)
-        }
 
         androidMain {
-            dependsOn(nonWebMain)
             dependencies {
                 implementation(libs.sqldelight.android.driver)
             }
         }
 
         jvmMain {
-            dependsOn(nonWebMain)
             dependencies {
                 implementation(libs.sqldelight.sqlite.driver)
             }
@@ -96,18 +98,6 @@ kotlin {
                 implementation(libs.jetbrains.kotlinx.coroutines.test)
                 implementation(libs.sqldelight.sqlite.driver)
             }
-        }
-
-        val webMain by creating {
-            dependsOn(commonMain.get())
-        }
-
-        jsMain {
-            dependsOn(webMain)
-        }
-
-        wasmJsMain {
-            dependsOn(webMain)
         }
     }
 }

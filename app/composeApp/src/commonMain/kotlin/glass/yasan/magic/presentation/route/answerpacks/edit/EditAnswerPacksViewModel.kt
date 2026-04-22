@@ -1,6 +1,7 @@
 package glass.yasan.magic.presentation.route.answerpacks.edit
 
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import glass.yasan.magic.feature.answers.domain.model.Answer
 import glass.yasan.magic.feature.answers.domain.model.CustomAnswer
 import glass.yasan.magic.feature.answers.domain.model.CustomAnswerPack
@@ -14,6 +15,7 @@ import glass.yasan.toolkit.compose.viewmodel.ViewEvent
 import glass.yasan.toolkit.compose.viewmodel.ViewState
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
+import org.koin.core.annotation.InjectedParam
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentListOf
@@ -26,7 +28,7 @@ import kotlinx.coroutines.sync.Mutex
 
 @OptIn(ExperimentalUuidApi::class)
 internal class EditAnswerPacksViewModel(
-    private val answerPackId: String?,
+    @InjectedParam private val answerPackId: String?,
     private val builtInAnswerPackProvider: BuiltInAnswerPackProvider,
     private val customAnswerPackRepository: CustomAnswerPackRepository,
     private val settingsRepository: SettingsRepository,
@@ -35,6 +37,8 @@ internal class EditAnswerPacksViewModel(
         EditAnswerPacksViewModel.Event,
         EditAnswerPacksViewModel.Action,
         >() {
+
+    private val logger: Logger = Logger.withTag("EditAnswerPacksViewModel")
 
     private val operationMutex = Mutex()
 
