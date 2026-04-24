@@ -147,14 +147,64 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    flavorDimensions += "channel"
+    productFlavors {
+        create("local") {
+            dimension = "channel"
+            isDefault = true
+        }
+        create("internal") {
+            dimension = "channel"
+        }
+    }
+    signingConfigs {
+        val debugKeystore = rootProject.file("keystores/debug.jks")
+        if (debugKeystore.exists()) {
+            getByName("debug") {
+                storeFile = debugKeystore
+                storePassword = "android"
+                keyAlias = "androiddebugkey"
+                keyPassword = "android"
+            }
+        } else {
+            println("⚠️  keystores/debug.jks not found")
+        }
+        val releaseKeystore = rootProject.file("keystores/release.jks")
+        if (releaseKeystore.exists()) {
+            val releaseStorePassword = System.getenv("MAGIC_RELEASE_STORE_PASSWORD")
+            val releaseKeyAlias = System.getenv("MAGIC_RELEASE_KEY_ALIAS")
+            val releaseKeyPassword = System.getenv("MAGIC_RELEASE_KEY_PASSWORD")
+            require(
+                !releaseStorePassword.isNullOrBlank() &&
+                    !releaseKeyAlias.isNullOrBlank() &&
+                    !releaseKeyPassword.isNullOrBlank()
+            ) {
+                "Release keystore present but MAGIC_RELEASE_STORE_PASSWORD / " +
+                    "MAGIC_RELEASE_KEY_ALIAS / MAGIC_RELEASE_KEY_PASSWORD env vars are not all set."
+            }
+            create("release") {
+                storeFile = releaseKeystore
+                storePassword = releaseStorePassword
+                keyAlias = releaseKeyAlias
+                keyPassword = releaseKeyPassword
+            }
+        } else {
+            println("⚠️  keystores/release.jks not found")
+        }
+    }
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
+            signingConfig = signingConfigs.findByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        getByName("debug") {
+            applicationIdSuffix = ".debug"
+            signingConfig = signingConfigs.findByName("debug")
         }
     }
     compileOptions {

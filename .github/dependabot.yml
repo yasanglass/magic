@@ -35,3 +35,16 @@ updates:
   open-pull-requests-limit: 3
   assignees:
     - "yasanglass"
+
+- package-ecosystem: "bundler"
+  directory: "/"
+  schedule:
+    interval: monthly
+    timezone: "Europe/Prague"
+  rebase-strategy: disabled
+  labels:
+    - 'ruby'
+    - 'dependencies'
+  open-pull-requests-limit: 3
+  assignees:
+    - "yasanglass"

@@ -1,0 +1,66 @@
+name: Manual Internal Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      force_release:
+        description: 'Force release without changes'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: manual-internal-release
+  cancel-in-progress: false
+
+jobs:
+  check-changes:
+    name: Check for Changes
+    runs-on: ubuntu-latest
+    outputs:
+      should_release: ${{ steps.check_changes.outputs.should_release }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          ref: main
+
+      - name: Check for changes since last internal tag
+        id: check_changes
+        run: |
+          LAST_TAG=$(git for-each-ref --sort=-creatordate --format='%(refname:short)' refs/tags | grep -E '^.*-.*-internal$' | head -n 1)
+
+          if [ -z "$LAST_TAG" ]; then
+            echo "No previous internal tag found, proceeding with release"
+            echo "should_release=true" >> $GITHUB_OUTPUT
+          elif [ "${{ inputs.force_release }}" = "true" ]; then
+            echo "Force release enabled, proceeding with release"
+            echo "should_release=true" >> $GITHUB_OUTPUT
+          else
+            COMMIT_COUNT=$(git rev-list --count $LAST_TAG..HEAD --invert-grep --grep="^Bump version to")
+
+            if [ "$COMMIT_COUNT" -eq 0 ]; then
+              echo "No changes since last internal tag ($LAST_TAG), excluding version bumps"
+              echo "Use 'Force release' option to release anyway"
+              echo "should_release=false" >> $GITHUB_OUTPUT
+            else
+              echo "Found $COMMIT_COUNT new commit(s) since last internal tag, proceeding with release"
+              echo "should_release=true" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+  version-bump:
+    name: Bump Version
+    needs: check-changes
+    if: needs.check-changes.outputs.should_release == 'true'
+    uses: ./.github/workflows/version-bump.yml
+    with:
+      source: manual
+      flavor: internal
+    secrets:
+      PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+    permissions:
+      contents: write

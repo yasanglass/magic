@@ -1,0 +1,210 @@
+name: Internal Release
+
+on:
+  push:
+    tags:
+      - '*-*-internal'
+
+concurrency:
+  group: internal-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          submodules: true
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: zulu
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Run Lint
+        run: ./gradlew lint
+
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          submodules: true
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: zulu
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Run Unit Tests
+        run: ./gradlew :app:composeApp:testLocalDebugUnitTest
+
+  build-artifacts:
+    name: Build Artifacts
+    runs-on: ubuntu-latest
+    needs: [lint, unit-tests]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          submodules: true
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: zulu
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Create keystore
+        env:
+          RELEASE_KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
+        run: |
+          mkdir -p keystores
+          if [ -z "$RELEASE_KEYSTORE_BASE64" ]; then
+            echo "::error::RELEASE_KEYSTORE_BASE64 is required for release builds"
+            exit 1
+          else
+            printf '%s' "$RELEASE_KEYSTORE_BASE64" | base64 -d > keystores/release.jks
+            echo "Keystore file created successfully"
+          fi
+
+      - name: Assemble
+        env:
+          MAGIC_RELEASE_STORE_PASSWORD: ${{ secrets.MAGIC_RELEASE_STORE_PASSWORD }}
+          MAGIC_RELEASE_KEY_ALIAS: ${{ secrets.MAGIC_RELEASE_KEY_ALIAS }}
+          MAGIC_RELEASE_KEY_PASSWORD: ${{ secrets.MAGIC_RELEASE_KEY_PASSWORD }}
+        run: ./gradlew :app:composeApp:assembleInternalRelease :app:composeApp:bundleInternalRelease
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: internal-release-artifacts
+          if-no-files-found: error
+          path: |
+            app/composeApp/build/outputs/bundle/internalRelease/composeApp-internal-release.aab
+            app/composeApp/build/outputs/apk/internal/release/composeApp-internal-release.apk
+
+      - name: Cleanup
+        if: always()
+        run: rm -f keystores/release.jks
+
+  internal-release:
+    name: Publish Internal
+    runs-on: ubuntu-latest
+    needs: [build-artifacts]
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: internal-release-artifacts
+
+      - name: Prepare artifacts
+        run: |
+          set -e
+          AAB_SRC="bundle/internalRelease/composeApp-internal-release.aab"
+          APK_SRC="apk/internal/release/composeApp-internal-release.apk"
+          if [ ! -f "$AAB_SRC" ] || [ ! -f "$APK_SRC" ]; then
+            echo "::error::Release artifacts were not found after download"
+            find . -name "*.aab" -o -name "*.apk" | head -20
+            exit 1
+          fi
+          cp "$AAB_SRC" composeApp-internal-release.aab
+          cp "$APK_SRC" composeApp-internal-release.apk
+
+      - name: Version info
+        id: version
+        run: |
+          VERSION_NAME=$(grep "^appVersionName=" gradle.properties | cut -d'=' -f2)
+          VERSION_CODE=$(grep "^appVersionCode=" gradle.properties | cut -d'=' -f2)
+          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "version_code=$VERSION_CODE" >> $GITHUB_OUTPUT
+          echo "tag_name=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          echo "Release version: $VERSION_NAME ($VERSION_CODE) - Tag: ${{ github.ref_name }}"
+
+      - name: Create Play key
+        env:
+          PLAY_STORE_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_STORE_SERVICE_ACCOUNT_JSON }}
+        run: |
+          if [ -z "$PLAY_STORE_SERVICE_ACCOUNT_JSON" ]; then
+            echo "::error::PLAY_STORE_SERVICE_ACCOUNT_JSON is required for Play Store upload"
+            exit 1
+          else
+            printf '%s' "$PLAY_STORE_SERVICE_ACCOUNT_JSON" > fastlane.json
+            echo "Service account key created successfully"
+          fi
+
+      - name: Upload Play
+        env:
+          SUPPLY_JSON_KEY: ./fastlane.json
+        run: bundle exec fastlane internal aab:$GITHUB_WORKSPACE/composeApp-internal-release.aab apk:$GITHUB_WORKSPACE/composeApp-internal-release.apk
+
+      - name: GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${{ steps.version.outputs.tag_name }}"
+          FLAVOR="internal"
+
+          PREVIOUS_TAG=$(git for-each-ref --sort=-creatordate --format='%(refname:short)' refs/tags | grep -E "^.*-.*-${FLAVOR}$" | grep -vx "$TAG" | head -n 1)
+
+          if [ -n "$PREVIOUS_TAG" ]; then
+            BODY="**Changelog:** https://github.com/${{ github.repository }}/compare/${PREVIOUS_TAG}...${TAG}"
+          else
+            BODY="Initial ${FLAVOR} release."
+          fi
+
+          TITLE=$(echo "$TAG" | sed 's/-internal$//' | sed 's/$/ (Internal)/')
+          VERSION_NAME="${{ steps.version.outputs.version_name }}"
+          VERSION_CODE="${{ steps.version.outputs.version_code }}"
+          BASE_NAME="magic-${VERSION_NAME}.${VERSION_CODE}-internal"
+
+          cp composeApp-internal-release.aab "${BASE_NAME}.aab"
+          cp composeApp-internal-release.apk "${BASE_NAME}.apk"
+
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release edit "$TAG" --title "$TITLE" --notes "$BODY" --prerelease
+            gh release upload "$TAG" "${BASE_NAME}.aab" "${BASE_NAME}.apk" --clobber
+          else
+            gh release create "$TAG" \
+              --title "$TITLE" \
+              --notes "$BODY" \
+              --prerelease \
+              "${BASE_NAME}.aab" \
+              "${BASE_NAME}.apk"
+          fi
+
+      - name: Cleanup
+        if: always()
+        run: rm -f fastlane.json

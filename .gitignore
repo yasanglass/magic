@@ -16,3 +16,8 @@ captures
 !*.xcodeproj/project.xcworkspace/
 !*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
+keystores/
+fastlane.json
+fastlane/report.xml
+vendor/bundle
+.bundle/

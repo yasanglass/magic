@@ -1,0 +1,38 @@
+default_platform(:android)
+
+def validate_prebuilt_artifacts!(aab_path, apk_path)
+  return if aab_path.to_s.empty? && apk_path.to_s.empty?
+
+  if aab_path.to_s.empty? || apk_path.to_s.empty?
+    UI.user_error!("Both aab and apk paths are required when using prebuilt artifacts")
+  end
+
+  { "AAB" => aab_path, "APK" => apk_path }.each do |label, path|
+    UI.user_error!("#{label} file not found at #{path}") unless File.exist?(path)
+    UI.user_error!("#{label} file is empty at #{path}") if File.zero?(path)
+  end
+end
+
+platform :android do
+  desc "Deploy to internal testing track"
+  lane :internal do |options|
+    aab_path = options[:aab]
+    apk_path = options[:apk]
+    validate_prebuilt_artifacts!(aab_path, apk_path)
+
+    if aab_path.to_s.empty?
+      gradle(task: ":app:composeApp:bundleInternalRelease")
+    end
+
+    upload_options = {
+      track: 'internal',
+      skip_upload_apk: true,
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    }
+    upload_options[:aab] = aab_path unless aab_path.to_s.empty?
+
+    upload_to_play_store(**upload_options)
+  end
+end
