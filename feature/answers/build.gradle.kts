@@ -23,7 +23,9 @@ kotlin {
             group("nonWeb") {
                 withAndroidTarget()
                 withJvm()
-                withApple()
+                group("apple") {
+                    withApple()
+                }
             }
             group("web") {
                 withJs()
