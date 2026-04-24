@@ -3,7 +3,6 @@
 </p>
 
 <a href="https://github.com/yasanglass/magic/blob/main/LICENSE"><img src="https://img.shields.io/github/license/yasanglass/magic.svg" alt="license"/></a>
-<a href="https://kotlinlang.org"><img src="https://img.shields.io/badge/kotlin-2.3.0-purple.svg?style=flat" alt="kotlin"/></a>
 <a href="https://crowdin.com/project/magic-8-ball"><img src="https://badges.crowdin.net/magic-8-ball/localized.svg" alt="crowdin"/></a>
 <a href="https://github.com/yasanglass/magic/actions/workflows/android.yml"><img src="https://img.shields.io/github/actions/workflow/status/yasanglass/magic/android.yml?label=android" alt="android"/></a>
 <a href="https://github.com/yasanglass/magic/actions/workflows/jvm.yml"><img src="https://img.shields.io/github/actions/workflow/status/yasanglass/magic/jvm.yml?label=jvm" alt="jvm"/></a>
