@@ -55,7 +55,6 @@ jobs:
   build-artifacts:
     name: Build Artifacts
     runs-on: ubuntu-latest
-    needs: [lint, unit-tests]
 
     steps:
       - name: Checkout
