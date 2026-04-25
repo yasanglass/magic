@@ -1,11 +1,13 @@
 package glass.yasan.magic.presentation.route.settings
 
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -91,10 +93,21 @@ private fun LazyListScope.developerBannerItem() {
 
 private fun LazyListScope.appIdentityItem() {
     item {
+        val versionName = if (LocalInspectionMode.current) {
+            "6.0.0"
+        } else {
+            BuildKonfig.VERSION_NAME
+        }
+        val versionCode = if (LocalInspectionMode.current) {
+            "600"
+        } else {
+            BuildKonfig.VERSION_CODE
+        }
+
         PreferenceAppIdentity(
             title = stringResource(Res.string.app_name),
-            versionName = BuildKonfig.VERSION_NAME,
-            extras = arrayOf(BuildKonfig.VERSION_CODE),
+            versionName = versionName,
+            extras = arrayOf(versionCode),
             modifier = Modifier.fillMaxWidth(),
         )
     }
