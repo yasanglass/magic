@@ -1,5 +1,7 @@
 package glass.yasan.magic
 
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.runDesktopComposeUiTest
@@ -26,7 +28,9 @@ class PreviewScreenshotTests {
         previews.forEach { preview ->
             runDesktopComposeUiTest {
                 setContent {
-                    preview()
+                    CompositionLocalProvider(LocalInspectionMode provides true) {
+                        preview()
+                    }
                 }
                 onRoot().captureRoboImage(
                     filePath = "src/jvmTest/snapshots/${preview.methodName}.png",
