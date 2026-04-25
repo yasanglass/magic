@@ -1,0 +1,142 @@
+[
+  {
+    "label": "Build",
+    "command": "./gradlew build",
+    "args": [],
+    "env": {
+      "DEVELOPER_DIR": "/Applications/Xcode.app/Contents/Developer"
+    },
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide": "never",
+    "shell": "system"
+  },
+  {
+    "label": "Check",
+    "command": "./gradlew check",
+    "args": [],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide": "never",
+    "shell": "system"
+  },
+  {
+    "label": "Check with Coverage",
+    "command": "./gradlew check :koverHtmlReport :koverXmlReport :koverBinaryReport",
+    "args": [],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide": "never",
+    "shell": "system"
+  },
+  {
+    "label": "Clean Record Snapshots",
+    "command": "./gradlew :app:composeApp:cleanRecordSnapshots",
+    "args": [],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide": "never",
+    "shell": "system"
+  },
+  {
+    "label": "Create Module Graph",
+    "command": "./gradlew createModuleGraph",
+    "args": [],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide": "never",
+    "shell": "system"
+  },
+  {
+    "label": "Detekt",
+    "command": "./gradlew detekt",
+    "args": [],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide": "never",
+    "shell": "system"
+  },
+  {
+    "label": "Lint",
+    "command": "./gradlew lint",
+    "args": [],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide": "never",
+    "shell": "system"
+  },
+  {
+    "label": "Run Desktop",
+    "command": "./gradlew :app:composeApp:createDistributable && open app/composeApp/build/compose/binaries/main/app/Magic.app",
+    "args": [],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "use_new_terminal": true,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide": "never",
+    "shell": {
+      "with_arguments": {
+        "program": "/bin/zsh",
+        "args": ["-l", "-c"]
+      }
+    }
+  },
+  {
+    "label": "Run Desktop 🔥",
+    "command": "./gradlew -p app/composeApp hotRunJvm --mainClass \"glass.yasan.magic.MainKt\"",
+    "args": [],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide": "never",
+    "shell": "system"
+  },
+  {
+    "label": "Run JS",
+    "command": "./gradlew -p app jsBrowserDevelopmentRun",
+    "args": [],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide": "never",
+    "shell": "system"
+  },
+  {
+    "label": "Run Wasm",
+    "command": "./gradlew -p app wasmJsBrowserDevelopmentRun",
+    "args": [],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide": "never",
+    "shell": "system"
+  },
+  {
+    "label": "Verify Snapshots",
+    "command": "./gradlew :app:composeApp:verifySnapshots",
+    "args": [],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide": "never",
+    "shell": "system"
+  }
+]
