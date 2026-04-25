@@ -45,6 +45,8 @@ jobs:
           NEW_VERSION_CODE=$((CURRENT_VERSION_CODE + 1))
 
           sed -i "s/^appVersionCode=.*/appVersionCode=$NEW_VERSION_CODE/" gradle.properties
+          sed -i "s/^CURRENT_PROJECT_VERSION=.*/CURRENT_PROJECT_VERSION=$NEW_VERSION_CODE/" app/iosApp/Configuration/Config.xcconfig
+          sed -i "s/^MARKETING_VERSION=.*/MARKETING_VERSION=$CURRENT_VERSION_NAME/" app/iosApp/Configuration/Config.xcconfig
 
           echo "version_name=$CURRENT_VERSION_NAME" >> $GITHUB_OUTPUT
           echo "version_code=$NEW_VERSION_CODE" >> $GITHUB_OUTPUT
@@ -57,7 +59,7 @@ jobs:
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git add gradle.properties
+          git add gradle.properties app/iosApp/Configuration/Config.xcconfig
           git commit -m "Bump version to ${{ steps.version_bump.outputs.version_name }}-${{ steps.version_bump.outputs.version_code }}"
           git tag ${{ steps.version_bump.outputs.tag_name }}
           git push --atomic origin main ${{ steps.version_bump.outputs.tag_name }}
