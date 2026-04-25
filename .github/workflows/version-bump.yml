@@ -1,0 +1,64 @@
+name: Version Bump
+
+on:
+  workflow_call:
+    inputs:
+      source:
+        description: 'Source of the version bump (nightly/manual)'
+        required: true
+        type: string
+      flavor:
+        description: 'Build flavor for tag suffix (internal/beta)'
+        required: true
+        type: string
+    secrets:
+      PAT_TOKEN:
+        description: 'Personal Access Token for triggering workflows'
+        required: true
+
+jobs:
+  version-bump:
+    name: Bump Version and Create Tag
+    runs-on: ubuntu-latest
+    concurrency:
+      group: version-bump-${{ inputs.flavor }}
+      cancel-in-progress: false
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
+          fetch-depth: 0
+          ref: main
+
+      - name: Extract current version and bump
+        id: version_bump
+        run: |
+          CURRENT_VERSION_NAME=$(grep "^appVersionName=" gradle.properties | cut -d'=' -f2)
+          CURRENT_VERSION_CODE=$(grep "^appVersionCode=" gradle.properties | cut -d'=' -f2)
+
+          echo "Current version: $CURRENT_VERSION_NAME ($CURRENT_VERSION_CODE)"
+
+          NEW_VERSION_CODE=$((CURRENT_VERSION_CODE + 1))
+
+          sed -i "s/^appVersionCode=.*/appVersionCode=$NEW_VERSION_CODE/" gradle.properties
+
+          echo "version_name=$CURRENT_VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "version_code=$NEW_VERSION_CODE" >> $GITHUB_OUTPUT
+          echo "tag_name=$CURRENT_VERSION_NAME-$NEW_VERSION_CODE-${{ inputs.flavor }}" >> $GITHUB_OUTPUT
+          echo "Bumped version: $CURRENT_VERSION_NAME ($NEW_VERSION_CODE) for ${{ inputs.flavor }} flavor"
+
+      - name: Commit version bump and push tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add gradle.properties
+          git commit -m "Bump version to ${{ steps.version_bump.outputs.version_name }}-${{ steps.version_bump.outputs.version_code }}"
+          git tag ${{ steps.version_bump.outputs.tag_name }}
+          git push --atomic origin main ${{ steps.version_bump.outputs.tag_name }}
+          echo "Created tag: ${{ steps.version_bump.outputs.tag_name }}"
