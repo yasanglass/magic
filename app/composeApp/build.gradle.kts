@@ -124,6 +124,8 @@ kotlin {
         }
         androidMain {
             dependencies {
+                implementation(project(":feature:widget"))
+
                 implementation(libs.androidx.activity.compose)
                 implementation(libs.koin.android)
             }

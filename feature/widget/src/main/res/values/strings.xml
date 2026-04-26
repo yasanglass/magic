@@ -1,0 +1,5 @@
+<resources>
+    <string name="widget_label">Magic</string>
+    <string name="widget_description">Magic answer</string>
+    <string name="widget_preview_text">Ask a question…</string>
+</resources>
