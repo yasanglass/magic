@@ -5,6 +5,7 @@ android-sdk-min = "23"
 android-sdk-target = "36"
 androidx-activity-compose = "1.13.0"
 androidx-browser = "1.10.0"
+androidx-glance = "1.1.1"
 androidx-lifecycle = "2.10.0"
 androidx-navigation = "2.9.2"
 arturbosch-detekt = "1.23.8"
@@ -30,6 +31,7 @@ touchlab-kermit = "2.1.0"
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity-compose" }
 androidx-browser = { module = "androidx.browser:browser", version.ref = "androidx-browser" }
+androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "androidx-glance" }
 jetbrains-compose-components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "jetbrains-compose" }
 jetbrains-compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "jetbrains-compose" }
 jetbrains-compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "jetbrains-compose-material3" }
