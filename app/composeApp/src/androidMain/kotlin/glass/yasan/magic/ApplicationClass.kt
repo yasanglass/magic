@@ -2,6 +2,7 @@ package glass.yasan.magic
 
 import android.app.Application
 import glass.yasan.magic.di.appModule
+import glass.yasan.magic.widget.widgetModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -13,7 +14,7 @@ class ApplicationClass : Application() {
         startKoin {
             androidLogger()
             androidContext(this@ApplicationClass)
-            modules(appModule)
+            modules(appModule, widgetModule)
         }
     }
 }
